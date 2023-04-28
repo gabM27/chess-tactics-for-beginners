@@ -12,7 +12,7 @@ ImportString[fen,"FEN"]
 ]
 
 (* Inserimento del nome da input utente *)
-nomeUtente = InputString[];
+nomeUtente = InputString["Inserisci il tuo nome:"];
 
 newChessboard = Button["Nuova scacchiera", board=generateNewChessBoard[]];
 clearChessboard = Button["Pulisci scacchiera", board=ImportString["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", "FEN"]];
