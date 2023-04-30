@@ -1,7 +1,9 @@
 (* ::Package:: *)
 
 (* IMPORT E DEFINIZIONE FUNZIONE DI CREAZIONE NUOVA SCACCHIERA*)
-dataset = Import["C:\\matcomptest\\test.csv","Dataset","HeaderLines"->1];
+SetDirectory[NotebookDirectory[]]
+
+dataset = Import["test.csv","Dataset","HeaderLines"->1];
 board = ImportString["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", "FEN"];
 bestMove = aaaa;
 
@@ -39,7 +41,5 @@ TODO:
 	e successivamente creare menu a tendina per rigiocare la posizione salvata.
  - muovere i pezzi tramite GUI e/o tramite input esterni (menu a tendina, etc.)
 *)
-
-
 
 
