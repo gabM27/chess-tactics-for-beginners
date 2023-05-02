@@ -43,3 +43,10 @@ TODO:
 *)
 
 
+dir = NotebookDirectory[];
+SetDirectory[dir<>"Chess-master"];
+Get[dir<>"\Chess-master\Chess.wl"];
+
+data = Import[dir<>"prova.zip","*.pgn"][[1]];
+MakePGNfiles[data]
+
