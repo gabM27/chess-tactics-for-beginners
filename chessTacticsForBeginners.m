@@ -43,10 +43,27 @@ TODO:
 *)
 
 
+(* carico il package *)
 dir = NotebookDirectory[];
-SetDirectory[dir<>"Chess-master"];
-Get[dir<>"\Chess-master\Chess.wl"];
+SetDirectory[NotebookDirectory[]];
+Get[dir<>"Chess-master\\Chess.wl"];
 
-data = Import[dir<>"prova.zip","*.pgn"][[1]];
-MakePGNfiles[data]
+
+(* Carico il dataset e creo i file pgn *)
+problems = Import["dataset.zip","*.txt"][[1]];
+MakePGNfiles[problems]
+
+
+(* 
+converto il file della partita #100 e la mostro in scacchiera 
+N.B. : non tutte le partite vanno bene, 
+forse perch\[EGrave] formattata in modo errato 
+rispetto a quanto descritto dal package che usiamo
+*)
+board=PGNconvert[PGNfile[10]["PGN"]];
+board
+Chess[ShowBoard->board,Interact->True]
+PGN//Dynamic
+
+
 
