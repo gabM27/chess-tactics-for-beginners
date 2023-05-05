@@ -60,10 +60,16 @@ N.B. : non tutte le partite vanno bene,
 forse perch\[EGrave] formattata in modo errato 
 rispetto a quanto descritto dal package che usiamo
 *)
-board=PGNconvert[PGNfile[10]["PGN"]];
+
+(* PER CONTROLLARE SE FUNZIONANO TUTTI I PGN DEL FILE besmoves.txt
+n = 1; While[n < 11726, Print[PGNconvert[PGNfile[n]["PGN"]]]; n++] *)
+
+(* So che i PGN files totali sono 11726*)
+randomNum=RandomInteger[{1,11726}];
+board=PGNconvert[PGNfile[randomNum]["PGN"]];
 board
+
 Chess[ShowBoard->board,Interact->True]
 PGN//Dynamic
-
 
 
