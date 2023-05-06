@@ -46,7 +46,7 @@ TODO:
 (* carico il package *)
 dir = NotebookDirectory[];
 SetDirectory[NotebookDirectory[]];
-Get[dir<>"Chess-master\\Chess.wl"];
+Get[dir<>"Chess-master/Chess.wl"];
 
 
 (* Carico il dataset e creo i file pgn *)
@@ -70,6 +70,7 @@ board=PGNconvert[PGNfile[randomNum]["PGN"]];
 board
 
 Chess[ShowBoard->board,Interact->True]
-PGN//Dynamic
+
+
 
 
