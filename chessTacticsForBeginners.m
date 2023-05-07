@@ -74,3 +74,4 @@ Chess[ShowBoard->board,Interact->True]
 
 
 
+
