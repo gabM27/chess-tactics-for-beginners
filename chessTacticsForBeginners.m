@@ -7,12 +7,6 @@ dataset = Import["test.csv","Dataset","HeaderLines"->1];
 board = ImportString["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", "FEN"];
 bestMove = aaaa;
 
-generateNewChessBoard[]:= Module[ {num,fen,best},
-num = RandomInteger[{1,Length[dataset]}];
-fen = dataset[num,"fen"];
-bestMove = dataset[num,"best"];
-ImportString[fen,"FEN"]
-]
 
 (* Inserimento del nome da input utente *)
 nomeUtente = InputString["Inserisci il tuo nome:"];
@@ -51,29 +45,30 @@ Get[dir<>"Chess-master/Chess.wl"];
 
 (* Carico il dataset e creo i file pgn *)
 problems = Import["dataset.zip","*.txt"][[1]];
-MakePGNfiles[problems]
+MakePGNfiles[problems];
 
 
-(* 
-converto il file della partita #100 e la mostro in scacchiera 
-N.B. : non tutte le partite vanno bene, 
-forse perch\[EGrave] formattata in modo errato 
-rispetto a quanto descritto dal package che usiamo
-*)
-
-(* PER CONTROLLARE SE FUNZIONANO TUTTI I PGN DEL FILE besmoves.txt
-n = 1; While[n < 11715, Print[PGNconvert[PGNfile[n]["PGN"]]]; n++] *)
-
+whoIsPlaying;
+filepgn;
+generateNewChessBoard[]:= Module[ {randomNum, board},
 (* So che i PGN files totali sono 11715*)
 randomNum=RandomInteger[{1,11715}];
+filepgn = PGNfile[randomNum]["PGN"];
+board=PGNconvert[filepgn];
+Chess[ShowBoard->board,Interact->True];
+If[StringMatchQ[PGNfile[randomNum]["Result"], "1-0"], whoIsPlaying = "mossa al BIANCO, trova lo scacco matto", whoIsPlaying = "mossa al NERO, trova lo scacco matto"];
+Move[MoveFromPGN[#][[1]]]&/@ Drop[board, Length[Movelist]-1];
+]
 
-board=PGNconvert[PGNfile[randomNum]["PGN"]];
-If[PGNfile[randomNum]["Result"] == "1-0", "mossa al BIANCO, trova lo scacco matto", "mossa al NERO, trova lo scacco matto"]
-
-Chess[ShowBoard->board,Interact->True]
-
-
-
+board = Startposition;
+Chess[ShowBoard->Interactive]
+Button["Nuova scacchiera", board=generateNewChessBoard[]] Button["Restart",Startposition]
+(*stringa che mostra chi deve giocare*)
+Dynamic@whoIsPlaying
+(*Lista di mosse della partita --> dalla quale prendere ultima mossa per confronto*)
+Dynamic@filepgn
+(*Lista di mosse GIOCATE --> anche da questa prendere ultima mossa per confronto con lista precedente*)
+PGN//Dynamic
 
 
 
