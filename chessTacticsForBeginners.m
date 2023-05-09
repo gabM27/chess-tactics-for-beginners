@@ -62,7 +62,8 @@ Move[MoveFromPGN[#][[1]]]&/@ Drop[board, Length[Movelist]-1];
 
 board = Startposition;
 Chess[ShowBoard->Interactive]
-Button["Nuova scacchiera", board=generateNewChessBoard[]] Button["Restart",Startposition]
+Button["Nuova scacchiera", board=generateNewChessBoard[]] Button["Restart",Startposition] 
+Button["Verifica mossa" (*funzionedaimplementare*)]
 (*stringa che mostra chi deve giocare*)
 Dynamic@whoIsPlaying
 (*Lista di mosse della partita --> dalla quale prendere ultima mossa per confronto*)
