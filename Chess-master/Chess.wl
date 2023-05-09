@@ -510,7 +510,7 @@ Block[{},
                       
                       If[pgnc,
                         {Button["Next", If[Length[showc] > Length[Movelist], Move[MoveFromPGN[showc[[Length[Movelist]+1]]][[1]]]]],
-                        Button["Last", Move[MoveFromPGN[#][[1]]]&/@ Drop[showc, Length[Movelist]-2]],
+                        Button["Last", Move[MoveFromPGN[#][[1]]]&/@ Drop[showc, Length[Movelist]-1]],
                         Button["End", Move[MoveFromPGN[#][[1]]]&/@ Drop[showc, Length[Movelist]]]},
                         Button["Random Move", Move[RandomMove]]
                       ]

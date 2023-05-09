@@ -62,14 +62,16 @@ rispetto a quanto descritto dal package che usiamo
 *)
 
 (* PER CONTROLLARE SE FUNZIONANO TUTTI I PGN DEL FILE besmoves.txt
-n = 1; While[n < 11726, Print[PGNconvert[PGNfile[n]["PGN"]]]; n++] *)
+n = 1; While[n < 11715, Print[PGNconvert[PGNfile[n]["PGN"]]]; n++] *)
 
-(* So che i PGN files totali sono 11726*)
-randomNum=RandomInteger[{1,11726}];
+(* So che i PGN files totali sono 11715*)
+randomNum=RandomInteger[{1,11715}];
+
 board=PGNconvert[PGNfile[randomNum]["PGN"]];
-board
+If[PGNfile[randomNum]["Result"] == "1-0", "mossa al BIANCO, trova lo scacco matto", "mossa al NERO, trova lo scacco matto"]
 
 Chess[ShowBoard->board,Interact->True]
+
 
 
 
