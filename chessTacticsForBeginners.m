@@ -50,10 +50,12 @@ MakePGNfiles[problems];
 
 whoIsPlaying;
 filepgn;
+correctMove;
 generateNewChessBoard[]:= Module[ {randomNum, board},
 (* So che i PGN files totali sono 11715*)
 randomNum=RandomInteger[{1,11715}];
 filepgn = PGNfile[randomNum]["PGN"];
+correctMove=Last[filepgn];
 board=PGNconvert[filepgn];
 Chess[ShowBoard->board,Interact->True];
 If[StringMatchQ[PGNfile[randomNum]["Result"], "1-0"], whoIsPlaying = "mossa al BIANCO, trova lo scacco matto", whoIsPlaying = "mossa al NERO, trova lo scacco matto"];
@@ -68,8 +70,13 @@ Button["Verifica mossa" (*funzionedaimplementare*)]
 Dynamic@whoIsPlaying
 (*Lista di mosse della partita --> dalla quale prendere ultima mossa per confronto*)
 Dynamic@filepgn
+"CORRECT_MOVE: "Dynamic@correctMove
 (*Lista di mosse GIOCATE --> anche da questa prendere ultima mossa per confronto con lista precedente*)
-PGN//Dynamic
+var = PGN//Dynamic;
+var2 = Last[Movelist]//Dynamic;
+(* DA INSERIRE LETTERA PER IL PEZZO MOSSO *)
+"ULTIMA MOSSA:" <> Coord[Last[Movelist][[2]][[1]]] // Dynamic 
+
 
 
 
