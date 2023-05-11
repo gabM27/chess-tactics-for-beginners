@@ -71,12 +71,19 @@ Dynamic@whoIsPlaying
 (*Lista di mosse della partita --> dalla quale prendere ultima mossa per confronto*)
 Dynamic@filepgn
 "CORRECT_MOVE: "Dynamic@correctMove
-(*Lista di mosse GIOCATE --> anche da questa prendere ultima mossa per confronto con lista precedente*)
-var = PGN//Dynamic;
-var2 = Last[Movelist]//Dynamic;
-(* DA INSERIRE LETTERA PER IL PEZZO MOSSO *)
-"ULTIMA MOSSA:" <> Coord[Last[Movelist][[2]][[1]]] // Dynamic 
 
+(*
+Ultima mossa effettuata
+TODO: switch per fare diventare la stringa "pawn e4" --> "e4"; "knight f6" --> "Kf6"
+attenzione a quando si mangia un pezzo: si scrive con una x in mezzo.
+Per esempio se il cavallo in f6 mangia il pedone in e4 si scriver\[AGrave] Kxe4.
+altro esempio: se il pedone in e4 mangia il pedone in d5 si scriver\[AGrave] exd5.
+I pezzi diversi dai pedoni quindi devono sempre essere esplicitati 
+tramite lettera maiuscola rappresentativa.
+*)
+piece = Dynamic@Last[Movelist][[2]][[2]];
+coord = Dynamic@Coord[Last[Movelist][[2]][[1]]];
+StringForm["`1` `2`",piece,coord]
 
 
 
