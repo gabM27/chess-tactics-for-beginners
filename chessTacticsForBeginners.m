@@ -74,7 +74,8 @@ Dynamic@filepgn
 
 (*
 Ultima mossa effettuata
-TODO: switch per fare diventare la stringa "pawn e4" --> "e4"; "knight f6" --> "Kf6"
+TODO: vedere nel package se c'\[EGrave] gi\[AGrave] qualcosa
+o creare switch per fare diventare la stringa "pawn e4" --> "e4"; "knight f6" --> "Kf6"
 attenzione a quando si mangia un pezzo: si scrive con una x in mezzo.
 Per esempio se il cavallo in f6 mangia il pedone in e4 si scriver\[AGrave] Kxe4.
 altro esempio: se il pedone in e4 mangia il pedone in d5 si scriver\[AGrave] exd5.
