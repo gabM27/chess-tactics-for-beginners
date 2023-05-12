@@ -1,34 +1,5 @@
 (* ::Package:: *)
 
-(* IMPORT E DEFINIZIONE FUNZIONE DI CREAZIONE NUOVA SCACCHIERA*)
-SetDirectory[NotebookDirectory[]]
-
-dataset = Import["test.csv","Dataset","HeaderLines"->1];
-board = ImportString["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", "FEN"];
-bestMove = aaaa;
-
-
-(* Inserimento del nome da input utente *)
-nomeUtente = InputString["Inserisci il tuo nome:"];
-newChessboard clearChessboard
-newChessboard = Button["Nuova scacchiera", board=generateNewChessBoard[]];
-clearChessboard = Button["Pulisci scacchiera", board=ImportString["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", "FEN"]];
-(* newChessboard clearChessboard *)
-generateNewChessBoard[]
-nomeUtente "sta giocando!"
-
-
-bestMove "miglior mossa:" 
-Dynamic@board
-movePiece = Button["Muovi pezzo", board = InputString["inserisci la mossa ad esempio 1a4b"], Method -> "Queued"];
-checkmigliormossa[bestMove, movePiece]
-
-checkmigliormossa[]:= Module[ {soluzione,tentativo},
-(*result = [AlphabeticOrder[soluzione,tentativo];*)
-soluzione === tentativo
-]
-
-
 (*
 TODO: 
  - ricordarsi del seed della posizione appena giocata --> scrivere su file txt stringa fen 
@@ -50,41 +21,64 @@ MakePGNfiles[problems];
 
 whoIsPlaying;
 filepgn;
+pgntosplit;
+moveToCheck;
 correctMove;
+
+(* Crea la nuova scacchiera*)
 generateNewChessBoard[]:= Module[ {randomNum, board},
 (* So che i PGN files totali sono 11715*)
 randomNum=RandomInteger[{1,11715}];
 filepgn = PGNfile[randomNum]["PGN"];
 correctMove=Last[filepgn];
+correctMove = StringDrop[correctMove,-1]; (* droppo il "#" finale*)
 board=PGNconvert[filepgn];
 Chess[ShowBoard->board,Interact->True];
 If[StringMatchQ[PGNfile[randomNum]["Result"], "1-0"], whoIsPlaying = "mossa al BIANCO, trova lo scacco matto", whoIsPlaying = "mossa al NERO, trova lo scacco matto"];
 Move[MoveFromPGN[#][[1]]]&/@ Drop[board, Length[Movelist]-1];
+] 
+
+(* verifico che la mossa fatta equivalga a quella corretta
+TODO:
+1. non funziona con tutte le mosse --> perch\[EGrave] bisogna aggiornare i delimitatori con i numeri delle mosse.
+2. sistemare stampa solo una volta e cancellazione stampa precedente.
+3. bloccare la scacchiera una volta cliccato "verifica mossa" e creare pulsante rigioca la stessa partita (possibilmente salvare per dopo) 
+*)
+checkMove[]:= Module[{pgntosplit,delimitatori,lista,var,len, moveToCheck},
+pgntosplit = PGN // Dynamic;
+delimitatori ={" " , ", "};
+lista = StringSplit[pgntosplit[[1]],delimitatori];
+len = Dimensions[lista];
+moveToCheck = Last[lista];
+If[StringMatchQ[moveToCheck,correctMove], endgame = "MOSSA CORRETTA, BRAVO!",endgame = "hai sbagliato, riprova o visualizza la soluzione :("];
+Print[endgame];
 ]
+
+(* Inserimento del nome da input utente *)
+nomeUtente = InputString["Inserisci il tuo nome:"];
+nomeUtente "sta giocando!"
 
 board = Startposition;
 Chess[ShowBoard->Interactive]
-Button["Nuova scacchiera", board=generateNewChessBoard[]] Button["Restart",Startposition] 
-Button["Verifica mossa" (*funzionedaimplementare*)]
+newBoardBtn=Button["Nuova scacchiera", board=generateNewChessBoard[]];
+restartBtn=Button["Restart",Startposition];
+checkBtn=Button["Verifica mossa", checkMove[]];
+showSolutionBtn=Button["Mostra soluzione", Print["La mossa corretta \[EGrave] " <> correctMove]];
+(*TODO: capire perch\[EGrave] stampa prima showSolutionBtn degli altri*)
+newBoardBtn restartBtn checkBtn showSolutionBtn 
+
 (*stringa che mostra chi deve giocare*)
 Dynamic@whoIsPlaying
 (*Lista di mosse della partita --> dalla quale prendere ultima mossa per confronto*)
-Dynamic@filepgn
-"CORRECT_MOVE: "Dynamic@correctMove
+Dynamic@filepgn;
+
+
+
+
 
 (*
-Ultima mossa effettuata
-TODO: vedere nel package se c'\[EGrave] gi\[AGrave] qualcosa
-o creare switch per fare diventare la stringa "pawn e4" --> "e4"; "knight f6" --> "Kf6"
-attenzione a quando si mangia un pezzo: si scrive con una x in mezzo.
-Per esempio se il cavallo in f6 mangia il pedone in e4 si scriver\[AGrave] Kxe4.
-altro esempio: se il pedone in e4 mangia il pedone in d5 si scriver\[AGrave] exd5.
-I pezzi diversi dai pedoni quindi devono sempre essere esplicitati 
-tramite lettera maiuscola rappresentativa.
-*)
-piece = Dynamic@Last[Movelist][[2]][[2]];
-coord = Dynamic@Coord[Last[Movelist][[2]][[1]]];
-StringForm["`1` `2`",piece,coord]
-
-
+PROVE per delimitatori
+For[i=1, i<Dimensions[StringSplit[pgntosplit[[1]],", "]],i++, AppendTo[delList,ToString[i<>"."]]]
+For[i=1, i<Dimensions[delList],i++,Print[delList[[i]]]]
+delList*)
 
