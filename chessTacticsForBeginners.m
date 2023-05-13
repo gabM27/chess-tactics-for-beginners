@@ -42,7 +42,7 @@ Move[MoveFromPGN[#][[1]]]&/@ Drop[board, Length[Movelist]-1];
 TODO:
 1. non funziona con tutte le mosse --> perch\[EGrave] bisogna aggiornare i delimitatori con i numeri delle mosse.
 2. sistemare stampa solo una volta e cancellazione stampa precedente.
-3. bloccare la scacchiera una volta cliccato "verifica mossa" e creare pulsante rigioca la stessa partita (possibilmente salvare per dopo) 
+3. creare pulsante rigioca la stessa partita (possibilmente salvare per dopo) 
 *)
 checkMove[]:= Module[{pgntosplit,delimitatori,lista,var,len, moveToCheck},
 pgntosplit = PGN // Dynamic;
@@ -52,6 +52,7 @@ len = Dimensions[lista];
 moveToCheck = Last[lista];
 If[StringMatchQ[moveToCheck,correctMove], endgame = "MOSSA CORRETTA, BRAVO!",endgame = "hai sbagliato, riprova o visualizza la soluzione :("];
 Print[endgame];
+Chess[ShowBoard->board,Interact->False];
 ]
 
 (* Inserimento del nome da input utente *)
@@ -61,17 +62,17 @@ nomeUtente "sta giocando!"
 board = Startposition;
 Chess[ShowBoard->Interactive]
 newBoardBtn=Button["Nuova scacchiera", board=generateNewChessBoard[]];
-restartBtn=Button["Restart",Startposition];
+backBtn=Button["Back",Move[MoveFromPGN[filepgn[[Length[Movelist]-1]]][[1]]]]; (*non funziona ancora*)
+restartBtn=Button["Restart",Chess[ShowBoard->Startposition,Interact->True]];
 checkBtn=Button["Verifica mossa", checkMove[]];
 showSolutionBtn=Button["Mostra soluzione", Print["La mossa corretta \[EGrave] " <> correctMove]];
 (*TODO: capire perch\[EGrave] stampa prima showSolutionBtn degli altri*)
-newBoardBtn restartBtn checkBtn showSolutionBtn 
+newBoardBtn restartBtn checkBtn showSolutionBtn backBtn
 
 (*stringa che mostra chi deve giocare*)
 Dynamic@whoIsPlaying
 (*Lista di mosse della partita --> dalla quale prendere ultima mossa per confronto*)
 Dynamic@filepgn;
-
 
 
 
