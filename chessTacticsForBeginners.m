@@ -40,9 +40,8 @@ Move[MoveFromPGN[#][[1]]]&/@ Drop[board, Length[Movelist]-1];
 
 (* verifico che la mossa fatta equivalga a quella corretta
 TODO:
-1. non funziona con tutte le mosse --> perch\[EGrave] bisogna aggiornare i delimitatori con i numeri delle mosse.
-2. sistemare stampa solo una volta e cancellazione stampa precedente.
-3. creare pulsante rigioca la stessa partita (possibilmente salvare per dopo) 
+1. sistemare stampa solo una volta e cancellazione stampa precedente.
+2. creare pulsante rigioca la stessa partita (possibilmente salvare per dopo) 
 *)
 checkMove[]:= Module[{pgntosplit,delimitatori,lista,var,len, moveToCheck},
 pgntosplit = PGN // Dynamic;
@@ -50,6 +49,8 @@ delimitatori ={" " , ", "};
 lista = StringSplit[pgntosplit[[1]],delimitatori];
 len = Dimensions[lista];
 moveToCheck = Last[lista];
+Print["Correct: " correctMove <> " moveToCheck: " moveToCheck];
+Print[lista];
 If[StringMatchQ[moveToCheck,correctMove], endgame = "MOSSA CORRETTA, BRAVO!",endgame = "hai sbagliato, riprova o visualizza la soluzione :("];
 Print[endgame];
 Chess[ShowBoard->board,Interact->False];
@@ -72,7 +73,7 @@ newBoardBtn restartBtn checkBtn showSolutionBtn backBtn
 (*stringa che mostra chi deve giocare*)
 Dynamic@whoIsPlaying
 (*Lista di mosse della partita --> dalla quale prendere ultima mossa per confronto*)
-Dynamic@filepgn;
+Dynamic@filepgn
 
 
 
