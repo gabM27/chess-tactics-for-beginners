@@ -56,9 +56,14 @@ Print[endgame];
 Chess[ShowBoard->board,Interact->False];
 ]
 
-(* Inserimento del nome da input utente *)
-nomeUtente = InputString["Inserisci il tuo nome:"];
-nomeUtente "sta giocando!"
+(* Inserimento del nome da input utente
+Controllo che la stringa non sia vuota o che non contenga solo whitespace *)
+While[True,
+ nomeUtente = InputString["Inserisci il tuo nome:"];
+ If[!StringMatchQ[StringTrim[nomeUtente]][""], Break[]];
+ ]
+ (*Nel nome vengono rimpossi i whitespace *)
+ StringReplace[nomeUtente," "-> ""] "sta giocando!"
 
 board = Startposition;
 Chess[ShowBoard->Interactive]
