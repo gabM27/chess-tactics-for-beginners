@@ -22,6 +22,7 @@ MakePGNfiles[problems];
 filepgn;
 pgntosplit;
 moveToCheck;
+lastgame;
 whoIsPlaying = "";
 endgame = "";
 correctMove;
@@ -29,12 +30,25 @@ correctMovetoShow = "";
 
 generateNewChessBoard[] := Module[{randomNum, board},
   randomNum = RandomInteger[{1, 11715}];
+  lastgame = randomNum;
   filepgn = PGNfile[randomNum]["PGN"];
   correctMove = Last[filepgn];
   correctMove = StringDrop[correctMove, -1];
   board = PGNconvert[filepgn];
   Chess[ShowBoard -> board, Interact -> True];
   If[StringMatchQ[PGNfile[randomNum]["Result"], "1-0"],
+    whoIsPlaying = "mossa al BIANCO, trova lo scacco matto",
+    whoIsPlaying = "mossa al NERO, trova lo scacco matto"];
+  Move[MoveFromPGN[#][[1]]] & /@ Drop[board, Length[Movelist] - 1];
+]
+
+repeatChessBoard[] := Module[{board},
+  filepgn = PGNfile[lastgame]["PGN"];
+  correctMove = Last[filepgn];
+  correctMove = StringDrop[correctMove, -1];
+  board = PGNconvert[filepgn];
+  Chess[ShowBoard -> board, Interact -> True];
+  If[StringMatchQ[PGNfile[lastgame]["Result"], "1-0"],
     whoIsPlaying = "mossa al BIANCO, trova lo scacco matto",
     whoIsPlaying = "mossa al NERO, trova lo scacco matto"];
   Move[MoveFromPGN[#][[1]]] & /@ Drop[board, Length[Movelist] - 1];
@@ -59,17 +73,18 @@ While[True,
   If[! StringMatchQ[StringTrim[nomeUtente]][""], Break[]];
 ]
 
-StringReplace[nomeUtente, " " -> ""] <> "sta giocando!"
+StringReplace[nomeUtente, " " -> ""] <> " sta giocando!"
 
 board = Startposition;
 Chess[ShowBoard -> Interactive]
 newBoardBtn = Button["Nuova scacchiera", board = generateNewChessBoard[]];
+repeatBtn = Button["Rigioca Partita", board = repeatChessBoard[]];
 backBtn = Button["Back", Move[MoveFromPGN[filepgn[[Length[Movelist] - 1]]][[1]]]];
 restartBtn = Button["Restart", whoIsPlaying = ""; endgame = ""; correctMovetoShow =""; correctMove=""; Chess[ShowBoard -> Startposition, Interact -> True]];
 checkBtn = Button["Verifica mossa", checkMove[]];
 showSolutionBtn = Button["Mostra soluzione", correctMovetoShow = "La mossa corretta \[EGrave] " <> correctMove];
 
-Column[{newBoardBtn, restartBtn, checkBtn, showSolutionBtn, backBtn}]
+Column[{newBoardBtn, restartBtn, checkBtn, showSolutionBtn, backBtn,repeatBtn}]
 
 Dynamic@whoIsPlaying
 Dynamic@endgame
