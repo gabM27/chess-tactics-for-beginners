@@ -27,6 +27,7 @@ whoIsPlaying = "";
 endgame = "";
 correctMove;
 correctMovetoShow = "";
+gameResult = 0;
 
 generateNewChessBoard[] := Module[{randomNum, board},
   randomNum = RandomInteger[{1, 11715}];
@@ -39,7 +40,9 @@ generateNewChessBoard[] := Module[{randomNum, board},
   If[StringMatchQ[PGNfile[randomNum]["Result"], "1-0"],
     whoIsPlaying = "mossa al BIANCO, trova lo scacco matto",
     whoIsPlaying = "mossa al NERO, trova lo scacco matto"];
+    
   Move[MoveFromPGN[#][[1]]] & /@ Drop[board, Length[Movelist] - 1];
+  
 ]
 
 repeatChessBoard[] := Module[{board},
@@ -51,6 +54,8 @@ repeatChessBoard[] := Module[{board},
   If[StringMatchQ[PGNfile[lastgame]["Result"], "1-0"],
     whoIsPlaying = "mossa al BIANCO, trova lo scacco matto",
     whoIsPlaying = "mossa al NERO, trova lo scacco matto"];
+    
+ 
   Move[MoveFromPGN[#][[1]]] & /@ Drop[board, Length[Movelist] - 1];
 ]
 
@@ -61,10 +66,11 @@ checkMove[] := Module[{pgntosplit, delimitatori, lista, len, moveToCheck},
   len = Dimensions[lista];
   moveToCheck = Last[lista];
   (*Print["Correct: " <> correctMove <> " moveToCheck: " <> moveToCheck];
-  Print[lista];*)
+  Print[lista];
+  *)
   If[StringMatchQ[moveToCheck, correctMove],
-    endgame = "MOSSA CORRETTA, BRAVO!",
-    endgame = "hai sbagliato, riprova o visualizza la soluzione :("];
+    (gameResult=1; endgame = "MOSSA CORRETTA, BRAVO!";),(gameResult=0; endgame = "hai sbagliato, riprova o visualizza la soluzione :(";)];
+  Delete[Movelist,-1];
   Chess[ShowBoard -> board, Interact -> False];
 ]
 
@@ -77,7 +83,7 @@ StringReplace[nomeUtente, " " -> ""] <> " sta giocando!"
 
 board = Startposition;
 Chess[ShowBoard -> Interactive]
-newBoardBtn = Button["Nuova scacchiera", board = generateNewChessBoard[]];
+newBoardBtn = Button["Nuova scacchiera", board = generateNewChessBoard[]; gameResult = 0;];
 repeatBtn = Button["Rigioca Partita", board = repeatChessBoard[]];
 backBtn = Button["Back", Move[MoveFromPGN[filepgn[[Length[Movelist] - 1]]][[1]]]];
 restartBtn = Button["Restart", whoIsPlaying = ""; endgame = ""; correctMovetoShow =""; correctMove=""; Chess[ShowBoard -> Startposition, Interact -> True]];
@@ -89,7 +95,6 @@ Column[{newBoardBtn, restartBtn, checkBtn, showSolutionBtn, backBtn,repeatBtn}]
 Dynamic@whoIsPlaying
 Dynamic@endgame
 Dynamic@correctMovetoShow
-
 
 
 (*
