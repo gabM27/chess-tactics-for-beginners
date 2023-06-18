@@ -58,11 +58,18 @@ repeatChessBoard[] := Module[{board},
   Move[MoveFromPGN[#][[1]]] & /@ Drop[board, Length[Movelist] - 1];
 ]
 
-checkCorrectMove[] :=Module[{},
-	If[StringMatchQ[PGNfile[lastgame]["Result"], "1-0"],
-    correctMove = StringDrop[correctMove, 2],
-    correctMove=correctMove];  
-]
+dropCharWhiteMove[] := Module[{},
+If[StringMatchQ[PGNfile[lastgame]["Result"], "1-0"],
+	counter=0
+	While[True,
+		If[StringMatchQ[ StringPart[correctMove,counter] , "."],
+			Break[],
+			counter = counter+1;]
+		]
+	If[!MatchQ[counter,0],
+	correctMove = StringDrop[correctMove,counter+1];
+	moveToCheck = StringDrop[correctMove,counter+1];];
+]]
 
 checkMove[] := Module[{pgntosplit, delimitatori, lista, len, moveToCheck},
   pgntosplit = PGN // Dynamic;
@@ -93,7 +100,7 @@ repeatBtn = Button["Rigioca Partita", board = repeatChessBoard[]];
 backBtn = Button["Back", Move[MoveFromPGN[filepgn[[Length[Movelist] - 1]]][[1]]]];
 restartBtn = Button["Restart", whoIsPlaying = ""; endgame = ""; correctMovetoShow =""; correctMove=""; Chess[ShowBoard -> Startposition, Interact -> True]];
 checkBtn = Button["Verifica mossa", checkMove[] ];
-showSolutionBtn = Button["Mostra soluzione", checkCorrectMove[]; correctMovetoShow = "La mossa corretta \[EGrave] " <> correctMove ];
+showSolutionBtn = Button["Mostra soluzione", dropCharWhiteMove[]; correctMovetoShow = "La mossa corretta \[EGrave] " <> correctMove ];
 (*
 versione di interfaccia precedente:
 Column[{newBoardBtn, restartBtn, checkBtn, showSolutionBtn, backBtn,repeatBtn}]
