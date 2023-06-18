@@ -2,9 +2,10 @@
 
 (*
 TODO: 
- - ricordarsi del seed della posizione appena giocata --> scrivere su file txt stringa fen 
-	e successivamente creare menu a tendina per rigiocare la posizione salvata.
- - muovere i pezzi tramite GUI e/o tramite input esterni (menu a tendina, etc.)
+ - pulsante back
+ - dropWhiteMove per visualizzazione corretta
+ - restart stessa partita rimane selezionata la mossa e non funziona correttamente
+ - personalizzazione stupida della scacchiera
 *)
 
 
@@ -610,17 +611,4 @@ Dynamic@endgame
 Dynamic@correctMoveToPrint
 
 
-(* ::Input:: *)
-(**)
-
-
-(* ::Input:: *)
-(**)
-
-
-(*
-PROVE per delimitatori
-For[i=1, i<Dimensions[StringSplit[pgntosplit[[1]],", "]],i++, AppendTo[delList,ToString[i<>"."]]]
-For[i=1, i<Dimensions[delList],i++,Print[delList[[i]]]]
-delList*)
 
