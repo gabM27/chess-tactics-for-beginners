@@ -3,7 +3,7 @@
 (*
 TODO: 
  - pulsante back
- - dropWhiteMove per visualizzazione corretta
+ - dropWhiteMove per visualizzazione corretta | FATTO
  - restart stessa partita rimane selezionata la mossa e non funziona correttamente
  - personalizzazione stupida della scacchiera
 *)
@@ -29,7 +29,6 @@ endgame = "";
 correctMove;
 correctMoveToPrint = "";
 gameResult = 0;
-
 generateNewChessBoard[] := Module[{randomNum, board},
   randomNum = RandomInteger[{1, 11715}];
   lastgame = randomNum;
@@ -62,16 +61,11 @@ repeatChessBoard[] := Module[{board},
 dropCharWhiteMove[] := Module[{},
 correctMoveToPrint = correctMove;
 If[StringMatchQ[PGNfile[lastgame]["Result"], "1-0"], (* Se la mossa \[EGrave] al bianco*)
-	counter=0
-	While[True,
-		stringTmp =  StringPart[correctMoveToPrint,counter];
-		If[StringContainsQ[ToString[stringTmp], "."], (* Se il carattere n-esimo \[EGrave] diverso da ".", continua a iterare*)
-			Break[],
-			counter = counter+1;]
-		]
-	(* Drop dei caratteri *)
-	correctMovetoPrint = StringDrop[correctMove,counter];
-]]
+(*STAMPA PER VEDERE SE LA MOSSA NELLA StringDelete \[EGrave] corretta o vengono troncati altri caratteri*)
+(*Print[correctMove]; *)
+correctMoveToPrint=StringDelete[correctMoveToPrint, DigitCharacter.. ~~ ".", IgnoreCase -> False];
+];
+]
 
 checkMove[] := Module[{pgntosplit, delimitatori, lista, len, moveToCheck},
   pgntosplit = PGN // Dynamic;
@@ -609,6 +603,4 @@ D7nJT8HfotV/bWmKPS4koST16TGJSUxiEpOYxCQmMUkJ8v8AY8TT1A==
 Dynamic@whoIsPlaying
 Dynamic@endgame
 Dynamic@correctMoveToPrint
-
-
 
