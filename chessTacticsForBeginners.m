@@ -29,6 +29,8 @@ endgame = "";
 correctMove;
 correctMoveToPrint = "";
 gameResult = 0;
+
+
 generateNewChessBoard[] := Module[{randomNum, board},
   randomNum = RandomInteger[{1, 11715}];
   lastgame = randomNum;
@@ -44,6 +46,7 @@ generateNewChessBoard[] := Module[{randomNum, board},
   Move[MoveFromPGN[#][[1]]] & /@ Drop[board, Length[Movelist] - 1];
   
 ]
+
 
 repeatChessBoard[] := Module[{board},
   filepgn = PGNfile[lastgame]["PGN"];
@@ -97,10 +100,8 @@ backBtn = Button["Back", Move[MoveFromPGN[filepgn[[Length[Movelist] - 1]]][[1]]]
 restartBtn = Button["Restart", whoIsPlaying = ""; endgame = ""; correctMoveToPrint =""; correctMove=""; Chess[ShowBoard -> Startposition, Interact -> False]];
 checkBtn = Button["Verifica mossa", checkMove[] ];
 showSolutionBtn = Button["Mostra soluzione", dropCharWhiteMove[]; "La mossa corretta \[EGrave] " <> correctMoveToPrint ];
-(*
-versione di interfaccia precedente:
-Column[{newBoardBtn, restartBtn, checkBtn, showSolutionBtn, backBtn,repeatBtn}]
-*)
+changeColorBtn = Button["Colore Scacchiera", Background->LightBlue ];
+changeSizeBtn = Button["Dimensione Scacchiera", Background->LightBlue];
 GraphicsGrid[
 {
 {Image[CompressedData["
@@ -597,10 +598,14 @@ D7nJT8HfotV/bWmKPS4koST16TGJSUxiEpOYxCQmMUkJ8v8AY8TT1A==
 "], "Byte", ColorSpace -> "RGB", ImageResolution -> {96, 96}, Interleaving -> True]},
 {newBoardBtn, restartBtn, checkBtn },
 {showSolutionBtn, backBtn,repeatBtn},
-{Dynamic@whoIsPlaying,Dynamic@endgame,Dynamic@correctMoveToPrint}
-}, Frame->All , AspectRatio->1/3]
+{Dynamic@whoIsPlaying,Dynamic@endgame,Dynamic@correctMoveToPrint},
+{changeSizeBtn, changeColorBtn, ""}
+}, Frame->All , AspectRatio->2/5]
 
 Dynamic@whoIsPlaying
 Dynamic@endgame
 Dynamic@correctMoveToPrint
+
+
+
 
