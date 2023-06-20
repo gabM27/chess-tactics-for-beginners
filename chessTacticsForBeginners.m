@@ -3,8 +3,8 @@
 (*
 TODO: 
  - pulsante back
- - dropWhiteMove per visualizzazione corretta | FATTO
- - restart stessa partita rimane selezionata la mossa e non funziona correttamente
+ V dropWhiteMove per visualizzazione corretta
+ V restart stessa partita rimane selezionata la mossa e non funziona correttamente
  - personalizzazione stupida della scacchiera
 *)
 
@@ -20,15 +20,15 @@ problems = Import["dataset.zip","*.txt"][[1]];
 MakePGNfiles[problems];
 
 
-filepgn;
-pgntosplit;
-moveToCheck;
-lastgame;
-whoIsPlaying = "";
-endgame = "";
-correctMove;
-correctMoveToPrint = "";
-gameResult = 0;
+filepgn;                    (* file PGN della partita*)
+pgntosplit;                 (* variabile di appoggio per manipolare il file PGN *)
+moveToCheck;                (* mossa che compie il giocatore e che deve essere controllata per verificare se corretta *)
+lastgame;                   (* variabile utile a ricaricare l'ultima partita giocata*)
+whoIsPlaying = "";          (* memorizza il nome del giocatore *)
+endgame = "";               (* contiene il messaggio di successo o sconfitta di fine partita *)
+correctMove;                (* mossa corretta, ovvero mossa che porta allo scacco matto *)
+correctMoveToPrint = "";    (* formato stampa della mossa corretta *)
+gameResult = 0;             (* partita vinta oppure persa *)
 
 
 generateNewChessBoard[] := Module[{randomNum, board},
@@ -94,14 +94,21 @@ StringReplace[nomeUtente, " " -> ""] <> " sta giocando!";
 
 board = Startposition;
 Chess[ShowBoard -> Interactive]
-newBoardBtn = Button["Nuova scacchiera", board = generateNewChessBoard[]; gameResult = 0;];
-repeatBtn = Button["Rigioca Partita", board = repeatChessBoard[]];
-backBtn = Button["Back", Move[MoveFromPGN[filepgn[[Length[Movelist] - 1]]][[1]]]];
-restartBtn = Button["Restart", whoIsPlaying = ""; endgame = ""; correctMoveToPrint =""; correctMove=""; Chess[ShowBoard -> Startposition, Interact -> False]];
-checkBtn = Button["Verifica mossa", checkMove[] ];
-showSolutionBtn = Button["Mostra soluzione", dropCharWhiteMove[]; "La mossa corretta \[EGrave] " <> correctMoveToPrint ];
+newBoardBtn = Button["Nuova scacchiera", 
+	board = generateNewChessBoard[]; gameResult = 0;];
+repeatBtn = Button["Rigioca Partita", 
+	board = repeatChessBoard[]];
+backBtn = Button["Back",
+	Move[MoveFromPGN[filepgn[[Length[Movelist] - 1]]][[1]]]];
+restartBtn = Button["Restart", 
+	whoIsPlaying = ""; endgame = ""; correctMoveToPrint =""; correctMove=""; Chess[ShowBoard -> Startposition, Interact -> False]];
+checkBtn = Button["Verifica mossa", 
+	checkMove[] ];
+showSolutionBtn = Button["Mostra soluzione", 
+	dropCharWhiteMove[]; "La mossa corretta \[EGrave] " <> correctMoveToPrint ];
 changeColorBtn = Button["Colore Scacchiera", Background->LightBlue ];
-changeSizeBtn = Button["Dimensione Scacchiera", Background->LightBlue];
+changeSizeBtn = Button["Dimensione Scacchiera", 
+	board[ImageSize->Tiny]];
 GraphicsGrid[
 {
 {Image[CompressedData["
@@ -602,9 +609,12 @@ D7nJT8HfotV/bWmKPS4koST16TGJSUxiEpOYxCQmMUkJ8v8AY8TT1A==
 {changeSizeBtn, changeColorBtn, ""}
 }, Frame->All , AspectRatio->2/5]
 
-Dynamic@whoIsPlaying
-Dynamic@endgame
-Dynamic@correctMoveToPrint
+
+(*output soppresso perch\[EGrave] \[EGrave] nella nuova interfaccia*)
+Dynamic@whoIsPlaying;
+Dynamic@endgame;
+Dynamic@correctMoveToPrint;
+
 
 
 
