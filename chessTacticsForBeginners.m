@@ -81,7 +81,7 @@ checkMove[] := Module[{pgntosplit, delimitatori, lista, len, moveToCheck},
   *)
   If[StringMatchQ[moveToCheck, correctMove],
     (gameResult=1; endgame = "MOSSA CORRETTA, BRAVO!";),(gameResult=0; endgame = "hai sbagliato, riprova o guarda la soluzione :(";)];
-  Delete[Movelist,-1];
+ Movelist = Most[Movelist];
   Chess[ShowBoard -> board, Interact -> False];
 ]
 
@@ -605,6 +605,7 @@ D7nJT8HfotV/bWmKPS4koST16TGJSUxiEpOYxCQmMUkJ8v8AY8TT1A==
 Dynamic@whoIsPlaying
 Dynamic@endgame
 Dynamic@correctMoveToPrint
+
 
 
 
