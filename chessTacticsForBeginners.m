@@ -636,7 +636,7 @@ D7nJT8HfotV/bWmKPS4koST16TGJSUxiEpOYxCQmMUkJ8v8AY8TT1A==
 {newBoardBtn, restartBtn, checkBtn },
 {showSolutionBtn, backBtn,repeatBtn},
 {Dynamic@whoIsPlaying,Dynamic@endgame,Dynamic@correctMoveToPrint},
-{changeSizeBtn, changeColorBtn, ""}
+{changeSizeBtn, changeColorBtn,ColorSetter[Dynamic[x]]  } (*ColorSetter permette di scegliere un colore RGB,per colorare\[NonBreakingSpace]la\[NonBreakingSpace]scacchiera*)
 }, Frame->All , AspectRatio->2/5]
 
 
@@ -644,7 +644,5 @@ D7nJT8HfotV/bWmKPS4koST16TGJSUxiEpOYxCQmMUkJ8v8AY8TT1A==
 Dynamic@whoIsPlaying;
 Dynamic@endgame;
 Dynamic@correctMoveToPrint;
-
-
 
 
