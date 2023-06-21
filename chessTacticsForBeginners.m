@@ -3,6 +3,8 @@
 (*
 TODO: 
  - pulsante back
+ - BUG --> restart + rigioca stessa partita rimane selezionata la mossa e non funziona correttamente NEL CASO IN CUI NON SI SIA CLICCATO VERIFICA MOSSA
+  per risoluzione bug: fare Movelist = Most[Movelist]; da qualche parte (teoricamente quando si clicca restart MA SOLO DOPO aver mosso un pezzo, senn\[OGrave] si creano altri errori)
  V dropWhiteMove per visualizzazione corretta
  V restart stessa partita rimane selezionata la mossa e non funziona correttamente
  - personalizzazione stupida della scacchiera
@@ -81,7 +83,7 @@ checkMove[] := Module[{pgntosplit, delimitatori, lista, len, moveToCheck},
   *)
   If[StringMatchQ[moveToCheck, correctMove],
     (gameResult=1; endgame = "MOSSA CORRETTA, BRAVO!";),(gameResult=0; endgame = "hai sbagliato, riprova o guarda la soluzione :(";)];
- Movelist = Most[Movelist];
+  Movelist = Most[Movelist];
   Chess[ShowBoard -> board, Interact -> False];
 ]
 
@@ -93,22 +95,31 @@ While[True,
 StringReplace[nomeUtente, " " -> ""] <> " sta giocando!";
 
 board = Startposition;
+
 Chess[ShowBoard -> Interactive]
+Chess[ShowBoard -> board, Interact -> False]; (*LASCIARE SENNO RIMANE INTERACT -> TRUE*)
+
 newBoardBtn = Button["Nuova scacchiera", 
 	board = generateNewChessBoard[]; gameResult = 0;];
+	
 repeatBtn = Button["Rigioca Partita", 
 	board = repeatChessBoard[]];
-backBtn = Button["Back",
-	Move[MoveFromPGN[filepgn[[Length[Movelist] - 1]]][[1]]]];
-restartBtn = Button["Restart", 
-	whoIsPlaying = ""; endgame = ""; correctMoveToPrint =""; correctMove=""; Chess[ShowBoard -> Startposition, Interact -> False]];
+	
+backBtn = Button["Back"];
+
+restartBtn = Button["Restart", whoIsPlaying = ""; endgame = ""; correctMoveToPrint =""; correctMove=""; Chess[ShowBoard -> Startposition, Interact -> False]];
+
 checkBtn = Button["Verifica mossa", 
 	checkMove[] ];
+	
 showSolutionBtn = Button["Mostra soluzione", 
 	dropCharWhiteMove[]; "La mossa corretta \[EGrave] " <> correctMoveToPrint ];
+	
 changeColorBtn = Button["Colore Scacchiera", Background->LightBlue ];
+
 changeSizeBtn = Button["Dimensione Scacchiera", 
 	board[ImageSize->Tiny]];
+	
 GraphicsGrid[
 {
 {Image[CompressedData["
@@ -614,8 +625,6 @@ D7nJT8HfotV/bWmKPS4koST16TGJSUxiEpOYxCQmMUkJ8v8AY8TT1A==
 Dynamic@whoIsPlaying;
 Dynamic@endgame;
 Dynamic@correctMoveToPrint;
-
-
 
 
 
