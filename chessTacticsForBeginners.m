@@ -5,9 +5,8 @@ TODO:
  - pulsante back
  - BUG --> restart + rigioca stessa partita rimane selezionata la mossa e non funziona correttamente NEL CASO IN CUI NON SI SIA CLICCATO VERIFICA MOSSA
   per risoluzione bug: fare Movelist = Most[Movelist]; da qualche parte (teoricamente quando si clicca restart MA SOLO DOPO aver mosso un pezzo, senn\[OGrave] si creano altri errori)
- V dropWhiteMove per visualizzazione corretta
- V restart stessa partita rimane selezionata la mossa e non funziona correttamente
- - personalizzazione stupida della scacchiera
+ - BUG --> cambiare il colore della scacchiera in una fase in cui lo stato della scacchiera \[EGrave] Interactive -> false la rende Interactive -> true e pu\[OGrave] generare problemi.
+ 
 *)
 
 
@@ -65,16 +64,20 @@ repeatChessBoard[] := Module[{board},
   Move[MoveFromPGN[#][[1]]] & /@ Drop[board, Length[Movelist] - 1];
 ]
 
+backMove[] := Module[{board, filepgn},
+   Drop[filepgn, -1];
+   board = PGNconvert[filepgn];
+   Chess[ShowBoard -> board, Interact -> True,ImageSize -> dimensionBoard,BoardColour -> colorBoard];
+]
+
 dropCharWhiteMove[] := Module[{},
 correctMoveToPrint = correctMove;
 If[StringMatchQ[PGNfile[lastgame]["Result"], "1-0"], (* Se la mossa \[EGrave] al bianco*)
-(*STAMPA PER VEDERE SE LA MOSSA NELLA StringDelete \[EGrave] corretta o vengono troncati altri caratteri*)
-(*Print[correctMove]; *)
 correctMoveToPrint=StringDelete[correctMoveToPrint, DigitCharacter.. ~~ ".", IgnoreCase -> False];
 ];
 ]
 
-(*Cambio dimensione alla scacchiera,4 possibili dimensioni: 120,240,300,400*)
+(*Cambio dimensione alla scacchiera, 4 possibili dimensioni: 120,240,300,400*)
 changeDimensionBoard := Module[{},
 
 Switch[dimensionBoard,120,dimensionBoard=240,
@@ -118,16 +121,23 @@ board = Startposition;
 Chess[ShowBoard -> Interactive,ImageSize -> dimensionBoard,BoardColour -> colorBoard]
 Chess[ShowBoard -> board, Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard]; (*LASCIARE SENNO RIMANE INTERACT -> TRUE*)
 
+(* funzioni dei pulsanti*)
 newBoardBtn = Button["Nuova scacchiera", 
-	board = generateNewChessBoard[]; gameResult = 0;];
+	board = generateNewChessBoard[]; 
+	gameResult = 0;];
 	
 repeatBtn = Button["Rigioca Partita", 
 	board = repeatChessBoard[]];
 	
-backBtn = Button["Back"];
+backBtn = Button["Back",
+	board = backMove[]];
 
-restartBtn = Button["Restart", whoIsPlaying = ""; endgame = ""; correctMoveToPrint =""; correctMove=""; 
-Chess[ShowBoard -> Startposition, Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard]];
+restartBtn = Button["Restart", 
+	whoIsPlaying = ""; 
+	endgame = ""; 
+	correctMoveToPrint =""; 
+	correctMove=""; 
+	Chess[ShowBoard -> Startposition, Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard]];
 
 checkBtn = Button["Verifica mossa", 
 	checkMove[] ];
@@ -135,7 +145,8 @@ checkBtn = Button["Verifica mossa",
 showSolutionBtn = Button["Mostra soluzione", 
 	dropCharWhiteMove[]; "La mossa corretta \[EGrave] " <> correctMoveToPrint ];
 	
-changeColorBtn = Button["Colora Scacchiera",changeColorBoard[]];
+changeColorBtn = Button["Colora Scacchiera",
+	changeColorBoard[]];
 
 changeSizeBtn = Button["Dimensione Scacchiera", 
 	changeDimensionBoard[]];
