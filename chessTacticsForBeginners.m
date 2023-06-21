@@ -15,6 +15,7 @@ SetDirectory[NotebookDirectory[]];
 Get[dir<>"Chess-master/Chess.wl"];
 
 
+
 (* Carico il dataset e creo i file pgn *)
 problems = Import["dataset.zip","*.txt"][[1]];
 MakePGNfiles[problems];
@@ -29,6 +30,8 @@ endgame = "";               (* contiene il messaggio di successo o sconfitta di 
 correctMove;                (* mossa corretta, ovvero mossa che porta allo scacco matto *)
 correctMoveToPrint = "";    (* formato stampa della mossa corretta *)
 gameResult = 0;             (* partita vinta oppure persa *)
+dimensionBoard = 240;       (* Var. per settare la dimensione della board*)
+colorBoard=RGBColor[0.8196,0.5451,0.2784];     (* Var. per colore RGB della scacchiera, inizializzata a color default*)
 
 
 generateNewChessBoard[] := Module[{randomNum, board},
@@ -38,7 +41,7 @@ generateNewChessBoard[] := Module[{randomNum, board},
   correctMove = Last[filepgn];
   correctMove = StringDrop[correctMove, -1];
   board = PGNconvert[filepgn];
-  Chess[ShowBoard -> board, Interact -> True];
+  Chess[ShowBoard -> board, Interact -> True,ImageSize -> dimensionBoard,BoardColour -> colorBoard];
   If[StringMatchQ[PGNfile[randomNum]["Result"], "1-0"],
     whoIsPlaying = "mossa al BIANCO, trova lo scacco matto",
     whoIsPlaying = "mossa al NERO, trova lo scacco matto"];
@@ -53,7 +56,7 @@ repeatChessBoard[] := Module[{board},
   correctMove = Last[filepgn];
   correctMove = StringDrop[correctMove, -1];
   board = PGNconvert[filepgn];
-  Chess[ShowBoard -> board, Interact -> True];
+  Chess[ShowBoard -> board, Interact -> True,ImageSize -> dimensionBoard, BoardColour -> colorBoard];
   If[StringMatchQ[PGNfile[lastgame]["Result"], "1-0"],
     whoIsPlaying = "mossa al BIANCO, trova lo scacco matto",
     whoIsPlaying = "mossa al NERO, trova lo scacco matto"];
@@ -82,18 +85,35 @@ checkMove[] := Module[{pgntosplit, delimitatori, lista, len, moveToCheck},
   If[StringMatchQ[moveToCheck, correctMove],
     (gameResult=1; endgame = "MOSSA CORRETTA, BRAVO!";),(gameResult=0; endgame = "hai sbagliato, riprova o guarda la soluzione :(";)];
  Movelist = Most[Movelist];
-  Chess[ShowBoard -> board, Interact -> False];
+  Chess[ShowBoard -> board, Interact -> False,ImageSize->dimensionBoard,BoardColour -> colorBoard];
 ]
 
 While[True,
   nomeUtente = InputString["Inserisci il tuo nome:"];
   If[! StringMatchQ[StringTrim[nomeUtente]][""], Break[]];
 ]
+(*Cambio dimensione alla scacchiera,4 possibili dimensioni: 120,240,300,400*)
+changeDimensionBoard := Module[{},
+
+Switch[dimensionBoard,120,dimensionBoard=240,
+					  240,dimensionBoard=300,
+					  300,dimensionBoard=400,
+					  400,dimensionBoard=120]
+					 
+Chess[ShowBoard -> board,ImageSize -> dimensionBoard,BoardColour -> colorBoard]
+]
+(*Cambio colore alla scacchiera*)
+changeColorBoard := Module[{},
+colorBoard=x;
+Chess[ShowBoard -> board,ImageSize->dimensionBoard,BoardColour -> colorBoard]
+
+]
+
 (*output soppresso perch\[EGrave] \[EGrave] nella nuova interfaccia*)
 StringReplace[nomeUtente, " " -> ""] <> " sta giocando!";
 
 board = Startposition;
-Chess[ShowBoard -> Interactive]
+Chess[ShowBoard -> Interactive,ImageSize -> dimensionBoard,BoardColour -> colorBoard]
 newBoardBtn = Button["Nuova scacchiera", 
 	board = generateNewChessBoard[]; gameResult = 0;];
 repeatBtn = Button["Rigioca Partita", 
@@ -101,14 +121,14 @@ repeatBtn = Button["Rigioca Partita",
 backBtn = Button["Back",
 	Move[MoveFromPGN[filepgn[[Length[Movelist] - 1]]][[1]]]];
 restartBtn = Button["Restart", 
-	whoIsPlaying = ""; endgame = ""; correctMoveToPrint =""; correctMove=""; Chess[ShowBoard -> Startposition, Interact -> False]];
+	whoIsPlaying = ""; endgame = ""; correctMoveToPrint =""; correctMove=""; Chess[ShowBoard -> Startposition, Interact -> False,ImageSize -> dimensionBoard,BoardColour-> colorBoard]];
 checkBtn = Button["Verifica mossa", 
 	checkMove[] ];
 showSolutionBtn = Button["Mostra soluzione", 
 	dropCharWhiteMove[]; "La mossa corretta \[EGrave] " <> correctMoveToPrint ];
-changeColorBtn = Button["Colore Scacchiera", Background->LightBlue ];
+changeColorBtn = Button["Colora Scacchiera",changeColorBoard[]];
 changeSizeBtn = Button["Dimensione Scacchiera", 
-	board[ImageSize->Tiny]];
+	changeDimensionBoard[]];
 GraphicsGrid[
 {
 {Image[CompressedData["
@@ -606,7 +626,7 @@ D7nJT8HfotV/bWmKPS4koST16TGJSUxiEpOYxCQmMUkJ8v8AY8TT1A==
 {newBoardBtn, restartBtn, checkBtn },
 {showSolutionBtn, backBtn,repeatBtn},
 {Dynamic@whoIsPlaying,Dynamic@endgame,Dynamic@correctMoveToPrint},
-{changeSizeBtn, changeColorBtn, ""}
+{changeSizeBtn, changeColorBtn,ColorSetter[Dynamic[x]]  } (*ColorSetter permette di scegliere un colore RGB,per colorare la scacchiera*)
 }, Frame->All , AspectRatio->2/5]
 
 
@@ -614,8 +634,6 @@ D7nJT8HfotV/bWmKPS4koST16TGJSUxiEpOYxCQmMUkJ8v8AY8TT1A==
 Dynamic@whoIsPlaying;
 Dynamic@endgame;
 Dynamic@correctMoveToPrint;
-
-
 
 
 
