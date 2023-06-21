@@ -42,7 +42,7 @@ generateNewChessBoard[] := Module[{randomNum, board},
   correctMove = Last[filepgn];
   correctMove = StringDrop[correctMove, -1];
   board = PGNconvert[filepgn];
-  Chess[ShowBoard -> board, Interact -> True];
+  Chess[ShowBoard -> board, Interact -> True,ImageSize -> dimensionBoard,BoardColour -> colorBoard];
   If[StringMatchQ[PGNfile[randomNum]["Result"], "1-0"],
     whoIsPlaying = "mossa al BIANCO, trova lo scacco matto",
     whoIsPlaying = "mossa al NERO, trova lo scacco matto"];
@@ -57,7 +57,7 @@ repeatChessBoard[] := Module[{board},
   correctMove = Last[filepgn];
   correctMove = StringDrop[correctMove, -1];
   board = PGNconvert[filepgn];
-  Chess[ShowBoard -> board, Interact -> True];
+  Chess[ShowBoard -> board, Interact -> True,ImageSize -> dimensionBoard,BoardColour -> colorBoard];
   If[StringMatchQ[PGNfile[lastgame]["Result"], "1-0"],
     whoIsPlaying = "mossa al BIANCO, trova lo scacco matto",
     whoIsPlaying = "mossa al NERO, trova lo scacco matto"];
@@ -103,7 +103,7 @@ checkMove[] := Module[{pgntosplit, delimitatori, lista, len, moveToCheck},
   If[StringMatchQ[moveToCheck, correctMove],
     (gameResult=1; endgame = "MOSSA CORRETTA, BRAVO!";),(gameResult=0; endgame = "hai sbagliato, riprova o guarda la soluzione :(";)];
   Movelist = Most[Movelist];
-  Chess[ShowBoard -> board, Interact -> False];
+  Chess[ShowBoard -> board, Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard];
 ]
 
 While[True,
@@ -115,8 +115,8 @@ StringReplace[nomeUtente, " " -> ""] <> " sta giocando!";
 
 board = Startposition;
 
-Chess[ShowBoard -> Interactive]
-Chess[ShowBoard -> board, Interact -> False]; (*LASCIARE SENNO RIMANE INTERACT -> TRUE*)
+Chess[ShowBoard -> Interactive,ImageSize -> dimensionBoard,BoardColour -> colorBoard]
+Chess[ShowBoard -> board, Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard]; (*LASCIARE SENNO RIMANE INTERACT -> TRUE*)
 
 newBoardBtn = Button["Nuova scacchiera", 
 	board = generateNewChessBoard[]; gameResult = 0;];
@@ -126,7 +126,8 @@ repeatBtn = Button["Rigioca Partita",
 	
 backBtn = Button["Back"];
 
-restartBtn = Button["Restart", whoIsPlaying = ""; endgame = ""; correctMoveToPrint =""; correctMove=""; Chess[ShowBoard -> Startposition, Interact -> False]];
+restartBtn = Button["Restart", whoIsPlaying = ""; endgame = ""; correctMoveToPrint =""; correctMove=""; 
+Chess[ShowBoard -> Startposition, Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard]];
 
 checkBtn = Button["Verifica mossa", 
 	checkMove[] ];
@@ -644,5 +645,3 @@ D7nJT8HfotV/bWmKPS4koST16TGJSUxiEpOYxCQmMUkJ8v8AY8TT1A==
 Dynamic@whoIsPlaying;
 Dynamic@endgame;
 Dynamic@correctMoveToPrint;
-
-
