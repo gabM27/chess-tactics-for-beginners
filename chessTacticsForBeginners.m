@@ -31,6 +31,8 @@ endgame = "";               (* contiene il messaggio di successo o sconfitta di 
 correctMove;                (* mossa corretta, ovvero mossa che porta allo scacco matto *)
 correctMoveToPrint = "";    (* formato stampa della mossa corretta *)
 gameResult = 0;             (* partita vinta oppure persa *)
+dimensionBoard = 240;       (* Var. per settare la dimensione della board*)
+colorBoard=RGBColor[0.8196,0.5451,0.2784];     (* Var. per colore RGB della scacchiera, inizializzata a\[NonBreakingSpace]color\[NonBreakingSpace]default*)
 
 
 generateNewChessBoard[] := Module[{randomNum, board},
@@ -70,6 +72,23 @@ If[StringMatchQ[PGNfile[lastgame]["Result"], "1-0"], (* Se la mossa \[EGrave] al
 (*Print[correctMove]; *)
 correctMoveToPrint=StringDelete[correctMoveToPrint, DigitCharacter.. ~~ ".", IgnoreCase -> False];
 ];
+]
+
+(*Cambio dimensione alla scacchiera,4 possibili dimensioni: 120,240,300,400*)
+changeDimensionBoard := Module[{},
+
+Switch[dimensionBoard,120,dimensionBoard=240,
+					  240,dimensionBoard=300,
+					  300,dimensionBoard=400,
+					  400,dimensionBoard=120]
+					 
+Chess[ShowBoard -> board,ImageSize -> dimensionBoard,BoardColour -> colorBoard]
+]
+(*Cambio colore alla scacchiera*)
+changeColorBoard := Module[{},
+colorBoard=x;
+Chess[ShowBoard -> board,ImageSize->dimensionBoard,BoardColour ->\[NonBreakingSpace]colorBoard]
+
 ]
 
 checkMove[] := Module[{pgntosplit, delimitatori, lista, len, moveToCheck},
@@ -115,10 +134,10 @@ checkBtn = Button["Verifica mossa",
 showSolutionBtn = Button["Mostra soluzione", 
 	dropCharWhiteMove[]; "La mossa corretta \[EGrave] " <> correctMoveToPrint ];
 	
-changeColorBtn = Button["Colore Scacchiera", Background->LightBlue ];
+changeColorBtn = Button["Colora Scacchiera",changeColorBoard[]];
 
 changeSizeBtn = Button["Dimensione Scacchiera", 
-	board[ImageSize->Tiny]];
+	changeDimensionBoard[]];
 	
 GraphicsGrid[
 {
