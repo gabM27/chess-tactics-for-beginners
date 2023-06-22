@@ -5,7 +5,7 @@ TODO:
  - FIXED CREDO --> restart + rigioca stessa partita rimane selezionata la mossa e non funziona correttamente NEL CASO IN CUI NON SI SIA CLICCATO VERIFICA MOSSA
   per risoluzione bug: fare Movelist = Most[Movelist]; da qualche parte (teoricamente quando si clicca restart MA SOLO DOPO aver mosso un pezzo, senn\[OGrave] si creano altri errori)
  - FIXED --> cambiare il colore della scacchiera in una fase in cui lo stato della scacchiera \[EGrave] Interactive -> false la rende Interactive -> true e pu\[OGrave] generare problemi.
- 
+ - Disabilitare la possibilit\[AGrave] di muovere le pedine dell'avversario dopo che abbiamo fatto la mossa.
 *)
 
 
