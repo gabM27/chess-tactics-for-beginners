@@ -121,10 +121,13 @@ board = Startposition;
 Chess[ShowBoard -> Interactive,ImageSize -> dimensionBoard,BoardColour -> colorBoard]
 Chess[ShowBoard -> board, Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard]; (*LASCIARE SENNO RIMANE INTERACT -> TRUE*)
 
+(* boolean di attivazione dei pulsanti*)
+restartEnabled = False;
 (* funzioni dei pulsanti*)
 newBoardBtn = Button["Nuova scacchiera", 
 	board = generateNewChessBoard[]; 
-	gameResult = 0;];
+	gameResult = 0;
+	restartEnabled = True;];
 	
 repeatBtn = Button["Rigioca Partita", 
 	board = repeatChessBoard[]];
@@ -132,12 +135,14 @@ repeatBtn = Button["Rigioca Partita",
 backBtn = Button["Back",
 	board = backMove[]];
 
-restartBtn = Button["Restart", 
+restartBtn = Button["Restart",
 	whoIsPlaying = ""; 
 	endgame = ""; 
 	correctMoveToPrint =""; 
 	correctMove=""; 
-	Chess[ShowBoard -> Startposition, Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard]];
+	restartEnabled = False;
+	Chess[ShowBoard -> Startposition, Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard],
+		Enabled->Dynamic@restartEnabled];
 
 checkBtn = Button["Verifica mossa", 
 	checkMove[] ];
