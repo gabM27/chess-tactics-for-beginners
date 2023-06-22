@@ -43,8 +43,8 @@ generateNewChessBoard[] := Module[{randomNum, board},
   board = PGNconvert[filepgn];
   Chess[ShowBoard -> board, Interact -> True,ImageSize -> dimensionBoard,BoardColour -> colorBoard];
   If[StringMatchQ[PGNfile[randomNum]["Result"], "1-0"],
-    whoIsPlaying = "mossa al BIANCO, trova lo scacco matto",
-    whoIsPlaying = "mossa al NERO, trova lo scacco matto"];
+    whoIsPlaying = "Mossa al BIANCO",
+    whoIsPlaying = "Mossa al NERO"];
     
   Move[MoveFromPGN[#][[1]]] & /@ Drop[board, Length[Movelist] - 1];
   
@@ -90,14 +90,13 @@ Chess[ShowBoard -> board,ImageSize -> dimensionBoard,BoardColour -> colorBoard]
 (*Cambio colore alla scacchiera*)
 changeColorBoard := Module[{},
 colorBoard=x;
-Chess[ShowBoard -> board,ImageSize->dimensionBoard,BoardColour ->\[NonBreakingSpace]colorBoard]
-
+Chess[ShowBoard -> board, Interact -> False, ImageSize->dimensionBoard, BoardColour ->\[NonBreakingSpace]colorBoard];
 ]
 
 (*Reset colore iniziale alla scacchiera*)
 resetColorBoard := Module[{},
 colorBoard=RGBColor[0.8196,0.5451,0.2784];
-Chess[ShowBoard -> board,ImageSize->dimensionBoard,BoardColour ->\[NonBreakingSpace]colorBoard]
+Chess[ShowBoard -> board,Interact -> False, ImageSize->dimensionBoard, BoardColour ->\[NonBreakingSpace]colorBoard];
 ]
 
 checkMove[] := Module[{pgntosplit, delimitatori, lista, len, moveToCheck},
@@ -128,18 +127,41 @@ Chess[ShowBoard -> Interactive,ImageSize -> dimensionBoard,BoardColour -> colorB
 Chess[ShowBoard -> board, Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard]; (*LASCIARE SENNO RIMANE INTERACT -> TRUE*)
 
 (* boolean di attivazione dei pulsanti*)
+newBoardEnabled = True;
 restartEnabled = False;
+repeatEnabled = False;
+backEnabled = False;
+checkMoveEnabled = False;
+showSolutionEnabled = False;
+changeColorEnabled = True;
+resetColorEnabled = False;
+
 (* funzioni dei pulsanti*)
 newBoardBtn = Button["Nuova scacchiera", 
 	board = generateNewChessBoard[]; 
 	gameResult = 0;
-	restartEnabled = True;];
+	restartEnabled = True;
+	repeatEnabled = False;
+	backEnabled = True;
+	checkMoveEnabled = True;
+	showSolutionEnabled = True;
+	newBoardEnabled = False;
+	resetColorEnabled = False;
+	changeColorEnabled = False;,
+		Enabled->Dynamic@newBoardEnabled];
 	
 repeatBtn = Button["Rigioca Partita", 
-	board = repeatChessBoard[]];
+	board = repeatChessBoard[];
+	repeatEnabled = False;
+	restartEnabled = True;
+	showSolutionEnabled = True;
+	checkMoveEnabled = True;
+	backEnabled = True;,
+		Enabled->Dynamic@repeatEnabled];
 	
 backBtn = Button["Back",
-	board = backMove[]];
+	board = backMove[];,
+		Enabled->Dynamic@backEnabled];
 
 restartBtn = Button["Restart",
 	whoIsPlaying = ""; 
@@ -147,19 +169,33 @@ restartBtn = Button["Restart",
 	correctMoveToPrint =""; 
 	correctMove=""; 
 	restartEnabled = False;
-	Chess[ShowBoard -> Startposition, Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard],
+	repeatEnabled = True;
+	newBoardEnabled = True;
+	showSolutionEnabled = False;
+	checkMoveEnabled = False;
+	backEnabled = False;
+	resetColorEnabled = True;
+	changeColorEnabled = True;
+	Chess[ShowBoard -> Startposition, Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard];,
 		Enabled->Dynamic@restartEnabled];
 
 checkBtn = Button["Verifica mossa", 
-	checkMove[] ];
+	checkMove[];
+	,
+		Enabled->Dynamic@checkMoveEnabled ];
 	
 showSolutionBtn = Button["Mostra soluzione", 
-	dropCharWhiteMove[]; "La mossa corretta \[EGrave] " <> correctMoveToPrint ];
+	dropCharWhiteMove[]; "La mossa corretta \[EGrave] " <> correctMoveToPrint,
+		Enabled->Dynamic@showSolutionEnabled ];
 	
 changeColorBtn = Button["Colora Scacchiera",
-	changeColorBoard[]];
+	changeColorBoard[];
+	resetColorEnabled = True;,
+	Enabled->Dynamic@changeColorEnabled];
 
-resetColorBtn = Button["Reset colore", resetColorBoard[]];
+resetColorBtn = Button["Reset colore", resetColorBoard[];
+resetColorEnabled = False;,
+		Enabled->Dynamic@resetColorEnabled];
 
 changeSizeBtn = Button["Dimensione Scacchiera", 
 	changeDimensionBoard[]];
