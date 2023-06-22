@@ -2,8 +2,7 @@
 
 (*
 TODO: 
- - pulsante back
- - BUG --> restart + rigioca stessa partita rimane selezionata la mossa e non funziona correttamente NEL CASO IN CUI NON SI SIA CLICCATO VERIFICA MOSSA
+ - FIXED CREDO --> restart + rigioca stessa partita rimane selezionata la mossa e non funziona correttamente NEL CASO IN CUI NON SI SIA CLICCATO VERIFICA MOSSA
   per risoluzione bug: fare Movelist = Most[Movelist]; da qualche parte (teoricamente quando si clicca restart MA SOLO DOPO aver mosso un pezzo, senn\[OGrave] si creano altri errori)
  - FIXED --> cambiare il colore della scacchiera in una fase in cui lo stato della scacchiera \[EGrave] Interactive -> false la rende Interactive -> true e pu\[OGrave] generare problemi.
  
@@ -31,6 +30,7 @@ correctMove;                (* mossa corretta, ovvero mossa che porta allo scacc
 correctMoveToPrint = "";    (* formato stampa della mossa corretta *)
 gameResult = 0;             (* partita vinta oppure persa *)
 dimensionBoard = 240;       (* Var. per settare la dimensione della board*)
+checkMovelist;
 colorBoard=RGBColor[0.8196,0.5451,0.2784];     (* Var. per colore RGB della scacchiera, inizializzata a\[NonBreakingSpace]color\[NonBreakingSpace]default*)
 (* boolean di attivazione dei pulsanti*)
 newBoardEnabled = True;
@@ -41,7 +41,6 @@ checkMoveEnabled = False;
 showSolutionEnabled = False;
 changeColorEnabled = True;
 resetColorEnabled = False;
-
 
 generateNewChessBoard[] := Module[{randomNum, board},
   randomNum = RandomInteger[{1, 11715}];
@@ -56,9 +55,8 @@ generateNewChessBoard[] := Module[{randomNum, board},
     whoIsPlaying = "Mossa al NERO"];
     
   Move[MoveFromPGN[#][[1]]] & /@ Drop[board, Length[Movelist] - 1];
-  
+  checkMovelist = PGN // Dynamic;
 ]
-
 
 repeatChessBoard[] := Module[{board},
   filepgn = PGNfile[lastgame]["PGN"];
@@ -69,7 +67,7 @@ repeatChessBoard[] := Module[{board},
   If[StringMatchQ[PGNfile[lastgame]["Result"], "1-0"],
     whoIsPlaying = "mossa al BIANCO",
     whoIsPlaying = "mossa al NERO"];
- 
+  tmp= PGN // Dynamic;
   Move[MoveFromPGN[#][[1]]] & /@ Drop[board, Length[Movelist] - 1];
 ]
 
@@ -139,7 +137,7 @@ Chess[ShowBoard -> board, Interact -> False,ImageSize -> dimensionBoard,BoardCol
 newBoardBtn = Button["Nuova scacchiera", 
 	board = generateNewChessBoard[]; 
 	gameResult = 0;
-	restartEnabled = True;
+	restartEnabled = False;
 	repeatEnabled = False;
 	backEnabled = True;
 	checkMoveEnabled = True;
@@ -157,12 +155,10 @@ repeatBtn = Button["Rigioca Partita",
 	checkMoveEnabled = True;
 	backEnabled = True;
 	changeColorEnabled = False;
-	resetColorEnabled = False;,
+	resetColorEnabled = False;
+	newBoardEnabled = False;,
 		Enabled->Dynamic@repeatEnabled];
 	
-backBtn = Button["Back",
-	board = backMove[];,
-		Enabled->Dynamic@backEnabled];
 
 restartBtn = Button["Restart",
 	whoIsPlaying = ""; 
@@ -180,21 +176,22 @@ restartBtn = Button["Restart",
 	Chess[ShowBoard -> Startposition, Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard];,
 		Enabled->Dynamic@restartEnabled];
 
-checkBtn = Button["Verifica mossa", 
+checkBtn = Button["Verifica Mossa", 
 	checkMove[];
+	restartEnabled = True;
 	,
 		Enabled->Dynamic@checkMoveEnabled ];
 	
-showSolutionBtn = Button["Mostra soluzione", 
+showSolutionBtn = Button["Mostra Soluzione", 
 	dropCharWhiteMove[]; "La mossa corretta \[EGrave] " <> correctMoveToPrint,
 		Enabled->Dynamic@showSolutionEnabled ];
 	
-changeColorBtn = Button["Colora Scacchiera",
+changeColorBtn = Button["Colora Scacchiera:",
 	changeColorBoard[];
 	resetColorEnabled = True;,
 	Enabled->Dynamic@changeColorEnabled];
 
-resetColorBtn = Button["Reset colore", resetColorBoard[];
+resetColorBtn = Button["Reset Colore", resetColorBoard[];
 resetColorEnabled = False;,
 		Enabled->Dynamic@resetColorEnabled];
 
@@ -696,9 +693,150 @@ V5krjGQRs12kb7kTx/IQzxkJcXNHuC3+o+1ic9nu3Lf7yTXex90wFR3hCZm1
 D7nJT8HfotV/bWmKPS4koST16TGJSUxiEpOYxCQmMUkJ8v8AY8TT1A==
 "], "Byte", ColorSpace -> "RGB", ImageResolution -> {96, 96}, Interleaving -> True]},
 {newBoardBtn, restartBtn, checkBtn },
-{showSolutionBtn, backBtn,repeatBtn},
+{showSolutionBtn,Image[CompressedData["
+1:eJzt3H/sd2Vdx3EB5UekiL9SS0SwaYaF1bKyTUw3p7lK1MxWKQaYWYigM9zS
+2eYya6u1MudMx5psrJw1V6IusRIXNtcPXJmaKFkkmRj+4DefaPfG7t3353X5
+/X7uc53rnOt6PDYY8Nd9vT/nvK8n/5xHvfjlZ59/9L3uda+Lj7/7b2ef8+qn
+XHTROZc85/53/8vzLrj4pS+54Lxzn3HBK897yXkX/cCLj7n7P/7D0Qf++v9/
+3gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABT
+uyv7avaF7Ibsa1nrMQAAFekNAKA2vQEA1KY3AIDa9AYAUJveAABq0xsAQG16
+AwCoTW8AAHt3W/bh7OLsrOyMnfxIdkl2dXZH1vrXAIA+6Q29AQC16Q29AQC1
+6Q29AQC16Q29AQC16Q29AQC16Q29AQC16Q29AQC16Q29AQCTKHzY86Lsgdm9
+Fu9bstdmN2atf0MAWDq9oTcAoDa9oTcAoDa9oTcAoDa9oTcAoDa9oTcAoDa9
+oTcAoDa9oTcAoDa9oTcAYBL/lT03Oyor3OYnZGdmZ2c/kT0+OzYr/OGPyc7N
+pAgAbPSG3gCA+vSG3gCA2vSG3gCA2vSG3gCA2vSG3gCA2vSG3gCA2vSG3gCA
+2vSG3gCASdyWvTwrXL4FZ2SXZTdkt+/k+uxt2aOz3VKk8FXSO7PWzwsA7EJv
+6A0AqE1v6A0AqE1v6A0AqE1v6A0AqE1v6A0AqE1v6A0AqE1v6A0AqE1v6A0A
+qO2D2cnZblHxsaz1GL6xK7PTssKgHppdnbUeAwDsQm/skd4AgJ3pjT3SGwCw
+M72xR3oDAHamN/ZIbwDAzvTGHukNANiZ3tgjvQEAO9Mbe6Q3AGBnemOP9AYA
+lN2V/WJWuCuPy96ZtR5DLb+f3TsrjPfVWeuzAkCkN6rSGwCw0RuV6Q0A2OiN
+yvQGAGz0RmV6AwA2eqMyvQEAG71Rmd4AgI3eqExvAMBGb1SmNwDgbjdmT8wK
+F+J3Z1/IWo+hls9l354VxvvU7GtZ6zEAMDq9UZXeAICN3qhMbwDARm9UpjcA
+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
+"], "Byte", ColorSpace -> "RGB", ImageResolution -> {144, 144}, Interleaving -> True, MetaInformation -> <|"Exif" -> <|"ImageWidth" -> 720, "ImageLength" -> 720, "XResolution" -> 144, "YResolution" -> 144, "ResolutionUnit" -> "Inch", "Software" -> "Created with the Wolfram Language : www.wolfram.com", "DateTime" -> DateObject[{2023, 6, 22, 15, 3, 39.}, "Instant", "Gregorian", 2.], "TimeZoneOffset" -> 2|>, "Comments" -> <|"Software" -> "Created with the Wolfram Language : www.wolfram.com", "Creation Time" -> DateObject[{2023, 6, 22, 15, 3, 39.}, "Instant", "Gregorian", None]|>|>],repeatBtn},
 {Dynamic@whoIsPlaying,Dynamic@endgame,Dynamic@correctMoveToPrint},
-{changeSizeBtn, changeColorBtn,ColorSetter[Dynamic[selectedColor]]  }, (*ColorSetter permette di scegliere un colore RGB,per colorare\[NonBreakingSpace]la\[NonBreakingSpace]scacchiera*)
+{changeSizeBtn, changeColorBtn,resetColorBtn },
 {Image[CompressedData["
 1:eJztnQfQGEUZhmOwYEdFELBhJfaGggqCHRWUIDZsiYQYkN8hCQbUUUGxDXbF
 ERs2RLErCgpWpKioI4rYsCsq9t4N78OMK+vufLt399/d5ntmYCD8/3d7+x53
@@ -783,7 +921,9 @@ uL5t6xtDlJz8dvJkyLTZR4R10/TQHi4HrxQ6QvCt2U6wUtpTrBdvFHg1UXPx
 cxLGxfXdNGG/z96KroBnCrrskgVHN35iBPTT3lewiiNzYBcR1qrEEKcj/r6b
 IIOOOho6QuCdIGZBFIOOEHRyoAMw1XNUfI89f1PH9XVC2IURp2OG6UfKii6s
 FY0Ja0L5LSKS3StDnb5wfR3HcRzHcRzHcRzHcRzHcRxn8fkPt3NcfQ==
-"], "Byte", ColorSpace -> "RGB", ImageResolution -> {144, 144}, Interleaving -> True, MetaInformation -> <|"Exif" -> <|"ImageWidth" -> 160, "ImageLength" -> 160, "XResolution" -> 144, "YResolution" -> 144, "ResolutionUnit" -> "Inch", "Software" -> "Created with the Wolfram Language : www.wolfram.com", "DateTime" -> DateObject[{2023, 6, 22, 10, 24, 38.}, "Instant", "Gregorian", 2.], "TimeZoneOffset" -> 2|>, "Comments" -> <|"Software" -> "Created with the Wolfram Language : www.wolfram.com", "Creation Time" -> DateObject[{2023, 6, 22, 10, 24, 38.}, "Instant", "Gregorian", None]|>|>] , resetColorBtn ,Image[CompressedData["
+"], "Byte", ColorSpace -> "RGB", ImageResolution -> {144, 144}, Interleaving -> True, MetaInformation -> <|"Exif" -> <|"ImageWidth" -> 160, "ImageLength" -> 160, "XResolution" -> 144, "YResolution" -> 144, "ResolutionUnit" -> "Inch", "Software" -> "Created with the Wolfram Language : www.wolfram.com", "DateTime" -> DateObject[{2023, 6, 22, 10, 24, 38.}, "Instant", "Gregorian", 2.], "TimeZoneOffset" -> 2|>, "Comments" -> <|"Software" -> "Created with the Wolfram Language : www.wolfram.com", "Creation Time" -> DateObject[{2023, 6, 22, 10, 24, 38.}, "Instant", "Gregorian", None]|>|>] , 
+ColorSetter[Dynamic[selectedColor]] (*ColorSetter permette di scegliere un colore RGB,per colorare\[NonBreakingSpace]la\[NonBreakingSpace]scacchiera*),
+Image[CompressedData["
 1:eJzt3XmwfEdZxvGfiUtckF1EUURZBERQRAMRBQVNJCAEMICAJiREjCZm0RgB
 MSggiwu4QlAQRbZyCRSKgiVEZRcimxoEcQVcQAEVhADh+fjHW9XVhzNz752Z
 e+xvFVRyp0/POf2c9HS/W9/g1LNPevBRR44cOe+YK//vpFMuuOO5555y4T2v
