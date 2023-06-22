@@ -5,7 +5,7 @@ TODO:
  - pulsante back
  - BUG --> restart + rigioca stessa partita rimane selezionata la mossa e non funziona correttamente NEL CASO IN CUI NON SI SIA CLICCATO VERIFICA MOSSA
   per risoluzione bug: fare Movelist = Most[Movelist]; da qualche parte (teoricamente quando si clicca restart MA SOLO DOPO aver mosso un pezzo, senn\[OGrave] si creano altri errori)
- - BUG --> cambiare il colore della scacchiera in una fase in cui lo stato della scacchiera \[EGrave] Interactive -> false la rende Interactive -> true e pu\[OGrave] generare problemi.
+ - FIXED --> cambiare il colore della scacchiera in una fase in cui lo stato della scacchiera \[EGrave] Interactive -> false la rende Interactive -> true e pu\[OGrave] generare problemi.
  
 *)
 
@@ -32,6 +32,15 @@ correctMoveToPrint = "";    (* formato stampa della mossa corretta *)
 gameResult = 0;             (* partita vinta oppure persa *)
 dimensionBoard = 240;       (* Var. per settare la dimensione della board*)
 colorBoard=RGBColor[0.8196,0.5451,0.2784];     (* Var. per colore RGB della scacchiera, inizializzata a\[NonBreakingSpace]color\[NonBreakingSpace]default*)
+(* boolean di attivazione dei pulsanti*)
+newBoardEnabled = True;
+restartEnabled = False;
+repeatEnabled = False;
+backEnabled = False;
+checkMoveEnabled = False;
+showSolutionEnabled = False;
+changeColorEnabled = True;
+resetColorEnabled = False;
 
 
 generateNewChessBoard[] := Module[{randomNum, board},
@@ -58,8 +67,8 @@ repeatChessBoard[] := Module[{board},
   board = PGNconvert[filepgn];
   Chess[ShowBoard -> board, Interact -> True,ImageSize -> dimensionBoard,BoardColour -> colorBoard];
   If[StringMatchQ[PGNfile[lastgame]["Result"], "1-0"],
-    whoIsPlaying = "mossa al BIANCO, trova lo scacco matto",
-    whoIsPlaying = "mossa al NERO, trova lo scacco matto"];
+    whoIsPlaying = "mossa al BIANCO",
+    whoIsPlaying = "mossa al NERO"];
  
   Move[MoveFromPGN[#][[1]]] & /@ Drop[board, Length[Movelist] - 1];
 ]
@@ -89,8 +98,8 @@ Chess[ShowBoard -> board,ImageSize -> dimensionBoard,BoardColour -> colorBoard]
 ]
 (*Cambio colore alla scacchiera*)
 changeColorBoard := Module[{},
-colorBoard=x;
-Chess[ShowBoard -> board, Interact -> False, ImageSize->dimensionBoard, BoardColour ->\[NonBreakingSpace]colorBoard];
+colorBoard = selectedColor;
+Chess[ShowBoard -> board, Interact -> False, ImageSize->dimensionBoard, BoardColour ->\[NonBreakingSpace]selectedColor];
 ]
 
 (*Reset colore iniziale alla scacchiera*)
@@ -126,16 +135,6 @@ board = Startposition;
 Chess[ShowBoard -> Interactive,ImageSize -> dimensionBoard,BoardColour -> colorBoard]
 Chess[ShowBoard -> board, Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard]; (*LASCIARE SENNO RIMANE INTERACT -> TRUE*)
 
-(* boolean di attivazione dei pulsanti*)
-newBoardEnabled = True;
-restartEnabled = False;
-repeatEnabled = False;
-backEnabled = False;
-checkMoveEnabled = False;
-showSolutionEnabled = False;
-changeColorEnabled = True;
-resetColorEnabled = False;
-
 (* funzioni dei pulsanti*)
 newBoardBtn = Button["Nuova scacchiera", 
 	board = generateNewChessBoard[]; 
@@ -156,7 +155,9 @@ repeatBtn = Button["Rigioca Partita",
 	restartEnabled = True;
 	showSolutionEnabled = True;
 	checkMoveEnabled = True;
-	backEnabled = True;,
+	backEnabled = True;
+	changeColorEnabled = False;
+	resetColorEnabled = False;,
 		Enabled->Dynamic@repeatEnabled];
 	
 backBtn = Button["Back",
@@ -174,8 +175,8 @@ restartBtn = Button["Restart",
 	showSolutionEnabled = False;
 	checkMoveEnabled = False;
 	backEnabled = False;
-	resetColorEnabled = True;
 	changeColorEnabled = True;
+	resetColorEnabled = True;
 	Chess[ShowBoard -> Startposition, Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard];,
 		Enabled->Dynamic@restartEnabled];
 
@@ -697,7 +698,7 @@ D7nJT8HfotV/bWmKPS4koST16TGJSUxiEpOYxCQmMUkJ8v8AY8TT1A==
 {newBoardBtn, restartBtn, checkBtn },
 {showSolutionBtn, backBtn,repeatBtn},
 {Dynamic@whoIsPlaying,Dynamic@endgame,Dynamic@correctMoveToPrint},
-{changeSizeBtn, changeColorBtn,ColorSetter[Dynamic[x]]  }, (*ColorSetter permette di scegliere un colore RGB,per colorare\[NonBreakingSpace]la\[NonBreakingSpace]scacchiera*)
+{changeSizeBtn, changeColorBtn,ColorSetter[Dynamic[selectedColor]]  }, (*ColorSetter permette di scegliere un colore RGB,per colorare\[NonBreakingSpace]la\[NonBreakingSpace]scacchiera*)
 {Image[CompressedData["
 1:eJztnQfQGEUZhmOwYEdFELBhJfaGggqCHRWUIDZsiYQYkN8hCQbUUUGxDXbF
 ERs2RLErCgpWpKioI4rYsCsq9t4N78OMK+vufLt399/d5ntmYCD8/3d7+x53
