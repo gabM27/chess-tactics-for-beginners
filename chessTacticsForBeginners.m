@@ -134,7 +134,7 @@ Chess[ShowBoard -> Interactive,ImageSize -> dimensionBoard,BoardColour -> colorB
 Chess[ShowBoard -> board, Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard]; (*LASCIARE SENNO RIMANE INTERACT -> TRUE*)
 
 (* funzioni dei pulsanti*)
-newBoardBtn = Button["Nuova scacchiera", 
+newBoardBtn = Button["Nuova Scacchiera", 
 	board = generateNewChessBoard[]; 
 	gameResult = 0;
 	restartEnabled = False;
