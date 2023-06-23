@@ -4,8 +4,9 @@
 TODO: 
  - FIXED CREDO --> restart + rigioca stessa partita rimane selezionata la mossa e non funziona correttamente NEL CASO IN CUI NON SI SIA CLICCATO VERIFICA MOSSA
   per risoluzione bug: fare Movelist = Most[Movelist]; da qualche parte (teoricamente quando si clicca restart MA SOLO DOPO aver mosso un pezzo, senn\[OGrave] si creano altri errori)
- - FIXED --> cambiare il colore della scacchiera in una fase in cui lo stato della scacchiera \[EGrave] Interactive -> false la rende Interactive -> true e pu\[OGrave] generare problemi.
  - Disabilitare la possibilit\[AGrave] di muovere le pedine dell'avversario dopo che abbiamo fatto la mossa.
+ - Dopo aver premuto Verifica mossa il tasto rimane cliccabile, non sarebbe meglio disabilitarlo e riattivarlo solo alla prossima partita?
+ - stesso discorso sopra per Mostra soluzione, forse \[EGrave] pi\[UGrave] friendly disattivarli dopo il click tanto se ricliccati non fanno assolutamente niente
 *)
 
 
@@ -33,6 +34,7 @@ gameResult = 0;             (* partita vinta oppure persa *)
 dimensionBoard = 240;       (* Var. per settare la dimensione della board*)
 checkMovelist;
 colorBoard=RGBColor[0.8196,0.5451,0.2784];     (* Var. per colore RGB della scacchiera, inizializzata a\[NonBreakingSpace]color\[NonBreakingSpace]default*)
+
 (* boolean di attivazione dei pulsanti*)
 newBoardEnabled = True;
 restartEnabled = False;
@@ -80,9 +82,9 @@ backMove[] := Module[{board, filepgn},
 ]
 
 dropCharWhiteMove[] := Module[{},
-correctMoveToPrint = correctMove;
-If[StringMatchQ[PGNfile[lastgame]["Result"], "1-0"], (* Se la mossa \[EGrave] al bianco*)
-correctMoveToPrint=StringDelete[correctMoveToPrint, DigitCharacter.. ~~ ".", IgnoreCase -> False];
+	correctMoveToPrint = correctMove;
+	If[StringMatchQ[PGNfile[lastgame]["Result"], "1-0"], (* Se la mossa \[EGrave] al bianco*)
+	correctMoveToPrint=StringDelete[correctMoveToPrint, DigitCharacter.. ~~ ".", IgnoreCase -> False];
 ];
 ]
 
@@ -98,14 +100,14 @@ Chess[ShowBoard -> board,ImageSize -> dimensionBoard,BoardColour -> colorBoard]
 ]
 (*Cambio colore alla scacchiera*)
 changeColorBoard := Module[{},
-colorBoard = selectedColor;
-Chess[ShowBoard -> board, Interact -> False, ImageSize->dimensionBoard, BoardColour ->\[NonBreakingSpace]selectedColor];
+	colorBoard = selectedColor;
+	Chess[ShowBoard -> board, Interact -> False, ImageSize->dimensionBoard, BoardColour ->\[NonBreakingSpace]selectedColor];
 ]
 
 (*Reset colore iniziale alla scacchiera*)
 resetColorBoard := Module[{},
-colorBoard=RGBColor[0.8196,0.5451,0.2784];
-Chess[ShowBoard -> board,Interact -> False, ImageSize->dimensionBoard, BoardColour ->\[NonBreakingSpace]colorBoard];
+	colorBoard=RGBColor[0.8196,0.5451,0.2784];
+	Chess[ShowBoard -> board,Interact -> False, ImageSize->dimensionBoard, BoardColour ->\[NonBreakingSpace]colorBoard];
 ]
 
 checkMove[] := Module[{pgntosplit, delimitatori, lista, len, moveToCheck},
@@ -133,7 +135,7 @@ nomeUtente=StringReplace[nomeUtente, " " -> ""];
 board = Startposition;
 
 Chess[ShowBoard -> Interactive,ImageSize -> dimensionBoard,BoardColour -> colorBoard]
-Chess[ShowBoard -> board, Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard]; (*LASCIARE SENNO RIMANE INTERACT -> TRUE*)
+Chess[ShowBoard -> board, Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard]; (*expr per disabilitare l'interazione con la scacchiera*)
 
 (* funzioni dei pulsanti*)
 newBoardBtn = Button["Nuova Scacchiera", 
@@ -191,7 +193,7 @@ showSolutionBtn = Button["Mostra Soluzione",
 changeColorBtn = Button["Colora Scacchiera:",
 	changeColorBoard[];
 	resetColorEnabled = True;,
-	Enabled->Dynamic@changeColorEnabled];
+		Enabled->Dynamic@changeColorEnabled];
 
 resetColorBtn = Button["Reset Colore", resetColorBoard[];
 resetColorEnabled = False;,
