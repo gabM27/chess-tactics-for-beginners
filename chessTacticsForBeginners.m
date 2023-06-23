@@ -24,6 +24,7 @@ filepgn;                    (* file PGN della partita*)
 pgntosplit;                 (* variabile di appoggio per manipolare il file PGN *)
 moveToCheck;                (* mossa che compie il giocatore e che deve essere controllata per verificare se corretta *)
 lastgame;                   (* variabile utile a ricaricare l'ultima partita giocata*)
+nomeUtente="";              (*Variabile usata per memorizzare il nickname dell'utente che sta giocando*)
 whoIsPlaying = "";          (* memorizza il nome del giocatore *)
 endgame = "";               (* contiene il messaggio di successo o sconfitta di fine partita *)
 correctMove;                (* mossa corretta, ovvero mossa che porta allo scacco matto *)
@@ -69,6 +70,7 @@ repeatChessBoard[] := Module[{board},
     whoIsPlaying = "mossa al NERO"];
   tmp= PGN // Dynamic;
   Move[MoveFromPGN[#][[1]]] & /@ Drop[board, Length[Movelist] - 1];
+  
 ]
 
 backMove[] := Module[{board, filepgn},
@@ -125,8 +127,8 @@ While[True,
   nomeUtente = InputString["Inserisci il tuo nome:"];
   If[! StringMatchQ[StringTrim[nomeUtente]][""], Break[]];
 ]
-(*output soppresso perch\[EGrave] \[EGrave] nella nuova interfaccia*)
-StringReplace[nomeUtente, " " -> ""] <> " sta giocando!";
+nomeUtente=StringReplace[nomeUtente, " " -> ""];
+
 
 board = Startposition;
 
