@@ -1,0 +1,333 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     12578,        325]
+NotebookOptionsPosition[     10225,        275]
+NotebookOutlinePosition[     10631,        291]
+CellTagsIndexPosition[     10588,        288]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Tutorial: chess tacticts for beginners", "Title",
+ CellChangeTimes->{{3.8965855560051813`*^9, 3.8965855571466665`*^9}, {
+  3.8965866382100253`*^9, 
+  3.896586640602087*^9}},ExpressionUUID->"b4c1efc5-5035-4c79-92c1-\
+17133407d1ae"],
+
+Cell["Wolfram Knights", "Subtitle",
+ CellChangeTimes->{
+  3.8965856884814014`*^9, {3.896586643056076*^9, 3.896586644555659*^9}, 
+   3.896586689785836*^9, {3.8965870946852026`*^9, 
+   3.8965871184591684`*^9}},ExpressionUUID->"7f439269-25d8-4575-8ff2-\
+f94a80aede29"],
+
+Cell["\<\
+Progetto di Matematica Computazionale per l\[CloseCurlyQuote]anno accademico \
+2022/2023.
+Collaborators: Andrea Accornero, Andrea Bianchi, Mattia Frega, Gabriele \
+Magazz\[UGrave].\
+\>", "Subsubtitle",
+ CellChangeTimes->{{3.8965865912321477`*^9, 
+  3.896586606683176*^9}},ExpressionUUID->"6ffc14ed-2f3f-495f-b7f0-\
+24706ec67a1a"],
+
+Cell[CellGroupData[{
+
+Cell["Introduzione", "Section",
+ CellChangeTimes->{{3.896585606181684*^9, 
+  3.896585608702693*^9}},ExpressionUUID->"667d1e4a-2b4a-49aa-8e43-\
+99487a6c0d5a"],
+
+Cell["\<\
+Lo scopo del progetto consiste nel creare un package (notebook wolfram) che \
+proponga a un utente (target del progetto sar\[AGrave] un utente \
+principiante) per aiutarlo a migliorare nelle risoluzioni di problemi \
+posizionali negli scacchi (nel gergo si dice \[OpenCurlyDoubleQuote]trovare \
+una tattica\[CloseCurlyDoubleQuote]). 
+
+Una tattica \[EGrave] una sequenza di mosse che porta un giocatore a un \
+vantaggio. 
+
+Questo vantaggio pu\[OGrave] essere concretizzato attraverso: 
+
+Vantaggio istantaneo: scacco matto. 
+
+Vantaggio materiale: cattura di uno o pi\[UGrave] pezzi \
+dell\[CloseCurlyQuote]avversario. 
+
+Vantaggio posizionale: trovare una posizione delle proprie pedine pi\[UGrave] \
+vantaggiosa rispetto alla posizione di quelle \
+dell\[CloseCurlyQuote]avversario, nonostante si abbiano le stesse pedine. Un \
+esempio tipico \[EGrave] avere un pedone \[OpenCurlyDoubleQuote]doppiato\
+\[CloseCurlyDoubleQuote] rispetto ad averne uno per colonna.  
+
+Esempio di vantaggio istantaneo: scacco matto in una mossa per il bianco:
+
+Esempio di vantaggio materiale: il bianco attraverso una mossa riesce (nella \
+mossa successiva a catturare un pezzo dell\[CloseCurlyQuote]avversario e a \
+portarsi in un vantaggio materiale):
+
+Esempio di vantaggio posizionale per il bianco: il nero presenta un pedone \
+doppiato sulla colonna c e un pezzo sviluppato in meno rispetto al bianco \
+(Cavallo in f3):
+
+\
+\>", "Text",
+ CellChangeTimes->{{3.8965864496681843`*^9, 3.896586488368638*^9}, 
+   3.896586561437129*^9},ExpressionUUID->"6f85201a-e72a-45bf-9187-\
+2a9361cef3b4"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Generazione esercizio", "Section",
+ CellChangeTimes->{
+  3.8965857040020247`*^9, {3.8965858223193483`*^9, 
+   3.8965858362660418`*^9}},ExpressionUUID->"0d25efe0-e1b0-4231-a072-\
+6fad7d6e9bfe"],
+
+Cell["\<\
+L\[CloseCurlyQuote]utente inserisce da input il proprio nome (richiesto \
+inserimento di caratteri come input dalla prof, alternativo) 
+
+L\[CloseCurlyQuote]utente clicca sul pulsante \[OpenCurlyDoubleQuote]Nuova \
+tattica\[CloseCurlyDoubleQuote], sceglie il livello di difficolt\[AGrave] \
+(esempio banale: scacco matto in una mossa = livello 1; scacco matto in tre \
+mosse = livello 2; scacco matto in 5 mosse = livello 3.) 
+
+Una volta generato l\[CloseCurlyQuote]esercizio viene riempita la scacchiera \
+con i pezzi nelle rispettive caselle e si richiama lo script con il quale il \
+motore scacchistico selezionato calcola la mossa pi\[UGrave] corretta per \
+quella posizione. 
+
+Alternativa a generazione esercizio da dataset 
+
+Possiamo implementare tramite GUI una scacchiera nella quale l\
+\[CloseCurlyQuote]utente pu\[OGrave] inserire i pezzi come vuole (non \
+dovrebbe essere difficile, online \[EGrave] pieno di queste cose. L\
+\[CloseCurlyQuote]unico inghippo potrebbe essere mathematica wolfram, ma sono \
+fiducioso sul fatto che ce la faremo, alla fine \[EGrave] una matrice \
+bidimensionale con sopra delle immagini delle pedine). 
+
+Una volta inserita la posizione scelta l\[CloseCurlyQuote]utente clicca su \
+\[OpenCurlyDoubleQuote]conferma posizione\[CloseCurlyDoubleQuote] e si avvia \
+lo script con il quale il motore scacchistico selezionato calcola la mossa pi\
+\[UGrave] corretta per quella determinata posizione. \
+\>", "Text",
+ CellChangeTimes->{
+  3.8965858618078346`*^9},ExpressionUUID->"43ce0e81-dbeb-4817-9701-\
+b32b3fbe7d38"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Verifica esercizio ", "Section",
+ CellChangeTimes->{
+  3.896585716477778*^9},ExpressionUUID->"f7c8a37c-d513-4cd6-8825-\
+54015d831ad4"],
+
+Cell["\<\
+L\[CloseCurlyQuote]utente, attraverso GUI, interagisce con la scacchiera e fa \
+la sua mossa. Una volta che \[EGrave] sicuro della propria mossa clicca su \
+\[OpenCurlyDoubleQuote]verifica mossa\[CloseCurlyDoubleQuote] e si mette a \
+confronto con la mossa scelta dal motore scacchistico.  
+
+Ora posiamo avere 2 risultati: 
+
+Mossa corretta --> l\[CloseCurlyQuote]utente ha selezionato la mossa \
+corretta; se il problema non \[EGrave] stato risolto (ancora altre mosse da \
+fare) viene mossa la pedina dell\[CloseCurlyQuote]avversario e \
+successivamente si rid\[AGrave] la possibilit\[AGrave] \
+all\[CloseCurlyQuote]utente di selezionare la mossa e si ripete la verifica. 
+
+Mossa sbagliata --> l\[CloseCurlyQuote]utente ha selezionato la mosse errata; \
+viene chiesto all\[CloseCurlyQuote]utente se vuole riprovare a trovare la \
+mossa corretta oppure di mostrare la soluzione corretta. \
+\>", "Text",
+ CellChangeTimes->{
+  3.8965858944042845`*^9},ExpressionUUID->"d2fb31f2-7974-471f-8c03-\
+0a2882293a70"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Mostra soluzione ", "Section",
+ CellChangeTimes->{
+  3.896585724242237*^9},ExpressionUUID->"14fdf3cc-b476-443d-b857-\
+1ce101028c3c"],
+
+Cell["\<\
+Mostra la soluzione corretta sulla scacchiera (se non gi\[AGrave] trovata \
+dall\[CloseCurlyQuote]utente). 
+
+IN OGNI CASO stampa la sequenza di mosse corrette (esempio: Da1,Rg8,Tc8#) \
+\>", "Text",
+ CellChangeTimes->{
+  3.8965859020152326`*^9},ExpressionUUID->"165929cf-e8f0-4301-92a2-\
+a4551c588815"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Pulisci soluzione ", "Section",
+ CellChangeTimes->{
+  3.896585767321879*^9},ExpressionUUID->"da00c775-243c-4432-bad5-\
+a5a110637a02"],
+
+Cell["\<\
+Cancella dall\[CloseCurlyQuote]interfaccia l\[CloseCurlyQuote]esercizio \
+rimuovendo tutti pezzi dalla scacchiera  
+
+Possibile \[OpenCurlyDoubleQuote]cronologia\[CloseCurlyDoubleQuote] / \
+salvataggio da implementare delle tattiche trovate o meno. Esempio: ho \
+trovato 3 tattiche e mi sono arreso e scelto di visualizzare la soluzione per \
+altre 5, avr\[OGrave] nella cronologia 3 + (simil vittorie) e 5 - (simil \
+sconfitte). \
+\>", "Text",
+ CellChangeTimes->{
+  3.8965859090939465`*^9},ExpressionUUID->"beeb116d-9237-4bac-9d38-\
+93402531cd84"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Approfondimento", "Section",
+ CellChangeTimes->{{3.8965857804871864`*^9, 
+  3.896585782804119*^9}},ExpressionUUID->"0a2ef08c-c3f1-4218-b1bc-\
+f6fbe4c17bf3"],
+
+Cell["\<\
+Descrizione iter progettuale e strade alternative 
+FEN STRING https://www.chess.com/terms/fen-chess#what-is-fen --- FEN string \
+description 
+Cos\[CloseCurlyQuote]\[EGrave] un PGN ? \
+\>", "Text",
+ CellChangeTimes->{{3.8965859707434363`*^9, 3.8965860275377955`*^9}, {
+   3.8965860895633616`*^9, 3.8965860932913733`*^9}, 
+   3.896586387779274*^9},ExpressionUUID->"6adb4893-cd40-4fef-beb3-\
+57cc577f1210"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Bibliografia e Sitografia", "Section",
+ CellChangeTimes->{{3.89658579078741*^9, 
+  3.8965857954592853`*^9}},ExpressionUUID->"24e17167-70e6-43bf-8ab2-\
+83f27a900fed"],
+
+Cell["\<\
+https://demonstrations.wolfram.com/Chess/   --- progetto dimostrativo 
+https://community.wolfram.com/groups/-/m/t/2123155 --- collegare stockfish a \
+mathematica 
+https://www.kaggle.com/datasets/ancientaxe/mate-in-one-chess?resource=\
+download --- dataset di posizioni con scacco matto in 1 mossa 
+https://lichess.org/forum/general-chess-discussion/can-i-download-mate-in-1-2-\
+3-4-puzzles-from-lichess- --- forum su ricerca dataset  
+https://www.apronus.com/chess/puzzles/ --- non so se si riesce a estrapolare \
+un dataset 
+https://chess.stackexchange.com/questions/19633/chess-problem-database-with-\
+pgn-or-fen  
+https://www.puzzlebase.com.au/ 
+https://www.chess.com/terms/fen-chess#what-is-fen --- FEN string description 
+LINK REPO GITHUB CHESS MASTER\
+\>", "Text",
+ CellChangeTimes->{{3.8965864034420214`*^9, 3.896586419043411*^9}, {
+  3.8965879798481784`*^9, 
+  3.8965879864151225`*^9}},ExpressionUUID->"eb7b5832-6b95-403c-92b4-\
+be7ff6ec92d0"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Commenti e lavoro futuro", "Section",
+ CellChangeTimes->{{3.896585803232766*^9, 
+  3.8965858079929705`*^9}},ExpressionUUID->"1821f3a1-6669-4a0d-9104-\
+b7601459630a"],
+
+Cell["\<\
+- Risoluzione problemi diversi (scacco matto in 3 o 5 mosse).
+- Possiamo fare uso di un qualunque motore scacchistico (uno tra i \
+pi\[UGrave] famosi e tra i migliori \[EGrave] Stockfish) per implementare l\
+\[CloseCurlyQuote]algoritmo che calcola la mossa corretta --> Integrazione di \
+un motore scacchistico (per esempio stockfish, citare link) per inserimento \
+posizione \[CloseCurlyDoubleQuote]manuale\[CloseCurlyDoubleQuote].
+- Personalizzazione profilo utente.
+- Classifica con punteggi e trofei per x problemi risolti o simili.\
+\>", "Text",
+ CellChangeTimes->{{3.8965861171332135`*^9, 3.8965862883664703`*^9}, {
+  3.8965863266212883`*^9, 3.8965863609989996`*^9}, {3.8965865027862396`*^9, 
+  3.896586509389279*^9}},ExpressionUUID->"68ca50c6-3942-471f-86c8-\
+744aef219e6b"]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1440., 741.75},
+WindowMargins->{{-6, Automatic}, {Automatic, -6}},
+FrontEndVersion->"13.2 for Microsoft Windows (64-bit) (January 30, 2023)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"38a74b43-aa26-4f3a-9cab-b5a8dbfd1b90"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 236, 4, 98, "Title",ExpressionUUID->"b4c1efc5-5035-4c79-92c1-17133407d1ae"],
+Cell[819, 28, 265, 5, 53, "Subtitle",ExpressionUUID->"7f439269-25d8-4575-8ff2-f94a80aede29"],
+Cell[1087, 35, 339, 8, 53, "Subsubtitle",ExpressionUUID->"6ffc14ed-2f3f-495f-b7f0-24706ec67a1a"],
+Cell[CellGroupData[{
+Cell[1451, 47, 157, 3, 67, "Section",ExpressionUUID->"667d1e4a-2b4a-49aa-8e43-99487a6c0d5a"],
+Cell[1611, 52, 1578, 37, 495, "Text",ExpressionUUID->"6f85201a-e72a-45bf-9187-2a9361cef3b4"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3226, 94, 198, 4, 67, "Section",ExpressionUUID->"0d25efe0-e1b0-4231-a072-6fad7d6e9bfe"],
+Cell[3427, 100, 1560, 30, 288, "Text",ExpressionUUID->"43ce0e81-dbeb-4817-9701-b32b3fbe7d38"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[5024, 135, 140, 3, 67, "Section",ExpressionUUID->"f7c8a37c-d513-4cd6-8825-54015d831ad4"],
+Cell[5167, 140, 1016, 20, 196, "Text",ExpressionUUID->"d2fb31f2-7974-471f-8c03-0a2882293a70"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[6220, 165, 138, 3, 67, "Section",ExpressionUUID->"14fdf3cc-b476-443d-b857-1ce101028c3c"],
+Cell[6361, 170, 311, 8, 81, "Text",ExpressionUUID->"165929cf-e8f0-4301-92a2-a4551c588815"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[6709, 183, 139, 3, 67, "Section",ExpressionUUID->"da00c775-243c-4432-bad5-a5a110637a02"],
+Cell[6851, 188, 557, 12, 104, "Text",ExpressionUUID->"beeb116d-9237-4bac-9d38-93402531cd84"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7445, 205, 162, 3, 67, "Section",ExpressionUUID->"0a2ef08c-c3f1-4218-b1bc-f6fbe4c17bf3"],
+Cell[7610, 210, 413, 9, 81, "Text",ExpressionUUID->"6adb4893-cd40-4fef-beb3-57cc577f1210"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[8060, 224, 171, 3, 67, "Section",ExpressionUUID->"24e17167-70e6-43bf-8ab2-83f27a900fed"],
+Cell[8234, 229, 961, 19, 219, "Text",ExpressionUUID->"eb7b5832-6b95-403c-92b4-be7ff6ec92d0"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[9232, 253, 171, 3, 67, "Section",ExpressionUUID->"1821f3a1-6669-4a0d-9104-b7601459630a"],
+Cell[9406, 258, 791, 13, 127, "Text",ExpressionUUID->"68ca50c6-3942-471f-86c8-744aef219e6b"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+

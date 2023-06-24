@@ -2,11 +2,8 @@
 
 (*
 TODO: 
- - FIXED CREDO --> restart + rigioca stessa partita rimane selezionata la mossa e non funziona correttamente NEL CASO IN CUI NON SI SIA CLICCATO VERIFICA MOSSA
-  per risoluzione bug: fare Movelist = Most[Movelist]; da qualche parte (teoricamente quando si clicca restart MA SOLO DOPO aver mosso un pezzo, senn\[OGrave] si creano altri errori)
  - Disabilitare la possibilit\[AGrave] di muovere le pedine dell'avversario dopo che abbiamo fatto la mossa.
- - Dopo aver premuto Verifica mossa il tasto rimane cliccabile, non sarebbe meglio disabilitarlo e riattivarlo solo alla prossima partita?
- - stesso discorso sopra per Mostra soluzione, forse \[EGrave] pi\[UGrave] friendly disattivarli dopo il click tanto se ricliccati non fanno assolutamente niente
+ - Aggiungere qualche commento generico
 *)
 
 
@@ -58,7 +55,7 @@ generateNewChessBoard[] := Module[{randomNum, board},
     whoIsPlaying = "Mossa al NERO"];
     
   Move[MoveFromPGN[#][[1]]] & /@ Drop[board, Length[Movelist] - 1];
-  checkMovelist = PGN // Dynamic;
+  checkMovelist = Length[Movelist];
 ]
 
 repeatChessBoard[] := Module[{board},
@@ -72,7 +69,7 @@ repeatChessBoard[] := Module[{board},
     whoIsPlaying = "mossa al NERO"];
   tmp= PGN // Dynamic;
   Move[MoveFromPGN[#][[1]]] & /@ Drop[board, Length[Movelist] - 1];
-  
+  checkMovelist = Length[Movelist];
 ]
 
 backMove[] := Module[{board, filepgn},
@@ -120,7 +117,7 @@ checkMove[] := Module[{pgntosplit, delimitatori, lista, len, moveToCheck},
   Print[lista];
   *)
   If[StringMatchQ[moveToCheck, correctMove],
-    (gameResult=1; endgame = "MOSSA CORRETTA, BRAVO!";),(gameResult=0; endgame = "hai sbagliato, riprova o guarda la soluzione :(";)];
+    (gameResult=1; endgame = "MOSSA CORRETTA, BRAVO!"; MessageDialog["MOSSA CORRETTA, HAI VINTO!"];),(gameResult=0; endgame = "hai sbagliato, riprova o guarda la soluzione :(";MessageDialog["mossa errata, hai perso!"];)];
   Movelist = Most[Movelist];
   Chess[ShowBoard -> board, Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard];
 ]
@@ -154,7 +151,7 @@ newBoardBtn = Button["Nuova Scacchiera",
 repeatBtn = Button["Rigioca Partita", 
 	board = repeatChessBoard[];
 	repeatEnabled = False;
-	restartEnabled = True;
+	restartEnabled = False;
 	showSolutionEnabled = True;
 	checkMoveEnabled = True;
 	backEnabled = True;
@@ -183,11 +180,12 @@ restartBtn = Button["Restart",
 checkBtn = Button["Verifica Mossa", 
 	checkMove[];
 	restartEnabled = True;
+	checkMoveEnabled = False;
 	,
 		Enabled->Dynamic@checkMoveEnabled ];
 	
 showSolutionBtn = Button["Mostra Soluzione", 
-	dropCharWhiteMove[]; "La mossa corretta \[EGrave] " <> correctMoveToPrint,
+	dropCharWhiteMove[]; showSolutionEnabled = False; "La mossa corretta \[EGrave] " <> correctMoveToPrint,
 		Enabled->Dynamic@showSolutionEnabled ];
 	
 changeColorBtn = Button["Colora Scacchiera:",
@@ -1040,10 +1038,5 @@ vxj6/n/GmsfeytqGHV4OKV+DKmR8fDzp5mEzLUsC7556gL38MhEFon1ErjrR
 0uqOx5APUTSOlZ7YdZF7ImBF+u3yuXK7w9B3UKl+PSMsKpV3z76pl1/mN0JL
 V9lbeceWET9z2Bn6DgaDwWAwGAwGg8FgMBgMBoPBYLB5Pg5EvlNY
 "], "Byte", ColorSpace -> "RGB", ImageResolution -> {144, 144}, Interleaving -> True, MetaInformation -> <|"Exif" -> <|"ImageWidth" -> 160, "ImageLength" -> 160, "XResolution" -> 144, "YResolution" -> 144, "ResolutionUnit" -> "Inch", "Software" -> "Created with the Wolfram Language : www.wolfram.com", "DateTime" -> DateObject[{2023, 6, 22, 10, 24, 21.}, "Instant", "Gregorian", 2.], "TimeZoneOffset" -> 2|>, "Comments" -> <|"Software" -> "Created with the Wolfram Language : www.wolfram.com", "Creation Time" -> DateObject[{2023, 6, 22, 10, 24, 21.}, "Instant", "Gregorian", None]|>|>]}
-}, Frame->All , AspectRatio->2/5]
+}, Frame->All , AspectRatio->2/5, ImageSize->Large]
 
-
-(*output soppresso perch\[EGrave] \[EGrave] nella nuova interfaccia*)
-Dynamic@whoIsPlaying;
-Dynamic@endgame;
-Dynamic@correctMoveToPrint;
