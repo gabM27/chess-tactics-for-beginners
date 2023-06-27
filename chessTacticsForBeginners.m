@@ -7,9 +7,13 @@ TODO:
 
 
 (* carico il package *)
+
+Chess::usage = "Chess[options] displays the chessboard.";
 dir = NotebookDirectory[];
 SetDirectory[NotebookDirectory[]];
 Get[dir<>"Chess-master/Chess.wl"];
+SetAttributes[Chess,{}];
+
 
 
 (* Carico il dataset e creo i file pgn *)
@@ -30,6 +34,8 @@ gameResult = 0;             (* partita vinta oppure persa *)
 dimensionBoard = 240;       (* Var. per settare la dimensione della board*)
 checkMovelist;
 colorBoard=RGBColor[0.8196,0.5451,0.2784];     (* Var. per colore RGB della scacchiera, inizializzata a\[NonBreakingSpace]color\[NonBreakingSpace]default*)
+
+
 
 (* boolean di attivazione dei pulsanti*)
 newBoardEnabled = True;
@@ -64,6 +70,7 @@ generateNewChessBoard[] := Module[{randomNum, board},
     
   Move[MoveFromPGN[#][[1]]] & /@ Drop[board, Length[Movelist] - 1];
   checkMovelist = Length[Movelist];
+  board
 ]
 (* Funzione che viene invocata al  click del button "Rigioca Partita":
 - Tramite la variabile 'lastgame' sappiamo qual'\[EGrave] l'ultima partita giocata dall'utente e la mossa corretta (quella finale)
