@@ -3,7 +3,6 @@
 (*
 TODO: 
  - Disabilitare la possibilit\[AGrave] di muovere le pedine dell'avversario dopo che abbiamo fatto la mossa.
- - Aggiungere qualche commento generico
 *)
 
 
@@ -85,12 +84,7 @@ repeatChessBoard[] := Module[{board},
   Move[MoveFromPGN[#][[1]]] & /@ Drop[board, Length[Movelist] - 1];
   checkMovelist = Length[Movelist];
 ]
-(*------------------REFUSO DA TOGLIERE ---------------------------*)
-(*backMove[] := Module[{board, filepgn},
-   Drop[filepgn, -1];
-   board = PGNconvert[filepgn];
-   Chess[ShowBoard -> board, Interact -> True,ImageSize -> dimensionBoard,BoardColour -> colorBoard];
-]*)
+
 (*Questa funzione serve solo nel caso in cui l'utente stia giocando con le pedine bianche: 
 - Serve per stampare correttamente l'output del button "Mostra Soluzione"
 - Senza questa funzione l'ultima mossa stampata non sarebbe formattata correttamente*)
@@ -235,8 +229,9 @@ resetColorEnabled = False;,
 changeSizeBtn = Button["Dimensione Scacchiera", 
 	changeDimensionBoard[]];
 	
-	(* All'interno dei CompressData sono presenti le immagini del pezzo bianco e del pezzo nero
-	 che vengono mostrati nella struttura tabellare con i pulsanti *)
+(* GraphicsGrid per generare tabella grafica dei comandi di gioco*)
+(* All'interno dei CompressData sono presenti le immagini dei pezzi di scacchi
+che vengono mostrati in alcune celle della tabella, al solo scopo decorativo *)
 GraphicsGrid[
 {
 {Image[CompressedData["
