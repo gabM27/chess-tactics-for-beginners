@@ -42,6 +42,15 @@ showSolutionEnabled = False;
 changeColorEnabled = True;
 resetColorEnabled = False;
 
+(* funzione che viene attivata una volta cliccato il button "Nuova Scacchiera":
+- Genera un numero casuale intero compreso tra 1 e 11715 (num di partite del dataset)
+- Estrae la partita dal dataset in base al numero generato 
+- Viene memorizzata l'ultima mossa della partita (correctMove) che servir\[AGrave] per il controllo del vincitore
+- Viene caricata la partita nella scacchiera traimite Chess[...]
+- A seconda degli ultimi 3 caratteri presenti in ogni partita ("1-0" o "0-1") l'utente giocher\[AGrave] con i bianchi o con i neri
+- Vengono poi mosse tutte le pedine tramite Move[...] fino alla penultima mossa della partita
+- Salviamo le mosse che sono state fatte per la partita *)
+
 generateNewChessBoard[] := Module[{randomNum, board},
   randomNum = RandomInteger[{1, 11715}];
   lastgame = randomNum;
@@ -57,6 +66,11 @@ generateNewChessBoard[] := Module[{randomNum, board},
   Move[MoveFromPGN[#][[1]]] & /@ Drop[board, Length[Movelist] - 1];
   checkMovelist = Length[Movelist];
 ]
+(* Funzione che viene invocata al  click del button "Rigioca Partita":
+- Tramite la variabile 'lastgame' sappiamo qual'\[EGrave] l'ultima partita giocata dall'utente e la mossa corretta (quella finale)
+- Carichiamo nella board la partita in questione e poi la mostriamo nella scacchiera tramite Chess[...]
+- Controlliamo sempre tramite "1-0" o "0-1" quale pedine dovr\[AGrave] muovere l'utente
+- Mostriamo nella scacchiera le pedine nelle penultime posizioni della partita *)
 
 repeatChessBoard[] := Module[{board},
   filepgn = PGNfile[lastgame]["PGN"];
@@ -71,21 +85,27 @@ repeatChessBoard[] := Module[{board},
   Move[MoveFromPGN[#][[1]]] & /@ Drop[board, Length[Movelist] - 1];
   checkMovelist = Length[Movelist];
 ]
-
-backMove[] := Module[{board, filepgn},
+(*------------------REFUSO DA TOGLIERE ---------------------------*)
+(*backMove[] := Module[{board, filepgn},
    Drop[filepgn, -1];
    board = PGNconvert[filepgn];
    Chess[ShowBoard -> board, Interact -> True,ImageSize -> dimensionBoard,BoardColour -> colorBoard];
-]
-
+]*)
+(*Questa funzione serve solo nel caso in cui l'utente stia giocando con le pedine bianche: 
+- Serve per stampare correttamente l'output del button "Mostra Soluzione"
+- Senza questa funzione l'ultima mossa stampata non sarebbe formattata correttamente*)
 dropCharWhiteMove[] := Module[{},
 	correctMoveToPrint = correctMove;
 	If[StringMatchQ[PGNfile[lastgame]["Result"], "1-0"], (* Se la mossa \[EGrave] al bianco*)
+	(* Elimino dalla stringa tutti i caratteri in questo formato: numeriInt.."." (.. significa qualsiasi cosa e poi il punto (".")) *)
 	correctMoveToPrint=StringDelete[correctMoveToPrint, DigitCharacter.. ~~ ".", IgnoreCase -> False];
 ];
 ]
 
-(*Cambio dimensione alla scacchiera, 4 possibili dimensioni: 120,240,300,400*)
+(*Funzione per il cambio dimensione alla scacchiera, 4 possibili dimensioni: 120,240,300,400
+- Viene richiamata nel button "Dimensione Scacchiera"
+- La dimensione cambia in ordine crescente, quindi dalla scacchiera pi\[UGrave] piccola (120) a quella pi\[UGrave] grande (400)- 
+- Per applicare la dimensione passo al comando Chess[...] il paramatro 'dimensionBoard' che applico a ImageSize *)
 changeDimensionBoard := Module[{},
 
 Switch[dimensionBoard,120,dimensionBoard=240,
@@ -95,18 +115,26 @@ Switch[dimensionBoard,120,dimensionBoard=240,
 					 
 Chess[ShowBoard -> board,ImageSize -> dimensionBoard,BoardColour -> colorBoard]
 ]
-(*Cambio colore alla scacchiera*)
-changeColorBoard := Module[{},
-	colorBoard = selectedColor;
-	Chess[ShowBoard -> board, Interact -> False, ImageSize->dimensionBoard, BoardColour ->\[NonBreakingSpace]selectedColor];
-]
 
-(*Reset colore iniziale alla scacchiera*)
+(*-Resetto il colore della scacchiera a quello iniziale di default tramite la variabile colorBoard
+ -Per applicare il colore lo passo come parametro assegnandolo alla "BoardColour" il valore colorBoard*)
 resetColorBoard := Module[{},
 	colorBoard=RGBColor[0.8196,0.5451,0.2784];
 	Chess[ShowBoard -> board,Interact -> False, ImageSize->dimensionBoard, BoardColour ->\[NonBreakingSpace]colorBoard];
 ]
 
+(*Cambio colore alla scacchiera:
+- la funzione \[EGrave] la stessa del reset color, solo che in questo caso il colore applicato \[EGrave] quello scelto dall'utente tramite ColorSetter*)
+changeColorBoard := Module[{},
+	colorBoard = selectedColor;
+	Chess[ShowBoard -> board, Interact -> False, ImageSize->dimensionBoard, BoardColour ->\[NonBreakingSpace]selectedColor];
+]
+(* Funzione che viene attivata quando si preme "Verifica Mossa":
+- Per sapere quante sono le mosse della partita, vengono salvate in una stringa tutte le mosse ("lista")
+- Si memorizza il numero di tutte le mosse della partita e l'ultima mossa
+- Per controllare se l'utente ha compiuto la mossa corretta, si confronta "moveToCheck" (l'ultima mossa della partita estratta dal dataset)
+con "correctMove" (la mossa eseguita dall'utente): se sono uguali allora viene stampato il messaggio di successo, altrimenti di sconfitta.
+ *)
 checkMove[] := Module[{pgntosplit, delimitatori, lista, len, moveToCheck},
   pgntosplit = PGN // Dynamic;
   delimitatori = {" ", ", "};
@@ -121,7 +149,8 @@ checkMove[] := Module[{pgntosplit, delimitatori, lista, len, moveToCheck},
   Movelist = Most[Movelist];
   Chess[ShowBoard -> board, Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard];
 ]
-
+(* Questo \[EGrave] il messaggio pop-up della scelta del nome dell'utente all'avvio del programma:
+- L'utente sar\[AGrave] obbligato a mettere un nome (che non sia una stringa vuota) ed eventuali spazi verranno eliminati restituendo un'unica stringa *)
 While[True,
   nomeUtente = InputString["Inserisci il tuo nome:"];
   If[! StringMatchQ[StringTrim[nomeUtente]][""], Break[]];
@@ -129,8 +158,14 @@ While[True,
 nomeUtente=StringReplace[nomeUtente, " " -> ""];
 
 
-board = Startposition;
-
+board = Startposition; (* La board viene settata con le pedine in posizioni specifiche (iniziali, in caso di schermata iniziale, o penultime)*)
+(*Parametri del comando Chess[]:
+- ShowBoard -> serve per specifiare l'interazione con la scacchiera visualizzata (
+			  Interactive: possibilit\[AGrave] di interagire con essa e muovere le pedine
+			  PGN-values (board) le pedine sono mosse tenendo conto dei valori PGN specificati
+-ImageSize -> Tramite un valore numerico intero specifico la dimensione della scacchiera
+-BoardColour -> Tramite valore RGBColor vado ad applicare un determinato colore alla scacchiera
+)*)
 Chess[ShowBoard -> Interactive,ImageSize -> dimensionBoard,BoardColour -> colorBoard]
 Chess[ShowBoard -> board, Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard]; (*expr per disabilitare l'interazione con la scacchiera*)
 
@@ -200,6 +235,8 @@ resetColorEnabled = False;,
 changeSizeBtn = Button["Dimensione Scacchiera", 
 	changeDimensionBoard[]];
 	
+	(* All'interno dei CompressData sono presenti le immagini del pezzo bianco e del pezzo nero
+	 che vengono mostrati nella struttura tabellare con i pulsanti *)
 GraphicsGrid[
 {
 {Image[CompressedData["
