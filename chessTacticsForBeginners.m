@@ -7,13 +7,9 @@ TODO:
 
 
 (* carico il package *)
-
-Chess::usage = "Chess[options] displays the chessboard.";
 dir = NotebookDirectory[];
 SetDirectory[NotebookDirectory[]];
 Get[dir<>"Chess-master/Chess.wl"];
-SetAttributes[Chess,{}];
-
 
 
 (* Carico il dataset e creo i file pgn *)
@@ -77,7 +73,6 @@ generateNewChessBoard[] := Module[{randomNum, board},
 - Carichiamo nella board la partita in questione e poi la mostriamo nella scacchiera tramite Chess[...]
 - Controlliamo sempre tramite "1-0" o "0-1" quale pedine dovr\[AGrave] muovere l'utente
 - Mostriamo nella scacchiera le pedine nelle penultime posizioni della partita *)
-
 repeatChessBoard[] := Module[{board},
   filepgn = PGNfile[lastgame]["PGN"];
   correctMove = Last[filepgn];
