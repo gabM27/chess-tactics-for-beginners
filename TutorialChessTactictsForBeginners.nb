@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[   4016169,      66142]
-NotebookOptionsPosition[   4010875,      66060]
-NotebookOutlinePosition[   4011270,      66076]
-CellTagsIndexPosition[   4011227,      66073]
+NotebookDataLength[   4016210,      66133]
+NotebookOptionsPosition[   4010854,      66050]
+NotebookOutlinePosition[   4011310,      66067]
+CellTagsIndexPosition[   4011267,      66064]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -55,8 +55,8 @@ Cell[BoxData[
      RowBox[{"ShowBoard", "->", "board"}], ",", 
      RowBox[{"Interact", "->", "True"}], ",", 
      RowBox[{"ImageSize", "->", "dimensionBoard"}], ",", 
-     RowBox[{"BoardColour", "->", "colorBoard"}]}], "]"}], 
-   "\[IndentingNewLine]", "\n"}]}]], "Input",
+     RowBox[{"BoardColour", "->", "colorBoard"}]}], "]"}], "\n", 
+   "\[IndentingNewLine]"}]}]], "Input",
  CellChangeTimes->{{3.89686378154983*^9, 3.8968637947505903`*^9}, {
    3.896864338634131*^9, 3.8968643396995277`*^9}, {3.896864685587554*^9, 
    3.896864687597032*^9}, {3.896864771085341*^9, 3.896864808700694*^9}, {
@@ -346,12 +346,11 @@ k4i9re9S0JprXxqewI1SlKIUpShFKUpRilJk+n+XaW2m
         ImageSizeRaw->{100.5, 100.5},
         PlotRange->{{0, 100.5}, {0, 100.5}}],
        TraditionalForm], {193.5, -195.42857142857142}, {Center, Center}, {360., 359.99999999999994},
-      
       BaseStyle->{Graphics3DBoxOptions -> {SphericalRegion -> False}}], 
      InsetBox[
       RowBox[{
        DynamicBox[ToBoxes[$CellContext`nomeUtente, TraditionalForm],
-        ImageSizeCache->{10., {0., 6.}}], 
+        ImageSizeCache->{54.47753620147706, {0., 8.}}], 
        " ", "\<\" sta giocando\"\>"}], {580.5, -195.42857142857142}, {
       Center, Center}, {360., 359.99999999999994},
       BaseStyle->{Graphics3DBoxOptions -> {SphericalRegion -> False}}], 
@@ -619,7 +618,6 @@ D7nJT8HfotV/bWmKPS4koST16TGJSUxiEpOYxCQmMUkJ8v8AY8TT1A==
         ImageSizeRaw->{100.5, 100.5},
         PlotRange->{{0, 100.5}, {0, 100.5}}],
        TraditionalForm], {967.5, -195.42857142857142}, {Center, Center}, {360., 359.99999999999994},
-      
       BaseStyle->{Graphics3DBoxOptions -> {SphericalRegion -> False}}]}, {
      InsetBox[
       ButtonBox["\<\"Nuova Scacchiera\"\>",
@@ -636,7 +634,6 @@ $CellContext`generateNewChessBoard[]; $CellContext`gameResult =
        Enabled->Dynamic[$CellContext`newBoardEnabled],
        Evaluator->Automatic,
        Method->"Preemptive"], {193.5, -586.2857142857142}, {Center, Center}, {360., 359.99999999999994},
-      
       BaseStyle->{Graphics3DBoxOptions -> {SphericalRegion -> False}}], 
      InsetBox[
       ButtonBox["\<\"Restart\"\>",
@@ -657,7 +654,6 @@ $CellContext`generateNewChessBoard[]; $CellContext`gameResult =
        Enabled->Dynamic[$CellContext`restartEnabled],
        Evaluator->Automatic,
        Method->"Preemptive"], {580.5, -586.2857142857142}, {Center, Center}, {360., 359.99999999999994},
-      
       BaseStyle->{Graphics3DBoxOptions -> {SphericalRegion -> False}}], 
      InsetBox[
       ButtonBox["\<\"Verifica Mossa\"\>",
@@ -667,7 +663,6 @@ $CellContext`generateNewChessBoard[]; $CellContext`gameResult =
        Enabled->Dynamic[$CellContext`checkMoveEnabled],
        Evaluator->Automatic,
        Method->"Preemptive"], {967.5, -586.2857142857142}, {Center, Center}, {360., 359.99999999999994},
-      
       BaseStyle->{Graphics3DBoxOptions -> {SphericalRegion -> False}}]}, {
      InsetBox[
       ButtonBox["\<\"Mostra Soluzione\"\>",
@@ -678,7 +673,6 @@ $CellContext`showSolutionEnabled = False;
        Enabled->Dynamic[$CellContext`showSolutionEnabled],
        Evaluator->Automatic,
        Method->"Preemptive"], {193.5, -977.1428571428571}, {Center, Center}, {360., 360.},
-      
       BaseStyle->{Graphics3DBoxOptions -> {SphericalRegion -> False}}], 
      InsetBox[
       FormBox[
@@ -848,7 +842,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAsx/8BjGmoHg==
         ImageSizeRaw->{360., 360.},
         PlotRange->{{0, 360.}, {0, 360.}}],
        TraditionalForm], {580.5, -977.1428571428571}, {Center, Center}, {360., 360.},
-      
       BaseStyle->{Graphics3DBoxOptions -> {SphericalRegion -> False}}], 
      InsetBox[
       ButtonBox["\<\"Rigioca Partita\"\>",
@@ -863,22 +856,21 @@ $CellContext`repeatEnabled = False; $CellContext`restartEnabled =
        Enabled->Dynamic[$CellContext`repeatEnabled],
        Evaluator->Automatic,
        Method->"Preemptive"], {967.5, -977.1428571428571}, {Center, Center}, {360., 360.},
-      
       BaseStyle->{Graphics3DBoxOptions -> {SphericalRegion -> False}}]}, {
      InsetBox[
       DynamicBox[ToBoxes[$CellContext`whoIsPlaying, TraditionalForm],
-       ImageSizeCache->{0., {0., 6.}}], {193.5, -1368.}, {Center, Center}, {360., 360.0000000000002},
-      
+       ImageSizeCache->{58.920895671844484`, {2., 8.}}], {193.5, -1368.}, {
+      Center, Center}, {360., 360.0000000000002},
       BaseStyle->{Graphics3DBoxOptions -> {SphericalRegion -> False}}], 
      InsetBox[
       DynamicBox[ToBoxes[$CellContext`endgame, TraditionalForm],
-       ImageSizeCache->{0., {0., 6.}}], {580.5, -1368.}, {Center, Center}, {360., 360.0000000000002},
-      
+       ImageSizeCache->{41.69921607971192, {2., 8.}}], {580.5, -1368.}, {
+      Center, Center}, {360., 360.0000000000002},
       BaseStyle->{Graphics3DBoxOptions -> {SphericalRegion -> False}}], 
      InsetBox[
       DynamicBox[ToBoxes[$CellContext`correctMoveToPrint, TraditionalForm],
-       ImageSizeCache->{0., {0., 6.}}], {967.5, -1368.}, {Center, Center}, {360., 360.0000000000002},
-      
+       ImageSizeCache->{87.24608945846558, {0., 8.}}], {967.5, -1368.}, {
+      Center, Center}, {360., 360.0000000000002},
       BaseStyle->{Graphics3DBoxOptions -> {SphericalRegion -> False}}]}, {
      InsetBox[
       ButtonBox["\<\"Dimensione Scacchiera\"\>",
@@ -1019,12 +1011,10 @@ FY0Ja0L5LSKS3StDnb5wfR3HcRzHcRzHcRzHcRzHcRxn8fkPt3NcfQ==
         ImageSizeRaw->{80., 80.},
         PlotRange->{{0, 80.}, {0, 80.}}],
        TraditionalForm], {193.5, -2149.7142857142853}, {Center, Center}, {360., 359.9999999999998},
-      
       BaseStyle->{Graphics3DBoxOptions -> {SphericalRegion -> False}}], 
      InsetBox[
       ColorSetterBox[Dynamic[$CellContext`selectedColor], 
        "Swatch"], {580.5, -2149.7142857142853}, {Center, Center}, {360., 359.9999999999998},
-      
       BaseStyle->{Graphics3DBoxOptions -> {SphericalRegion -> False}}], 
      InsetBox[
       FormBox[
@@ -1165,7 +1155,6 @@ V9lbeceWET9z2Bn6DgaDwWAwGAwGg8FgMBgMBoPBYLB5Pg5EvlNY
         ImageSizeRaw->{80., 80.},
         PlotRange->{{0, 80.}, {0, 80.}}],
        TraditionalForm], {967.5, -2149.7142857142853}, {Center, Center}, {360., 359.9999999999998},
-      
       BaseStyle->{Graphics3DBoxOptions -> {SphericalRegion -> False}}]}}, 
    StyleBox[{{}, {LineBox[{{0, 0}, {0, -390.85714285714283`}}], 
       LineBox[{{0, -390.85714285714283`}, {0, -781.7142857142857}}], 
@@ -1268,8 +1257,7 @@ Cell[BoxData[
              Part[
               Last[Chess`Movelist], 2, 3]], Switch[
               Part[
-               Last[Chess`Movelist], 2, 3], 1, Chess`piece1[Chess`pos] = 
-              Most[
+               Last[Chess`Movelist], 2, 3], 1, Chess`piece1[Chess`pos] = Most[
                 Chess`piece1[Chess`pos]], 2, Chess`piece2[Chess`pos] = Most[
                 Chess`piece2[Chess`pos]], 3, Chess`piece3[Chess`pos] = Most[
                 Chess`piece3[Chess`pos]], 4, Chess`piece4[Chess`pos] = Most[
@@ -1278,8 +1266,7 @@ Cell[BoxData[
                 Chess`piece6[Chess`pos]], 7, Chess`piece7[Chess`pos] = Most[
                 Chess`piece7[Chess`pos]], 8, Chess`piece8[Chess`pos] = Most[
                 Chess`piece8[Chess`pos]], 9, Chess`piece9[Chess`pos] = Most[
-                Chess`piece9[Chess`pos]], 10, Chess`piece10[Chess`pos] = 
-              Most[
+                Chess`piece9[Chess`pos]], 10, Chess`piece10[Chess`pos] = Most[
                 Chess`piece10[Chess`pos]], 11, Chess`piece11[Chess`pos] = Most[
                 Chess`piece11[Chess`pos]], 12, Chess`piece12[Chess`pos] = Most[
                 Chess`piece12[Chess`pos]], 13, Chess`piece13[Chess`pos] = Most[
@@ -1410,7 +1397,6 @@ Cell[BoxData[
                     Opacity[0.5], 
                     Lighter[Green], 
                     Rectangle[Chess`Private`pt2 - {1, 1}, Chess`Private`pt2], 
-                    
                     Rectangle[
                     Chess`Private`pt3 - {1, 1}, Chess`Private`pt3]}], 
                  If[
@@ -1440,7 +1426,9 @@ Cell[BoxData[
                     (#[Chess`MoveChoices]& )[
                     Part[Chess`Private`test2, 1]]]}], 
                  Graphics[{}]]}], StandardForm],
-            ImageSizeCache->{240., {125., 129.}}]}
+            
+            ImageSizeCache->{
+             856.0717542648314, {112.05119547907914`, 14.352050360105931`}}]}
          },
          AutoDelete->False,
          GridBoxAlignment->{"Rows" -> {{Top}}},
@@ -1467,10 +1455,10 @@ Cell["Introduzione", "Section",
 
 Cell["\<\
 Lo scopo del progetto consiste nel creare un Mathematica Package che proponga \
-ad un utente (target del progetto sar\[AGrave] un utente principiante) per \
-aiutarlo a migliorare nelle risoluzioni di problemi posizionali negli scacchi \
-(nel gergo si dice \[OpenCurlyDoubleQuote]trovare una tattica\
-\[CloseCurlyDoubleQuote]). 
+ad un utente (target del progetto sar\[AGrave] un utente principiante) \
+diverse partite per aiutarlo a migliorare le proprie abilit\[AGrave] nelle \
+risoluzioni di problemi posizionali negli scacchi (nel gergo si dice \
+\[OpenCurlyDoubleQuote]trovare una tattica\[CloseCurlyDoubleQuote]). 
 
 Una tattica \[EGrave] una sequenza di mosse che porta un giocatore ad un \
 vantaggio. Questo vantaggio pu\[OGrave] essere concretizzato attraverso: \
@@ -1478,7 +1466,8 @@ vantaggio. Questo vantaggio pu\[OGrave] essere concretizzato attraverso: \
  CellChangeTimes->{{3.8965864496681843`*^9, 3.896586488368638*^9}, 
    3.896586561437129*^9, {3.8966142238181286`*^9, 3.8966142649653883`*^9}, {
    3.8966153168536377`*^9, 3.896615317317415*^9}, {3.896615364871827*^9, 
-   3.8966153833217773`*^9}},ExpressionUUID->"6f85201a-e72a-45bf-9187-\
+   3.8966153833217773`*^9}, {3.897019968462255*^9, 
+   3.8970200020679755`*^9}},ExpressionUUID->"6f85201a-e72a-45bf-9187-\
 2a9361cef3b4"],
 
 Cell[TextData[{
@@ -38192,18 +38181,20 @@ Cell[TextData[{
 l\[CloseCurlyQuote]esecuzione del package l\[CloseCurlyQuote]utente inserisce \
  il proprio nome nella casella di testo in popup. \n\n\
 L\[CloseCurlyQuote]utente clicca sul pulsante \[OpenCurlyDoubleQuote]",
- StyleBox["Nuova tattica",
+ StyleBox["Nuova Schacchiera",
   FontWeight->"Bold"],
- "\[CloseCurlyDoubleQuote], che estrae in  maniera randomica una tattica da \
-un dataset precaricato nel package.\n\nUna volta generato \
+ "\[CloseCurlyDoubleQuote], che estrae in  maniera randomica una partita dal \
+dataset precaricato nel package.\n\nUna volta generato \
 l\[CloseCurlyQuote]esercizio viene riempita la scacchiera con i pezzi nelle \
 rispettive caselle, e l\[CloseCurlyQuote]utente pu\[OGrave] fare la propria \
-mossa.\n"
+mossa, ovvero quella che secondo lui porter\[AGrave] allo scacco matto dell\
+\[CloseCurlyQuote]avversario.\n"
 }], "Text",
  CellChangeTimes->{
   3.8965858618078346`*^9, {3.896615395326289*^9, 3.8966154492595735`*^9}, {
    3.896666369311986*^9, 3.8966664659174128`*^9}, {3.896667767264825*^9, 
-   3.8966678184280148`*^9}},ExpressionUUID->"43ce0e81-dbeb-4817-9701-\
+   3.8966678184280148`*^9}, {3.897020079631201*^9, 
+   3.8970201447258005`*^9}},ExpressionUUID->"43ce0e81-dbeb-4817-9701-\
 b32b3fbe7d38"]
 }, Open  ]],
 
@@ -38238,13 +38229,14 @@ Cell[TextData[{
    0.023529411764705882`, 0.8235294117647058, 0.023529411764705882`]],
  " l\[CloseCurlyQuote]utente ha fatto la mossa che coincide con la soluzione. \
 Ottimo lavoro! Dopo la conferma di mossa corretta, l\[CloseCurlyQuote]utente \
-pu\[OGrave] resettare la scacchiera e caricare una nuova partita."
+pu\[OGrave] resettare la scacchiera e caricare una nuova partita o rigiocare \
+la stessa."
 }], "Item",
  CellChangeTimes->{{3.896615566961218*^9, 3.896615569788036*^9}, {
   3.8966156327545586`*^9, 3.8966156327545586`*^9}, {3.8966156667183137`*^9, 
   3.896615712573223*^9}, {3.896615749486834*^9, 3.896615759135268*^9}, {
-  3.8966158066057615`*^9, 
-  3.896615827053382*^9}},ExpressionUUID->"05c2b9a1-3698-4f37-a3ca-\
+  3.8966158066057615`*^9, 3.896615827053382*^9}, {3.8970201902119193`*^9, 
+  3.8970202101958747`*^9}},ExpressionUUID->"05c2b9a1-3698-4f37-a3ca-\
 82688bef908c"],
 
 Cell[TextData[{
@@ -38306,9 +38298,11 @@ Cell[TextData[{
  "l\[CloseCurlyQuote]utente preme il tasto \[OpenCurlyDoubleQuote]",
  StyleBox["Reset",
   FontWeight->"Bold"],
- "\[CloseCurlyDoubleQuote], che riporta la scacchiera alla startposition, \
-ovvero alla posizione iniziale, e carica una nuova partita premendo il tasto \
-\[OpenCurlyDoubleQuote]",
+ "\[CloseCurlyDoubleQuote], che riporta la scacchiera alla ",
+ StyleBox["startposition",
+  FontSlant->"Italic"],
+ ", ovvero alla posizione iniziale, e carica una nuova partita premendo il \
+tasto \[OpenCurlyDoubleQuote]",
  StyleBox["Nuova Scacchiera",
   FontWeight->"Bold"],
  "\[CloseCurlyDoubleQuote];"
@@ -38321,8 +38315,10 @@ Cell[TextData[{
  "l\[CloseCurlyQuote]utente preme il tasto \[OpenCurlyDoubleQuote]",
  StyleBox["Reset",
   FontWeight->"Bold"],
- "\[CloseCurlyDoubleQuote], che riporta la scacchiera alla startposition e \
-successivamente preme \[OpenCurlyDoubleQuote]",
+ "\[CloseCurlyDoubleQuote], che riporta la scacchiera alla ",
+ StyleBox["startposition",
+  FontSlant->"Italic"],
+ " e successivamente preme \[OpenCurlyDoubleQuote]",
  StyleBox["Rigioca partita",
   FontWeight->"Bold"],
  "\[CloseCurlyDoubleQuote]. In questo modo viene ricaricata la partita appena \
@@ -38341,24 +38337,16 @@ Cell["Approfondimento", "Section",
  TextAlignment->Center,ExpressionUUID->"0a2ef08c-c3f1-4218-b1bc-f6fbe4c17bf3"],
 
 Cell[TextData[{
- "Descrizione di come abbiamo usato la repo github chessmaster e come l\
-\[CloseCurlyQuote]abbiamo adeguata al nostro utilizzo (forse questo non \
-\[EGrave] meglio che vada nella documentazione invece che nel tutorial? Il \
-tutorial \[EGrave] volto ALL\[CloseCurlyQuote]UTENTE TARGET CHE NON SA USARE \
-MATHEMATICA, quindi non credo gliene importi pi\[UGrave] di tanto di questa \
-cosa)\nDescrizione iter progettuale e strade alternative (come sopra, credo \
-debba stare in documentazione e non in tutorial)\n\nPer capire meglio come \
-funziona il package \[EGrave] necessario fare una digressione sulla struttura \
-delle partite presenti nel dataset, dalle quali estrapoliamo le tattiche di \
-scacco matto in una mossa. Le partite sono rappresentate nel formato ",
+ "Per capire meglio come funziona il package \[EGrave] necessario fare una \
+digressione sulla struttura delle partite presenti nel dataset, dalle quali \
+estrapoliamo le tattiche di scacco matto in una mossa. Le partite sono \
+rappresentate nel formato ",
  StyleBox["PGN",
   FontWeight->"Bold"],
- " (Portable Game Notation): ",
- "questo ",
- "\[EGrave] un formato di facile lettura che registra le mosse di una partita \
-(in notazione algebrica standard) e qualsiasi dato correlato come i nomi dei \
-giocatori, il vincitore/sconfitto, e persino la data in cui \[EGrave] stata \
-giocata la partita.\n",
+ " (Portable Game Notation): questo \[EGrave] un formato di facile lettura \
+che registra le mosse di una partita (in notazione algebrica standard) e \
+qualsiasi dato correlato come i nomi dei giocatori, il vincitore/sconfitto, e \
+persino la data in cui \[EGrave] stata giocata la partita.\n",
  StyleBox["Ecco un esempio tratto direttamente dagli archivi di ",
   FontSize->15],
  StyleBox["chess.com",
@@ -38415,8 +38403,9 @@ quali descrive un aspetto di una posizione e separato da uno spazio."
    3.896757012798074*^9, 3.89675715107444*^9}, {3.896757196509295*^9, 
    3.896757282345934*^9}, {3.8967575611817446`*^9, 3.8967575999662848`*^9}, {
    3.896757973165037*^9, 3.8967580329482026`*^9}, {3.896758138131166*^9, 
-   3.896758223184079*^9}, {3.8967582640806494`*^9, 
-   3.896758305133903*^9}},ExpressionUUID->"6adb4893-cd40-4fef-beb3-\
+   3.896758223184079*^9}, {3.8967582640806494`*^9, 3.896758305133903*^9}, {
+   3.8970204083094964`*^9, 
+   3.897020412464102*^9}},ExpressionUUID->"6adb4893-cd40-4fef-beb3-\
 57cc577f1210"],
 
 Cell[TextData[{
@@ -66043,24 +66032,26 @@ Cell[TextData[{
  " raggiunti dall\[CloseCurlyQuote]utente per incoraggiarlo nel suo ",
  StyleBox["percorso di apprendimento degli scacchi",
   FontWeight->"Bold"],
- ". \[LineSeparator]Un esempio potrebbe essere l\[CloseCurlyQuote]aggiunta di \
-punteggi e premi, assegnati in base alle mosse giuste o sbagliate e prendendo \
-in considerazione anche il tempo speso per trovare la mossa corretta (o le \
+ ". \[LineSeparator]Ad esempio l\[CloseCurlyQuote]aggiunta di punteggi e \
+premi, assegnati in base alle mosse giuste o sbagliate e prendendo in \
+considerazione anche il tempo speso per trovare la mossa corretta (o le \
 mosse, nel caso di pi\[UGrave] di una soluzione!)."
 }], "Item",
  CellChangeTimes->{{3.8966144326196413`*^9, 3.89661444871094*^9}, {
    3.8966145304634123`*^9, 3.896614538135745*^9}, {3.8966146212293487`*^9, 
    3.896614678030116*^9}, {3.896614961981472*^9, 3.8966149679459095`*^9}, {
    3.8966150960121913`*^9, 3.896615195552447*^9}, {3.896615237745639*^9, 
-   3.8966152802093773`*^9}, 3.896667497082378*^9, 
-   3.896668223232154*^9},ExpressionUUID->"f7d1fa2c-bd16-422e-876d-\
+   3.8966152802093773`*^9}, 3.896667497082378*^9, 3.896668223232154*^9, {
+   3.8970207069777656`*^9, 
+   3.8970207087587905`*^9}},ExpressionUUID->"f7d1fa2c-bd16-422e-876d-\
 8c70cd1ee034"]
 }, Open  ]]
 }, Open  ]]
 },
-WindowSize->{1440, 742},
+WindowSize->{1141.2, 573.6},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
-FrontEndVersion->"13.2 for Mac OS X ARM (64-bit) (January 30, 2023)",
+SpellingDictionaries->{"CorrectWords"->{"dietro"}},
+FrontEndVersion->"13.2 for Microsoft Windows (64-bit) (January 30, 2023)",
 StyleDefinitions->"Default.nb",
 ExpressionUUID->"38a74b43-aa26-4f3a-9cab-b5a8dbfd1b90"
 ]
@@ -66080,68 +66071,68 @@ Cell[580, 22, 255, 3, 98, "Title",ExpressionUUID->"b4c1efc5-5035-4c79-92c1-17133
 Cell[838, 27, 283, 4, 53, "Subtitle",ExpressionUUID->"7f439269-25d8-4575-8ff2-f94a80aede29"],
 Cell[1124, 33, 411, 10, 97, "Subsubtitle",ExpressionUUID->"6ffc14ed-2f3f-495f-b7f0-24706ec67a1a"],
 Cell[CellGroupData[{
-Cell[1560, 47, 824, 17, 115, "Input",ExpressionUUID->"4d06faa3-f3df-4749-be90-aa23d1c413d3"],
+Cell[1560, 47, 824, 17, 105, "Input",ExpressionUUID->"4d06faa3-f3df-4749-be90-aa23d1c413d3"],
 Cell[2387, 66, 452, 10, 28, "Message",ExpressionUUID->"40dac63d-507a-49d5-b593-49c177cdae30"],
 Cell[2842, 78, 459, 10, 28, "Message",ExpressionUUID->"06ff35f5-020d-4257-a1c9-7472040e1848"],
-Cell[3304, 90, 247, 4, 24, "Print",ExpressionUUID->"f81c57d8-2e2c-47e6-8d7c-9226391352de"],
-Cell[3554, 96, 65437, 1125, 248, "Output",ExpressionUUID->"b55cbb4f-0e62-4e47-aee3-5742d087547b"],
-Cell[68994, 1223, 12571, 235, 313, "Output",ExpressionUUID->"94286910-0cc8-46e8-ac4f-3388c2211c93"]
+Cell[3304, 90, 247, 4, 22, "Print",ExpressionUUID->"f81c57d8-2e2c-47e6-8d7c-9226391352de"],
+Cell[3554, 96, 65421, 1114, 247, "Output",ExpressionUUID->"b55cbb4f-0e62-4e47-aee3-5742d087547b"],
+Cell[68978, 1212, 12590, 234, 181, "Output",ExpressionUUID->"94286910-0cc8-46e8-ac4f-3388c2211c93"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[81602, 1463, 176, 2, 67, "Section",ExpressionUUID->"667d1e4a-2b4a-49aa-8e43-99487a6c0d5a"],
-Cell[81781, 1467, 806, 14, 104, "Text",ExpressionUUID->"6f85201a-e72a-45bf-9187-2a9361cef3b4"],
-Cell[82590, 1483, 230, 7, 32, "Item",ExpressionUUID->"c8adb2d8-9c95-42eb-889b-b44ef6de2db6"],
-Cell[82823, 1492, 286, 7, 32, "Item",ExpressionUUID->"b61b7111-9e3c-4a8b-aa04-ca768b042763"],
-Cell[83112, 1501, 569, 12, 53, "Item",ExpressionUUID->"2aaa95e3-3344-429e-b458-a023bf6fdca6"],
-Cell[83684, 1515, 2235176, 36664, 1044, "Text",ExpressionUUID->"ea0e43b9-7d89-41f1-8e3f-b5fc8a3e4377"]
+Cell[81605, 1451, 176, 2, 67, "Section",ExpressionUUID->"667d1e4a-2b4a-49aa-8e43-99487a6c0d5a"],
+Cell[81784, 1455, 901, 15, 104, "Text",ExpressionUUID->"6f85201a-e72a-45bf-9187-2a9361cef3b4"],
+Cell[82688, 1472, 230, 7, 32, "Item",ExpressionUUID->"c8adb2d8-9c95-42eb-889b-b44ef6de2db6"],
+Cell[82921, 1481, 286, 7, 32, "Item",ExpressionUUID->"b61b7111-9e3c-4a8b-aa04-ca768b042763"],
+Cell[83210, 1490, 569, 12, 53, "Item",ExpressionUUID->"2aaa95e3-3344-429e-b458-a023bf6fdca6"],
+Cell[83782, 1504, 2235176, 36664, 1067, "Text",ExpressionUUID->"ea0e43b9-7d89-41f1-8e3f-b5fc8a3e4377"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[2318897, 38184, 216, 3, 67, "Section",ExpressionUUID->"0d25efe0-e1b0-4231-a072-6fad7d6e9bfe"],
-Cell[2319116, 38189, 925, 17, 150, "Text",ExpressionUUID->"43ce0e81-dbeb-4817-9701-b32b3fbe7d38"]
+Cell[2318995, 38173, 216, 3, 67, "Section",ExpressionUUID->"0d25efe0-e1b0-4231-a072-6fad7d6e9bfe"],
+Cell[2319214, 38178, 1079, 19, 173, "Text",ExpressionUUID->"43ce0e81-dbeb-4817-9701-b32b3fbe7d38"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[2320078, 38211, 159, 2, 67, "Section",ExpressionUUID->"f7c8a37c-d513-4cd6-8825-54015d831ad4"],
-Cell[2320240, 38215, 606, 13, 104, "Text",ExpressionUUID->"d2fb31f2-7974-471f-8c03-0a2882293a70"],
-Cell[2320849, 38230, 833, 17, 32, "Item",ExpressionUUID->"05c2b9a1-3698-4f37-a3ca-82688bef908c"],
-Cell[2321685, 38249, 887, 16, 53, "Item",ExpressionUUID->"3dec33b5-d181-4867-a82a-71d254df52af"]
+Cell[2320330, 38202, 159, 2, 67, "Section",ExpressionUUID->"f7c8a37c-d513-4cd6-8825-54015d831ad4"],
+Cell[2320492, 38206, 606, 13, 104, "Text",ExpressionUUID->"d2fb31f2-7974-471f-8c03-0a2882293a70"],
+Cell[2321101, 38221, 907, 18, 53, "Item",ExpressionUUID->"05c2b9a1-3698-4f37-a3ca-82688bef908c"],
+Cell[2322011, 38241, 887, 16, 74, "Item",ExpressionUUID->"3dec33b5-d181-4867-a82a-71d254df52af"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[2322609, 38270, 157, 2, 67, "Section",ExpressionUUID->"14fdf3cc-b476-443d-b857-1ce101028c3c"],
-Cell[2322769, 38274, 647, 14, 58, "Text",ExpressionUUID->"165929cf-e8f0-4301-92a2-a4551c588815"]
+Cell[2322935, 38262, 157, 2, 67, "Section",ExpressionUUID->"14fdf3cc-b476-443d-b857-1ce101028c3c"],
+Cell[2323095, 38266, 647, 14, 58, "Text",ExpressionUUID->"165929cf-e8f0-4301-92a2-a4551c588815"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[2323453, 38293, 158, 2, 67, "Section",ExpressionUUID->"da00c775-243c-4432-bad5-a5a110637a02"],
-Cell[2323614, 38297, 282, 5, 35, "Text",ExpressionUUID->"beeb116d-9237-4bac-9d38-93402531cd84"],
-Cell[2323899, 38304, 531, 13, 32, "Item",ExpressionUUID->"d188d3a5-eb18-4bff-9c96-d26f386de9cb"],
-Cell[2324433, 38319, 671, 14, 53, "Item",ExpressionUUID->"52ab9591-99fa-4d8c-bfde-1ca502a45b77"]
+Cell[2323779, 38285, 158, 2, 67, "Section",ExpressionUUID->"da00c775-243c-4432-bad5-a5a110637a02"],
+Cell[2323940, 38289, 282, 5, 35, "Text",ExpressionUUID->"beeb116d-9237-4bac-9d38-93402531cd84"],
+Cell[2324225, 38296, 572, 15, 53, "Item",ExpressionUUID->"d188d3a5-eb18-4bff-9c96-d26f386de9cb"],
+Cell[2324800, 38313, 712, 16, 53, "Item",ExpressionUUID->"52ab9591-99fa-4d8c-bfde-1ca502a45b77"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[2325141, 38338, 181, 2, 67, "Section",ExpressionUUID->"0a2ef08c-c3f1-4218-b1bc-f6fbe4c17bf3"],
-Cell[2325325, 38342, 4328, 77, 604, "Text",ExpressionUUID->"6adb4893-cd40-4fef-beb3-57cc577f1210"],
-Cell[2329656, 38421, 1943, 32, 68, "ItemNumbered",ExpressionUUID->"826d3cb9-d70c-4de3-883d-100dd37cd37e"],
-Cell[2331602, 38455, 1309, 23, 31, "ItemNumbered",ExpressionUUID->"d15fbf41-7779-4e56-8aed-2c99b5948da7"],
-Cell[2332914, 38480, 1625, 28, 49, "ItemNumbered",ExpressionUUID->"1703eeb7-21a6-4edf-9ce5-4bb7f415870f"],
-Cell[2334542, 38510, 1607, 30, 49, "ItemNumbered",ExpressionUUID->"50e07a48-1183-4156-a553-33b269e2d5ef"],
-Cell[2336152, 38542, 1553, 25, 49, "ItemNumbered",ExpressionUUID->"e2b1fc87-e27b-4ab7-b49a-f9c0cdc204a3"],
-Cell[2337708, 38569, 1334, 22, 49, "ItemNumbered",ExpressionUUID->"8cbfd430-d9d0-427b-97be-dadc8076641d"],
-Cell[2339045, 38593, 563, 13, 58, "Text",ExpressionUUID->"f563e4c9-c36b-4d09-b178-8468ec3a7cc4"],
-Cell[2339611, 38608, 1663674, 27282, 474, "Text",ExpressionUUID->"55cc8ea4-b03d-4611-871d-7ffbb2cc317d"]
+Cell[2325549, 38334, 181, 2, 67, "Section",ExpressionUUID->"0a2ef08c-c3f1-4218-b1bc-f6fbe4c17bf3"],
+Cell[2325733, 38338, 3861, 70, 558, "Text",ExpressionUUID->"6adb4893-cd40-4fef-beb3-57cc577f1210"],
+Cell[2329597, 38410, 1943, 32, 87, "ItemNumbered",ExpressionUUID->"826d3cb9-d70c-4de3-883d-100dd37cd37e"],
+Cell[2331543, 38444, 1309, 23, 49, "ItemNumbered",ExpressionUUID->"d15fbf41-7779-4e56-8aed-2c99b5948da7"],
+Cell[2332855, 38469, 1625, 28, 87, "ItemNumbered",ExpressionUUID->"1703eeb7-21a6-4edf-9ce5-4bb7f415870f"],
+Cell[2334483, 38499, 1607, 30, 68, "ItemNumbered",ExpressionUUID->"50e07a48-1183-4156-a553-33b269e2d5ef"],
+Cell[2336093, 38531, 1553, 25, 68, "ItemNumbered",ExpressionUUID->"e2b1fc87-e27b-4ab7-b49a-f9c0cdc204a3"],
+Cell[2337649, 38558, 1334, 22, 49, "ItemNumbered",ExpressionUUID->"8cbfd430-d9d0-427b-97be-dadc8076641d"],
+Cell[2338986, 38582, 563, 13, 81, "Text",ExpressionUUID->"f563e4c9-c36b-4d09-b178-8468ec3a7cc4"],
+Cell[2339552, 38597, 1663674, 27282, 473, "Text",ExpressionUUID->"55cc8ea4-b03d-4611-871d-7ffbb2cc317d"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[4003322, 65895, 190, 2, 67, "Section",ExpressionUUID->"24e17167-70e6-43bf-8ab2-83f27a900fed"],
-Cell[4003515, 65899, 1426, 24, 219, "Text",ExpressionUUID->"eb7b5832-6b95-403c-92b4-be7ff6ec92d0"]
+Cell[4003263, 65884, 190, 2, 67, "Section",ExpressionUUID->"24e17167-70e6-43bf-8ab2-83f27a900fed"],
+Cell[4003456, 65888, 1426, 24, 242, "Text",ExpressionUUID->"eb7b5832-6b95-403c-92b4-be7ff6ec92d0"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[4004978, 65928, 216, 3, 67, "Section",ExpressionUUID->"1821f3a1-6669-4a0d-9104-b7601459630a"],
-Cell[4005197, 65933, 435, 8, 35, "Text",ExpressionUUID->"68ca50c6-3942-471f-86c8-744aef219e6b"],
+Cell[4004919, 65917, 216, 3, 67, "Section",ExpressionUUID->"1821f3a1-6669-4a0d-9104-b7601459630a"],
+Cell[4005138, 65922, 435, 8, 35, "Text",ExpressionUUID->"68ca50c6-3942-471f-86c8-744aef219e6b"],
 Cell[CellGroupData[{
-Cell[4005657, 65945, 716, 14, 53, "Item",ExpressionUUID->"48b26f90-b016-49f0-81f0-754bc1ce3c1c"],
-Cell[4006376, 65961, 657, 12, 25, "Subsubitem",ExpressionUUID->"d7b82592-6240-4be7-a067-7133afe6cbc6"],
-Cell[4007036, 65975, 681, 13, 25, "Subsubitem",ExpressionUUID->"8eefebca-a20f-44c8-9aa2-98ca581cd88f"],
-Cell[4007720, 65990, 599, 11, 25, "Subsubitem",ExpressionUUID->"1b3b4c6a-5c36-4a93-8813-07d75f2a3d02"]
+Cell[4005598, 65934, 716, 14, 53, "Item",ExpressionUUID->"48b26f90-b016-49f0-81f0-754bc1ce3c1c"],
+Cell[4006317, 65950, 657, 12, 25, "Subsubitem",ExpressionUUID->"d7b82592-6240-4be7-a067-7133afe6cbc6"],
+Cell[4006977, 65964, 681, 13, 25, "Subsubitem",ExpressionUUID->"8eefebca-a20f-44c8-9aa2-98ca581cd88f"],
+Cell[4007661, 65979, 599, 11, 25, "Subsubitem",ExpressionUUID->"1b3b4c6a-5c36-4a93-8813-07d75f2a3d02"]
 }, Open  ]],
-Cell[4008334, 66004, 1317, 24, 116, "Item",ExpressionUUID->"41fd65b0-9b6c-49f5-8f3a-2baa732eccbc"],
-Cell[4009654, 66030, 1193, 26, 95, "Item",ExpressionUUID->"f7d1fa2c-bd16-422e-876d-8c70cd1ee034"]
+Cell[4008275, 65993, 1317, 24, 116, "Item",ExpressionUUID->"41fd65b0-9b6c-49f5-8f3a-2baa732eccbc"],
+Cell[4009595, 66019, 1231, 27, 95, "Item",ExpressionUUID->"f7d1fa2c-bd16-422e-876d-8c70cd1ee034"]
 }, Open  ]]
 }, Open  ]]
 }
