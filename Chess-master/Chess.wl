@@ -282,7 +282,7 @@ MakePGNfiles[pgn_]:=
     Clear[PGNfile];
     t1=StringSplit[test,"[Event "];
     t1="[Event "<>t1[[#]]&/@Range[Length[t1]];
-    Print[ToString[Length[t1]]<>" PGN files are available (PGNfile[no])"];
+    (*Print[ToString[Length[t1]]<>" PGN files are available (PGNfile[no])"];*)
     PGNfile[i_] := (PGNfile[i] = Association@Append[
       Flatten[{StringDelete[First[#]," "]->Last[#]}& /@ Most@Select[StringSplit[#,"\""]& /@ StringSplit[t1[[i]],{"[","]"}],#!={"\n"}&]],
       "PGN" -> Most@StringSplit[StringSplit[t1[[i]],"\n\n"][[2]],{Whitespace,"\n"}]
@@ -518,7 +518,7 @@ Block[{},
                     }], 
                     
                     interactive[ShowBoard -> showc, ImageSize -> bsizec, PieceSize -> psizec, BoardColour -> colc, ShowPieces -> inclc, PawnConvert -> convc, ShowPGN -> pgnc, Interact-> interc]
-    }]
+    }];
       
   ]
 ]
