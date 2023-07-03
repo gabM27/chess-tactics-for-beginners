@@ -30,7 +30,7 @@ gameResult = 0;             (* partita vinta oppure persa *)
 dimensionBoard = 240;       (* Var. per settare la dimensione della board*)
 checkMovelist;
 colorBoard=RGBColor[0.8196,0.5451,0.2784];     (* Var. per colore RGB della scacchiera, inizializzata a\[NonBreakingSpace]color\[NonBreakingSpace]default*)
-
+                            (*Var. booleana per attivare/disattivare l'interazione con la scacchiera*)
 
 
 (* boolean di attivazione dei pulsanti*)
@@ -42,6 +42,7 @@ checkMoveEnabled = False;
 showSolutionEnabled = False;
 changeColorEnabled = True;
 resetColorEnabled = False;
+changeDimensionEnabled = True;
 
 (* funzione che viene attivata una volta cliccato il button "Nuova Scacchiera":
 - Genera un numero casuale intero compreso tra 1 e 11715 (num di partite del dataset)
@@ -109,7 +110,7 @@ Switch[dimensionBoard,120,dimensionBoard=240,
 					  300,dimensionBoard=400,
 					  400,dimensionBoard=120]
 					 
-Chess[ShowBoard -> board,ImageSize -> dimensionBoard,BoardColour -> colorBoard]
+Chess[ShowBoard -> board,Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard]
 ]
 
 (*-Resetto il colore della scacchiera a quello iniziale di default tramite la variabile colorBoard
@@ -117,6 +118,7 @@ Chess[ShowBoard -> board,ImageSize -> dimensionBoard,BoardColour -> colorBoard]
 resetColorBoard := Module[{},
 	colorBoard=RGBColor[0.8196,0.5451,0.2784];
 	Chess[ShowBoard -> board,Interact -> False, ImageSize->dimensionBoard, BoardColour ->\[NonBreakingSpace]colorBoard];
+	
 ]
 
 (*Cambio colore alla scacchiera:
@@ -176,6 +178,7 @@ newBoardBtn = Button["Nuova Scacchiera",
 	showSolutionEnabled = True;
 	newBoardEnabled = False;
 	resetColorEnabled = False;
+	changeDimensionEnabled=False;
 	changeColorEnabled = False;,
 		Enabled->Dynamic@newBoardEnabled];
 	
@@ -188,6 +191,7 @@ repeatBtn = Button["Rigioca Partita",
 	backEnabled = True;
 	changeColorEnabled = False;
 	resetColorEnabled = False;
+	changeDimensionEnabled= False;
 	newBoardEnabled = False;,
 		Enabled->Dynamic@repeatEnabled];
 	
@@ -204,6 +208,7 @@ restartBtn = Button["Restart",
 	checkMoveEnabled = False;
 	backEnabled = False;
 	changeColorEnabled = True;
+	changeDimensionEnabled=True;
 	resetColorEnabled = True;
 	Chess[ShowBoard -> Startposition, Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard];,
 		Enabled->Dynamic@restartEnabled];
@@ -225,11 +230,12 @@ changeColorBtn = Button["Colora Scacchiera:",
 		Enabled->Dynamic@changeColorEnabled];
 
 resetColorBtn = Button["Reset Colore", resetColorBoard[];
-resetColorEnabled = False;,
+	resetColorEnabled = False;,
 		Enabled->Dynamic@resetColorEnabled];
 
-changeSizeBtn = Button["Dimensione Scacchiera", 
-	changeDimensionBoard[]];
+changeSizeBtn = Button["Dimensione Scacchiera",
+	changeDimensionBoard[];,
+	Enabled->Dynamic@changeDimensionEnabled];
 	
 (* GraphicsGrid per generare tabella grafica dei comandi di gioco*)
 (* All'interno dei CompressData sono presenti le immagini dei pezzi di scacchi
@@ -1073,4 +1079,7 @@ vxj6/n/GmsfeytqGHV4OKV+DKmR8fDzp5mEzLUsC7556gL38MhEFon1ErjrR
 V9lbeceWET9z2Bn6DgaDwWAwGAwGg8FgMBgMBoPBYLB5Pg5EvlNY
 "], "Byte", ColorSpace -> "RGB", ImageResolution -> {144, 144}, Interleaving -> True, MetaInformation -> <|"Exif" -> <|"ImageWidth" -> 160, "ImageLength" -> 160, "XResolution" -> 144, "YResolution" -> 144, "ResolutionUnit" -> "Inch", "Software" -> "Created with the Wolfram Language : www.wolfram.com", "DateTime" -> DateObject[{2023, 6, 22, 10, 24, 21.}, "Instant", "Gregorian", 2.], "TimeZoneOffset" -> 2|>, "Comments" -> <|"Software" -> "Created with the Wolfram Language : www.wolfram.com", "Creation Time" -> DateObject[{2023, 6, 22, 10, 24, 21.}, "Instant", "Gregorian", None]|>|>]}
 }, Frame->All , AspectRatio->2/5, ImageSize->Large]
+
+
+
 
