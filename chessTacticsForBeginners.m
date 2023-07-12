@@ -1,6 +1,27 @@
 (* ::Package:: *)
 
-(* carico il package *)
+(* :Title: Chess Tactics for Beginners                                   *)
+(* :Author: A.Accornero, A.Bianchi, M.Frega, G.Magazz\[UGrave]                   *)
+(* :Summary:
+	Lo scopo del progetto consiste nel creare un Mathematica Package 
+	che proponga ad un utente principiante diverse partite per aiutarlo
+	a migliorare le proprie abilit\[AGrave] nelle risoluzioni 
+	di problemi posizionali negli scacchi.
+	Per il momento vengono trattati solo scacchi matti in una mossa.
+*)
+(* :Context: chessTacticsForBeginners`                                   *) 
+(* :Package Version: 0.1                                                 *)
+(* :Copyright: Wolfram Knights                                           *)
+(* :History: Progetto universitario per il corso 
+	di Matematica Computazionale a.a. 2022/2023                          *)
+(* :Keywords: Chess, Scacchi, Scacco Matto, Checkmate, Tattica,          *)
+(* :Source:                                 *)
+(* :Warning: None.                          *)
+(* :Mathematica Version: 13.2               *)
+(* :Limitation: None.                       *)
+(* :Discussion:                             *)
+
+(* carico il package Chess by Arne Eide *)
 dir = NotebookDirectory[];
 SetDirectory[NotebookDirectory[]];
 Get[dir<>"Chess-master/Chess.wl"];
@@ -1073,5 +1094,3 @@ vxj6/n/GmsfeytqGHV4OKV+DKmR8fDzp5mEzLUsC7556gL38MhEFon1ErjrR
 V9lbeceWET9z2Bn6DgaDwWAwGAwGg8FgMBgMBoPBYLB5Pg5EvlNY
 "], "Byte", ColorSpace -> "RGB", ImageResolution -> {144, 144}, Interleaving -> True, MetaInformation -> <|"Exif" -> <|"ImageWidth" -> 160, "ImageLength" -> 160, "XResolution" -> 144, "YResolution" -> 144, "ResolutionUnit" -> "Inch", "Software" -> "Created with the Wolfram Language : www.wolfram.com", "DateTime" -> DateObject[{2023, 6, 22, 10, 24, 21.}, "Instant", "Gregorian", 2.], "TimeZoneOffset" -> 2|>, "Comments" -> <|"Software" -> "Created with the Wolfram Language : www.wolfram.com", "Creation Time" -> DateObject[{2023, 6, 22, 10, 24, 21.}, "Instant", "Gregorian", None]|>|>]}
 }, Frame->All , AspectRatio->2/5, ImageSize->Large]
-
-
