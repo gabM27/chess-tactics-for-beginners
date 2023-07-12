@@ -21,33 +21,52 @@
 (* :Limitation: None.                       *)
 (* :Discussion:                             *)
 
+
+
+
+BeginPackage["chessTacticsForBeginners`"];
+
+grid::usage="GUI attraverso cui si gioca";
+Main::usage="Main function";
+
+
 (* carico il package Chess by Arne Eide *)
 dir = NotebookDirectory[];
+dir = dir<>"Chess-master";
+SetDirectory[dir];
+
+Needs["Chess`"]
 SetDirectory[NotebookDirectory[]];
-Get[dir<>"Chess-master/Chess.wl"];
 
-
-(* Carico il dataset e creo i file pgn *)
-problems = Import["dataset.zip","*.txt"][[1]];
-MakePGNfiles[problems];
-
-
-filepgn;                    (* file PGN della partita*)
-pgntosplit;                 (* variabile di appoggio per manipolare il file PGN *)
-moveToCheck;                (* mossa che compie il giocatore e che deve essere controllata per verificare se corretta *)
-lastgame;                   (* variabile utile a ricaricare l'ultima partita giocata*)
+Global`board::usage="scacchiera";
+filepgn::usage="file PGN della partita";                    (* file PGN della partita*)
+pgntosplit::usage="variabile di appoggio per manipolare il file PGN";                 (* variabile di appoggio per manipolare il file PGN *)
+moveToCheck::usage="mossa che compie il giocatore e che deve essere controllata per verificare se corretta";                (* mossa che compie il giocatore e che deve essere controllata per verificare se corretta *)
+lastgame::usage="ariabile utile a ricaricare l'ultima partita giocata";                   (* variabile utile a ricaricare l'ultima partita giocata*)
 nomeUtente="";              (*Variabile usata per memorizzare il nickname dell'utente che sta giocando*)
 whoIsPlaying = "";          (* memorizza il nome del giocatore *)
 endgame = "";               (* contiene il messaggio di successo o sconfitta di fine partita *)
-correctMove;                (* mossa corretta, ovvero mossa che porta allo scacco matto *)
+correctMove::usage="mossa corretta, ovvero mossa che porta allo scacco matto ";                (* mossa corretta, ovvero mossa che porta allo scacco matto *)
 correctMoveToPrint = "";    (* formato stampa della mossa corretta *)
 gameResult = 0;             (* partita vinta oppure persa *)
-dimensionBoard = 240;       (* Var. per settare la dimensione della board*)
-checkMovelist;
-colorBoard=RGBColor[0.8196,0.5451,0.2784];     (* Var. per colore RGB della scacchiera, inizializzata a\[NonBreakingSpace]color\[NonBreakingSpace]default*)
+dimensionBoard::usage="Var. per settare la dimensione della board";      (* Var. per settare la dimensione della board*)
+checkMovelist::usage="";
+colorBoard::usage="Var. per colore RGB della scacchiera, inizializzata a\[NonBreakingSpace]color\[NonBreakingSpace]default"; (* Var. per colore RGB della scacchiera, inizializzata a\[NonBreakingSpace]color\[NonBreakingSpace]default*)
                             (*Var. booleana per attivare/disattivare l'interazione con la scacchiera*)
 
+generateNewChessBoard::usage="funzione che genera una nuova scacchiera";
+repeatChessBoard::usage="funzione che fa rigiocare la partita precedente";
+dropCharWhiteMove::usage="funzione che droppa i caratteri in eccesso nella stringa di output che mostra la soluzione";
+changeDimensionBoard::usage="funzione che modifica la dimensione della scacchiera";
+resetColorBoard::usage="funzione che resetta il colore iniziale della scacchiera";
+changeColorBoard::usage="funzione che modifica il colore iniziale della scacchiera";
+checkMove::usage="funzione che verifica se la mossa scelta \[EGrave] quella corretta";
 
+
+
+Begin["`Private`"]
+dimensionBoard = 240;  
+colorBoard=RGBColor[0.8196,0.5451,0.2784]; 
 (* boolean di attivazione dei pulsanti*)
 newBoardEnabled = True;
 restartEnabled = False;
@@ -162,6 +181,14 @@ checkMove[] := Module[{pgntosplit, delimitatori, lista, len, moveToCheck},
   Movelist = Most[Movelist];
   Chess[ShowBoard -> board, Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard];
 ]
+
+Main[]:=
+Quiet@Block[{},
+
+(* Carico il dataset e creo i file pgn *)
+problems = Import["dataset.zip","*.txt"][[1]];
+MakePGNfiles[problems];
+
 (* Questo \[EGrave] il messaggio pop-up della scelta del nome dell'utente all'avvio del programma:
 - L'utente sar\[AGrave] obbligato a mettere un nome (che non sia una stringa vuota) ed eventuali spazi verranno eliminati restituendo un'unica stringa *)
 While[True,
@@ -169,7 +196,6 @@ While[True,
   If[! StringMatchQ[StringTrim[nomeUtente]][""], Break[]];
 ]
 nomeUtente=StringReplace[nomeUtente, " " -> ""];
-
 
 board = Startposition; (* La board viene settata con le pedine in posizioni specifiche (iniziali, in caso di schermata iniziale, o penultime)*)
 (*Parametri del comando Chess[]:
@@ -181,6 +207,10 @@ board = Startposition; (* La board viene settata con le pedine in posizioni spec
 )*)
 Chess[ShowBoard -> Interactive,ImageSize -> dimensionBoard,BoardColour -> colorBoard]
 Chess[ShowBoard -> board, Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard]; (*expr per disabilitare l'interazione con la scacchiera*)
+
+grid
+]
+
 
 (* funzioni dei pulsanti*)
 newBoardBtn = Button["Nuova Scacchiera", 
@@ -255,7 +285,7 @@ changeSizeBtn = Button["Dimensione Scacchiera",
 (* GraphicsGrid per generare tabella grafica dei comandi di gioco*)
 (* All'interno dei CompressData sono presenti le immagini dei pezzi di scacchi
 che vengono mostrati in alcune celle della tabella, al solo scopo decorativo *)
-GraphicsGrid[
+grid = GraphicsGrid[
 {
 {Image[CompressedData["
 1:eJztnQm8zdX6/0/DvbfbhFJkyJRDEhISoqKBEDJllnmIDCFTSeYp81womQ+u
@@ -1094,3 +1124,7 @@ vxj6/n/GmsfeytqGHV4OKV+DKmR8fDzp5mEzLUsC7556gL38MhEFon1ErjrR
 V9lbeceWET9z2Bn6DgaDwWAwGAwGg8FgMBgMBoPBYLB5Pg5EvlNY
 "], "Byte", ColorSpace -> "RGB", ImageResolution -> {144, 144}, Interleaving -> True, MetaInformation -> <|"Exif" -> <|"ImageWidth" -> 160, "ImageLength" -> 160, "XResolution" -> 144, "YResolution" -> 144, "ResolutionUnit" -> "Inch", "Software" -> "Created with the Wolfram Language : www.wolfram.com", "DateTime" -> DateObject[{2023, 6, 22, 10, 24, 21.}, "Instant", "Gregorian", 2.], "TimeZoneOffset" -> 2|>, "Comments" -> <|"Software" -> "Created with the Wolfram Language : www.wolfram.com", "Creation Time" -> DateObject[{2023, 6, 22, 10, 24, 21.}, "Instant", "Gregorian", None]|>|>]}
 }, Frame->All , AspectRatio->2/5, ImageSize->Large]
+
+End[];
+
+EndPackage[]
