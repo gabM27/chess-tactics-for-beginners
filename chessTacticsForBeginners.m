@@ -187,7 +187,7 @@ Quiet@Block[{},
 
 (* Carico il dataset e creo i file pgn *)
 problems = Import["dataset.zip","*.txt"][[1]];
-MakePGNfiles[problems];
+MakePGNfiles[problems]
 
 (* Questo \[EGrave] il messaggio pop-up della scelta del nome dell'utente all'avvio del programma:
 - L'utente sar\[AGrave] obbligato a mettere un nome (che non sia una stringa vuota) ed eventuali spazi verranno eliminati restituendo un'unica stringa *)
@@ -1123,8 +1123,10 @@ vxj6/n/GmsfeytqGHV4OKV+DKmR8fDzp5mEzLUsC7556gL38MhEFon1ErjrR
 0uqOx5APUTSOlZ7YdZF7ImBF+u3yuXK7w9B3UKl+PSMsKpV3z76pl1/mN0JL
 V9lbeceWET9z2Bn6DgaDwWAwGAwGg8FgMBgMBoPBYLB5Pg5EvlNY
 "], "Byte", ColorSpace -> "RGB", ImageResolution -> {144, 144}, Interleaving -> True, MetaInformation -> <|"Exif" -> <|"ImageWidth" -> 160, "ImageLength" -> 160, "XResolution" -> 144, "YResolution" -> 144, "ResolutionUnit" -> "Inch", "Software" -> "Created with the Wolfram Language : www.wolfram.com", "DateTime" -> DateObject[{2023, 6, 22, 10, 24, 21.}, "Instant", "Gregorian", 2.], "TimeZoneOffset" -> 2|>, "Comments" -> <|"Software" -> "Created with the Wolfram Language : www.wolfram.com", "Creation Time" -> DateObject[{2023, 6, 22, 10, 24, 21.}, "Instant", "Gregorian", None]|>|>]}
-}, Frame->All , AspectRatio->2/5, ImageSize->Large]
+}, Frame->All , AspectRatio->2/5, ImageSize->Large];
 
 End[];
 
-EndPackage[]
+EndPackage[];
+
+Quiet[Main[]]
