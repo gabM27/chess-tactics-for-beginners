@@ -196,6 +196,9 @@ While[True,
 nomeUtente=StringReplace[nomeUtente, " " -> ""];
 
 Global`board = Startposition; (* La board viene settata con le pedine in posizioni specifiche (iniziali, in caso di schermata iniziale, o penultime)*)
+
+Chess[ShowBoard -> Interactive,ImageSize -> dimensionBoard,BoardColour -> colorBoard]
+Chess[ShowBoard -> Global`board, Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard]; (*expr per disabilitare l'interazione con la scacchiera*)
 (*Parametri del comando Chess[]:
 - ShowBoard -> serve per specifiare l'interazione con la scacchiera visualizzata (
 			  Interactive: possibilit\[AGrave] di interagire con essa e muovere le pedine
