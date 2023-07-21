@@ -85,7 +85,7 @@ Begin["`Private`"];
 - A seconda degli ultimi 3 caratteri presenti in ogni partita ("1-0" o "0-1") l'utente giocher\[AGrave] con i bianchi o con i neri
 - Vengono poi mosse tutte le pedine tramite Move[...] fino alla penultima mossa della partita
 - Salviamo le mosse che sono state fatte per la partita *)
-generateNewChessBoard[] := DynamicModule[{board},
+generateNewChessBoard[] := Module[{board},
 
   lastgame = randomNum;
   filepgn = PGNfile[randomNum]["PGN"];
@@ -211,6 +211,7 @@ Global`grid
 
 (* funzioni dei pulsanti*)
 newBoardBtn = Button["Nuova Scacchiera", 
+	Quiet@Block[{},
 	While[True,  
      seed = InputString["Inserisci il seed della partita oppure 0 per generare una partita randomica (le partite sono 11715)"];
      If[! StringMatchQ[StringTrim[seed]][""] && StringMatchQ[seed, NumberString], 
@@ -234,7 +235,7 @@ newBoardBtn = Button["Nuova Scacchiera",
 	newBoardEnabled = False;
 	resetColorEnabled = False;
 	changeDimensionEnabled=False;
-	changeColorEnabled = False;,
+	changeColorEnabled = False;],
 		Method->"Queued",
 			Enabled->Dynamic@newBoardEnabled];
 			
