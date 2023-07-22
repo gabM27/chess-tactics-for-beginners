@@ -34,8 +34,8 @@ SetDirectory[NotebookDirectory[]];
 problems = Import["dataset.zip","*.txt"][[1]];
 MakePGNfiles[problems];
 
-Global`grid::usage="grid";
-Global`board::usage="scacchiera";
+grid::usage="grid";
+board::usage="scacchiera";
 filepgn::usage="file PGN della partita";                                                                                    (* file PGN della partita*)
 pgntosplit::usage="variabile di appoggio per manipolare il file PGN";                                                       (* variabile di appoggio per manipolare il file PGN *)
 moveToCheck::usage="mossa che compie il giocatore e che deve essere controllata per verificare se corretta";                (* mossa che compie il giocatore e che deve essere controllata per verificare se corretta *)
@@ -85,19 +85,19 @@ Begin["`Private`"];
 - A seconda degli ultimi 3 caratteri presenti in ogni partita ("1-0" o "0-1") l'utente giocher\[AGrave] con i bianchi o con i neri
 - Vengono poi mosse tutte le pedine tramite Move[...] fino alla penultima mossa della partita
 - Salviamo le mosse che sono state fatte per la partita *)
-generateNewChessBoard[] := Module[{board},
+generateNewChessBoard[] := Module[{},
 
   lastgame = randomNum;
   filepgn = PGNfile[randomNum]["PGN"];
   correctMove = Last[filepgn];
   correctMove = StringDrop[correctMove, -1];
-  Global`board = PGNconvert[filepgn];
-  Chess[ShowBoard -> Global`board, Interact -> True,ImageSize -> dimensionBoard,BoardColour -> colorBoard];
+  board = PGNconvert[filepgn];
+  Chess[ShowBoard -> board, Interact -> True,ImageSize -> dimensionBoard,BoardColour -> colorBoard];
   If[StringMatchQ[PGNfile[randomNum]["Result"], "1-0"],
     whoIsPlaying = "Mossa al BIANCO",
     whoIsPlaying = "Mossa al NERO"];
     
-  Move[MoveFromPGN[#][[1]]] & /@ Drop[Global`board, Length[Movelist] - 1];
+  Move[MoveFromPGN[#][[1]]] & /@ Drop[board, Length[Movelist] - 1];
   checkMovelist = Length[Movelist];
   showSeed = ToString[randomNum];
   
@@ -112,13 +112,13 @@ repeatChessBoard[] := Module[{board},
   showSeed = ToString[lastgame];
   correctMove = Last[filepgn];
   correctMove = StringDrop[correctMove, -1];
-  Global`board = PGNconvert[filepgn];
-  Chess[ShowBoard -> Global`board, Interact -> True,ImageSize -> dimensionBoard,BoardColour -> colorBoard];
+  board = PGNconvert[filepgn];
+  Chess[ShowBoard -> board, Interact -> True,ImageSize -> dimensionBoard,BoardColour -> colorBoard];
   If[StringMatchQ[PGNfile[lastgame]["Result"], "1-0"],
     whoIsPlaying = "mossa al BIANCO",
     whoIsPlaying = "mossa al NERO"];
   tmp= PGN // Dynamic;
-  Move[MoveFromPGN[#][[1]]] & /@ Drop[Global`board, Length[Movelist] - 1];
+  Move[MoveFromPGN[#][[1]]] & /@ Drop[board, Length[Movelist] - 1];
   checkMovelist = Length[Movelist];
   
 ]
@@ -145,14 +145,14 @@ Switch[dimensionBoard,120,dimensionBoard=240,
 					  300,dimensionBoard=400,
 					  400,dimensionBoard=120];
 					 
-Chess[ShowBoard -> Global`board,Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard];
+Chess[ShowBoard -> board,Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard];
 ]
 
 (*-Resetto il colore della scacchiera a quello iniziale di default tramite la variabile colorBoard
  -Per applicare il colore lo passo come parametro assegnandolo alla "BoardColour" il valore colorBoard*)
 resetColorBoard := Module[{},
 	colorBoard=RGBColor[0.8196,0.5451,0.2784];
-	Chess[ShowBoard -> Global`board,Interact -> False, ImageSize->dimensionBoard, BoardColour ->\[NonBreakingSpace]colorBoard];
+	Chess[ShowBoard -> board,Interact -> False, ImageSize->dimensionBoard, BoardColour ->\[NonBreakingSpace]colorBoard];
 	
 ]
 
@@ -160,7 +160,7 @@ resetColorBoard := Module[{},
 - la funzione \[EGrave] la stessa del reset color, solo che in questo caso il colore applicato \[EGrave] quello scelto dall'utente tramite ColorSetter*)
 changeColorBoard := Module[{},
 	colorBoard = selectedColor;
-	Chess[ShowBoard -> Global`board, Interact -> False, ImageSize->dimensionBoard, BoardColour ->\[NonBreakingSpace]selectedColor];
+	Chess[ShowBoard -> board, Interact -> False, ImageSize->dimensionBoard, BoardColour ->\[NonBreakingSpace]selectedColor];
 ]
 (* Funzione che viene attivata quando si preme "Verifica Mossa":
 - Per sapere quante sono le mosse della partita, vengono salvate in una stringa tutte le mosse ("lista")
@@ -180,7 +180,7 @@ checkMove[] := Module[{pgntosplit, delimitatori, lista, len, moveToCheck},
   If[StringMatchQ[moveToCheck, correctMove],
     (gameResult=1; endgame = "MOSSA CORRETTA, BRAVO!"; MessageDialog["MOSSA CORRETTA, HAI VINTO!"];),(gameResult=0; endgame = "hai sbagliato, riprova o guarda la soluzione :(";MessageDialog["mossa errata, hai perso!"];)];
   Movelist = Most[Movelist];
-  Chess[ShowBoard -> Global`board, Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard];
+  Chess[ShowBoard -> board, Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard];
 ]
 
 Main[]:=
@@ -195,10 +195,10 @@ While[True,
 ];
 nomeUtente=StringReplace[nomeUtente, " " -> ""];
 
-Global`board = Startposition; (* La board viene settata con le pedine in posizioni specifiche (iniziali, in caso di schermata iniziale, o penultime)*)
+board = Startposition; (* La board viene settata con le pedine in posizioni specifiche (iniziali, in caso di schermata iniziale, o penultime)*)
 
 Chess[ShowBoard -> Interactive,ImageSize -> dimensionBoard,BoardColour -> colorBoard]
-Chess[ShowBoard -> Global`board, Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard]; (*expr per disabilitare l'interazione con la scacchiera*)
+Chess[ShowBoard -> board, Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard]; (*expr per disabilitare l'interazione con la scacchiera*)
 (*Parametri del comando Chess[]:
 - ShowBoard -> serve per specifiare l'interazione con la scacchiera visualizzata (
 			  Interactive: possibilit\[AGrave] di interagire con essa e muovere le pedine
@@ -206,7 +206,7 @@ Chess[ShowBoard -> Global`board, Interact -> False,ImageSize -> dimensionBoard,B
 -ImageSize -> Tramite un valore numerico intero specifico la dimensione della scacchiera
 -BoardColour -> Tramite valore RGBColor vado ad applicare un determinato colore alla scacchiera
 )*)
-Global`grid
+grid
 ];
 
 (* funzioni dei pulsanti*)
@@ -224,7 +224,7 @@ newBoardBtn = Button["Nuova Scacchiera",
     randomNum = RandomInteger[{1, 11715}],
     randomNum = Interpreter["Number"][seed]];
     
-	Global`board = generateNewChessBoard[]; 
+	board = generateNewChessBoard[]; 
 	
 	gameResult = 0;
 	restartEnabled = False;
@@ -241,7 +241,7 @@ newBoardBtn = Button["Nuova Scacchiera",
 			
 	
 repeatBtn = Button["Rigioca Partita", 
-	Global`board = repeatChessBoard[];
+	board = repeatChessBoard[];
 	repeatEnabled = False;
 	restartEnabled = False;
 	showSolutionEnabled = True;
@@ -300,7 +300,7 @@ changeSizeBtn = Button["Dimensione Scacchiera",
 (* GraphicsGrid per generare tabella grafica dei comandi di gioco*)
 (* All'interno dei CompressData sono presenti le immagini dei pezzi di scacchi
 che vengono mostrati in alcune celle della tabella, al solo scopo decorativo *)
-Global`grid = GraphicsGrid[
+grid = GraphicsGrid[
 {
 {Image[CompressedData["
 1:eJztnQm8zdX6/0/DvbfbhFJkyJRDEhISoqKBEDJllnmIDCFTSeYp81womQ+u
