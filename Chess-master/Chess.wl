@@ -234,10 +234,10 @@ If[Length[move]===2 && move[[1]] !=0,
 
 test={#[id],move}&/@Select[Pieces,If[EvenQ[Length[Movelist]],0,16]<#[id]<If[EvenQ[Length[Movelist]],9,25] &&MemberQ[#[MoveChoices],move]&],
 
-If[EvenQ[Length[Movelist]]&&move==={0,Chess`Private`short},test={{16,{7,1}}}];
-If[EvenQ[Length[Movelist]]&&move==={0,Chess`Private`long},test={{16,{3,1}}}];
-If[OddQ[Length[Movelist]]&&move==={0,Chess`Private`short},test={{32,{7,8}}}];
-If[OddQ[Length[Movelist]]&&move==={0,Chess`Private`long},test={{32,{3,8}}}];
+If[EvenQ[Length[Movelist]]&&move==={0,short},test={{16,{7,1}}}];
+If[EvenQ[Length[Movelist]]&&move==={0,long},test={{16,{3,1}}}];
+If[OddQ[Length[Movelist]]&&move==={0,short},test={{32,{7,8}}}];
+If[OddQ[Length[Movelist]]&&move==={0,long},test={{32,{3,8}}}];
 
 ];
 (*
