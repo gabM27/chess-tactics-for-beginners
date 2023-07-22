@@ -100,7 +100,6 @@ generateNewChessBoard[] := Module[{board},
   Move[MoveFromPGN[#][[1]]] & /@ Drop[Global`board, Length[Movelist] - 1];
   checkMovelist = Length[Movelist];
   showSeed = ToString[randomNum];
-  Global`board;
   
 ]
 (* Funzione che viene invocata al  click del button "Rigioca Partita":
