@@ -24,7 +24,7 @@ BeginPackage["chessTacticsForBeginners`"];
 Main::usage="Main function";
 
 
-(* carico il package Chess by Arne Eide *)
+(* navigo nella sottodirectory per caricare il package Chess by Arne Eide *)
 dir = NotebookDirectory[];
 dir = dir<>"Chess-master";
 SetDirectory[dir];
@@ -32,24 +32,24 @@ Needs["Chess`"];
 SetDirectory[NotebookDirectory[]];
 
 problems = Import["dataset.zip","*.txt"][[1]];
-MakePGNfiles[problems]
+MakePGNfiles[problems];
 
 Global`grid::usage="grid";
 Global`board::usage="scacchiera";
-filepgn::usage="file PGN della partita";                    (* file PGN della partita*)
-pgntosplit::usage="variabile di appoggio per manipolare il file PGN";                 (* variabile di appoggio per manipolare il file PGN *)
+filepgn::usage="file PGN della partita";                                                                                    (* file PGN della partita*)
+pgntosplit::usage="variabile di appoggio per manipolare il file PGN";                                                       (* variabile di appoggio per manipolare il file PGN *)
 moveToCheck::usage="mossa che compie il giocatore e che deve essere controllata per verificare se corretta";                (* mossa che compie il giocatore e che deve essere controllata per verificare se corretta *)
-lastgame::usage="variabile utile a ricaricare l'ultima partita giocata";                   (* variabile utile a ricaricare l'ultima partita giocata*)
-nomeUtente="";              (*Variabile usata per memorizzare il nickname dell'utente che sta giocando*)
-whoIsPlaying = "";          (* memorizza il nome del giocatore *)
-endgame = "";               (* contiene il messaggio di successo o sconfitta di fine partita *)
-correctMove::usage="mossa corretta, ovvero mossa che porta allo scacco matto ";                (* mossa corretta, ovvero mossa che porta allo scacco matto *)
-correctMoveToPrint = "";    (* formato stampa della mossa corretta *)
-gameResult = 0;             (* partita vinta oppure persa *)
-dimensionBoard::usage="Var. per settare la dimensione della board";      (* Var. per settare la dimensione della board*)
-checkMovelist::usage="";
-colorBoard::usage="Var. per colore RGB della scacchiera, inizializzata a\[NonBreakingSpace]color\[NonBreakingSpace]default"; (* Var. per colore RGB della scacchiera, inizializzata a\[NonBreakingSpace]color\[NonBreakingSpace]default*)
-                            (*Var. booleana per attivare/disattivare l'interazione con la scacchiera*)
+lastgame::usage="variabile utile a ricaricare l'ultima partita giocata";                                                    (* variabile utile a ricaricare l'ultima partita giocata*)
+nomeUtente="";                                                                                                              (*Variabile usata per memorizzare il nickname dell'utente che sta giocando*)
+whoIsPlaying = "";                                                                                                          (* memorizza il nome del giocatore *)
+endgame = "";                                                                                                               (* contiene il messaggio di successo o sconfitta di fine partita *)
+correctMove::usage="mossa corretta, ovvero mossa che porta allo scacco matto ";                                             (* mossa corretta, ovvero mossa che porta allo scacco matto *)
+correctMoveToPrint = "";                                                                                                    (* formato stampa della mossa corretta *)
+gameResult = 0;                                                                                                             (* partita vinta oppure persa *)
+dimensionBoard::usage="Var. per settare la dimensione della board";                                                         (* Var. per settare la dimensione della board*)
+checkMovelist::usage="";                                                                                                    (*                                            *)
+colorBoard::usage="Var. per colore RGB della scacchiera, inizializzata a\[NonBreakingSpace]color\[NonBreakingSpace]default";                                    (* Var. per colore RGB della scacchiera, inizializzata a\[NonBreakingSpace]color\[NonBreakingSpace]default*)
+                                                                                                                            
 seed = "";
 randomNum = "";
 showSeed = " ";
@@ -100,7 +100,7 @@ generateNewChessBoard[] := Module[{board},
   Move[MoveFromPGN[#][[1]]] & /@ Drop[Global`board, Length[Movelist] - 1];
   checkMovelist = Length[Movelist];
   showSeed = ToString[randomNum];
-  Global`board
+  Global`board;
   
 ]
 (* Funzione che viene invocata al  click del button "Rigioca Partita":
@@ -121,6 +121,7 @@ repeatChessBoard[] := Module[{board},
   tmp= PGN // Dynamic;
   Move[MoveFromPGN[#][[1]]] & /@ Drop[Global`board, Length[Movelist] - 1];
   checkMovelist = Length[Movelist];
+  
 ]
 
 (*Questa funzione serve solo nel caso in cui l'utente stia giocando con le pedine bianche: 
@@ -143,7 +144,7 @@ changeDimensionBoard := Module[{},
 Switch[dimensionBoard,120,dimensionBoard=240,
 					  240,dimensionBoard=300,
 					  300,dimensionBoard=400,
-					  400,dimensionBoard=120]
+					  400,dimensionBoard=120];
 					 
 Chess[ShowBoard -> Global`board,Interact -> False,ImageSize -> dimensionBoard,BoardColour -> colorBoard];
 ]
@@ -192,7 +193,7 @@ Quiet@Block[{},
 While[True,
   nomeUtente = InputString["Inserisci il tuo nome:"];
   If[! StringMatchQ[StringTrim[nomeUtente]][""], Break[]];
-]
+];
 nomeUtente=StringReplace[nomeUtente, " " -> ""];
 
 Global`board = Startposition; (* La board viene settata con le pedine in posizioni specifiche (iniziali, in caso di schermata iniziale, o penultime)*)
@@ -207,7 +208,7 @@ Chess[ShowBoard -> Global`board, Interact -> False,ImageSize -> dimensionBoard,B
 -BoardColour -> Tramite valore RGBColor vado ad applicare un determinato colore alla scacchiera
 )*)
 Global`grid
-]
+];
 
 (* funzioni dei pulsanti*)
 newBoardBtn = Button["Nuova Scacchiera", 
@@ -216,10 +217,10 @@ newBoardBtn = Button["Nuova Scacchiera",
      seed = InputString["Inserisci il seed della partita oppure 0 per generare una partita randomica (le partite sono 11715)"];
      If[! StringMatchQ[StringTrim[seed]][""] && StringMatchQ[seed, NumberString], 
            tmp = Interpreter["Number"][seed];
-        If[tmp < 11716 && tmp >= 0, Break[]]
+        If[tmp < 11716 && tmp >= 0, Break[]];
      ];
         
-    ]
+    ];
     If[StringMatchQ[seed, "0"],
     randomNum = RandomInteger[{1, 11715}],
     randomNum = Interpreter["Number"][seed]];
@@ -275,12 +276,13 @@ restartBtn = Button["Restart",
 checkBtn = Button["Verifica Mossa", 
 	checkMove[];
 	restartEnabled = True;
-	checkMoveEnabled = False;
-	,
+	checkMoveEnabled = False;,
 		Enabled->Dynamic@checkMoveEnabled ];
 	
 showSolutionBtn = Button["Mostra Soluzione", 
-	dropCharWhiteMove[]; showSolutionEnabled = False; "La mossa corretta \[EGrave] " <> correctMoveToPrint,
+	dropCharWhiteMove[];
+	showSolutionEnabled = False;
+	"La mossa corretta \[EGrave] " <> correctMoveToPrint,
 		Enabled->Dynamic@showSolutionEnabled ];
 	
 changeColorBtn = Button["Colora Scacchiera:",
