@@ -54,13 +54,14 @@ Begin["`Private`"];
 - A seconda degli ultimi 3 caratteri presenti in ogni partita ("1-0" o "0-1") l'utente giocher\[AGrave] con i bianchi o con i neri
 - Vengono poi mosse tutte le pedine tramite Move[...] fino alla penultima mossa della partita
 - Salviamo le mosse che sono state fatte per la partita *)
-generateNewChessBoard[whoIsPlaying_, randomNum_] := Module[{lastgame, filepgn,correctMove,checkMovelist,showSeed},
+generateNewChessBoard[whoIsPlaying_, randomNum_] := DynamicModule[{lastgame, filepgn,correctMove,checkMovelist,showSeed},
   lastgame = randomNum;
  
   filepgn = PGNfile[randomNum]["PGN"];
   correctMove = Last[filepgn];
   correctMove = StringDrop[correctMove, -1];
   board = PGNconvert[filepgn];
+  
   Chess[ShowBoard -> board, Interact -> True, ImageSize -> dimensionBoard, BoardColour -> colorBoard];
   If[StringMatchQ[PGNfile[randomNum]["Result"], "1-0"],
     whoIsPlaying = "Mossa al BIANCO",
@@ -158,7 +159,7 @@ pgntosplit,                                                     (* variabile di 
 moveToCheck,                (* mossa che compie il giocatore e che deve essere controllata per verificare se corretta *)
 lastgame,                                                   (* variabile utile a ricaricare l'ultima partita giocata*)
 nomeUtente = "",                                                                                                              (*Variabile usata per memorizzare il nickname dell'utente che sta giocando*)
-whoIsPlaying = "",                                                                                                         (* memorizza il nome del giocatore *)
+whoIsPlaying,                                                                                                         (* memorizza il nome del giocatore *)
 endgame = "",                                                                                                               (* contiene il messaggio di successo o sconfitta di fine partita *)
 correctMove,                                             (* mossa corretta, ovvero mossa che porta allo scacco matto *)
 correctMoveToPrint = "",                                                                                                 (* formato stampa della mossa corretta *)
@@ -207,6 +208,8 @@ SetDirectory[NotebookDirectory[]];
 (* GraphicsGrid per generare tabella grafica dei comandi di gioco*)
 (* All'interno dei CompressData sono presenti le immagini dei pezzi di scacchi
 che vengono mostrati in alcune celle della tabella, al solo scopo decorativo *)
+whoIsPlaying= ""
+
 grid = GraphicsGrid[
 {
 {Import["whiteking.png"]," sta giocando"Dynamic@nomeUtente, Import["blacking.png"]},
