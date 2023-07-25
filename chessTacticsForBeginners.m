@@ -22,12 +22,13 @@
 (* :Discussion:                             *)
 BeginPackage["chessTacticsForBeginners`"];
 Main::usage="Main function";
-
+whoIsPlaying::usage="mostra all'utente chi deve giocare";
 board::usage="scacchiera";
 dimensionBoard::usage="Var. per settare la dimensione della board"; 
 colorBoard::usage="Var. per colore RGB della scacchiera, inizializzata a\[NonBreakingSpace]color\[NonBreakingSpace]default";
 dimensionBoard = 240; 
 colorBoard=RGBColor[0.8196,0.5451,0.2784];                                    (* Var. per colore RGB della scacchiera, inizializzata a\[NonBreakingSpace]color\[NonBreakingSpace]default*)
+
 
 
 (* navigo nella sottodirectory per caricare il package Chess by Arne Eide *)
@@ -40,10 +41,6 @@ SetDirectory[NotebookDirectory[]];
 problems = Import["dataset.zip","*.txt"][[1]];
 MakePGNfiles[problems];
 
-(*
-
-*)
-
 Begin["`Private`"];
 
 (* funzione che viene attivata una volta cliccato il button "Nuova Scacchiera":
@@ -54,7 +51,7 @@ Begin["`Private`"];
 - A seconda degli ultimi 3 caratteri presenti in ogni partita ("1-0" o "0-1") l'utente giocher\[AGrave] con i bianchi o con i neri
 - Vengono poi mosse tutte le pedine tramite Move[...] fino alla penultima mossa della partita
 - Salviamo le mosse che sono state fatte per la partita *)
-generateNewChessBoard[whoIsPlaying_, randomNum_] := DynamicModule[{lastgame, filepgn,correctMove,checkMovelist,showSeed},
+generateNewChessBoard[randomNum_] := DynamicModule[{lastgame, filepgn,correctMove,checkMovelist,showSeed},
   lastgame = randomNum;
  
   filepgn = PGNfile[randomNum]["PGN"];
@@ -159,7 +156,7 @@ pgntosplit,                                                     (* variabile di 
 moveToCheck,                (* mossa che compie il giocatore e che deve essere controllata per verificare se corretta *)
 lastgame,                                                   (* variabile utile a ricaricare l'ultima partita giocata*)
 nomeUtente = "",                                                                                                              (*Variabile usata per memorizzare il nickname dell'utente che sta giocando*)
-whoIsPlaying,                                                                                                         (* memorizza il nome del giocatore *)
+                                                                                                         (* memorizza il nome del giocatore *)
 endgame = "",                                                                                                               (* contiene il messaggio di successo o sconfitta di fine partita *)
 correctMove,                                             (* mossa corretta, ovvero mossa che porta allo scacco matto *)
 correctMoveToPrint = "",                                                                                                 (* formato stampa della mossa corretta *)
@@ -208,8 +205,7 @@ SetDirectory[NotebookDirectory[]];
 (* GraphicsGrid per generare tabella grafica dei comandi di gioco*)
 (* All'interno dei CompressData sono presenti le immagini dei pezzi di scacchi
 che vengono mostrati in alcune celle della tabella, al solo scopo decorativo *)
-whoIsPlaying= ""
-
+whoIsPlaying = "";
 grid = GraphicsGrid[
 {
 {Import["whiteking.png"]," sta giocando"Dynamic@nomeUtente, Import["blacking.png"]},
@@ -240,7 +236,7 @@ newBoardBtn = Button["Nuova Scacchiera",
     randomNum = RandomInteger[{1, 11715}],
     randomNum = Interpreter["Number"][seed]];
     
-	generateNewChessBoard[whoIsPlaying,randomNum];
+	generateNewChessBoard[randomNum];
 	
 	gameResult = 0;
 	restartEnabled = False;
