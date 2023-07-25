@@ -10,7 +10,7 @@
 	Per il momento vengono trattati solo scacchi matti in una mossa.
 *)
 (* :Context: chessTacticsForBeginners`                                   *) 
-(* :Package Version: 0.1                                                 *)
+(* :Package Version: 0.3                                                 *)
 (* :Copyright: Wolfram Knights                                           *)
 (* :History: Progetto universitario per il corso 
 	di Matematica Computazionale a.a. 2022/2023                          *)
@@ -21,9 +21,10 @@
 (* :Limitation: None.                       *)
 (* :Discussion:                             *)
 BeginPackage["chessTacticsForBeginners`"];
+
 Main::usage="Main function";
-whoIsPlaying::usage="mostra all'utente chi deve giocare";
 board::usage="scacchiera";
+
 dimensionBoard::usage="Var. per settare la dimensione della board"; 
 colorBoard::usage="Var. per colore RGB della scacchiera, inizializzata a\[NonBreakingSpace]color\[NonBreakingSpace]default";
 dimensionBoard = 240; 
@@ -51,7 +52,7 @@ Begin["`Private`"];
 - A seconda degli ultimi 3 caratteri presenti in ogni partita ("1-0" o "0-1") l'utente giocher\[AGrave] con i bianchi o con i neri
 - Vengono poi mosse tutte le pedine tramite Move[...] fino alla penultima mossa della partita
 - Salviamo le mosse che sono state fatte per la partita *)
-generateNewChessBoard[randomNum_] := DynamicModule[{lastgame, filepgn,correctMove,checkMovelist,showSeed},
+generateNewChessBoard[whoIsPlaying_,showSeed_,lastgame_, randomNum_,correctMove_] := DynamicModule[{filepgn},
   lastgame = randomNum;
  
   filepgn = PGNfile[randomNum]["PGN"];
@@ -65,7 +66,7 @@ generateNewChessBoard[randomNum_] := DynamicModule[{lastgame, filepgn,correctMov
     whoIsPlaying = "Mossa al NERO"];
     
   Move[MoveFromPGN[#][[1]]] & /@ Drop[board, Length[Movelist] - 1];
-  checkMovelist = Length[Movelist];
+ 
   showSeed = ToString[randomNum];
 ]
 
@@ -74,7 +75,7 @@ generateNewChessBoard[randomNum_] := DynamicModule[{lastgame, filepgn,correctMov
 - Carichiamo nella board la partita in questione e poi la mostriamo nella scacchiera tramite Chess[...]
 - Controlliamo sempre tramite "1-0" o "0-1" quale pedine dovr\[AGrave] muovere l'utente
 - Mostriamo nella scacchiera le pedine nelle penultime posizioni della partita *)
-repeatChessBoard[] := Module[{filepgn,showSeed,correctMove,checkMovelist,whoIsPlaying,lastgame},
+repeatChessBoard[whoIsPlaying_, showSeed_, correctMove_, lastgame_] := Module[{filepgn},
   filepgn = PGNfile[lastgame]["PGN"];
   showSeed = ToString[lastgame];
   correctMove = Last[filepgn];
@@ -84,16 +85,14 @@ repeatChessBoard[] := Module[{filepgn,showSeed,correctMove,checkMovelist,whoIsPl
   If[StringMatchQ[PGNfile[lastgame]["Result"], "1-0"],
     whoIsPlaying = "mossa al BIANCO",
     whoIsPlaying = "mossa al NERO"];
-    (* C'era un tmp = PGN // Dynamic *)
   Move[MoveFromPGN[#][[1]]] & /@ Drop[board, Length[Movelist] - 1];
-  checkMovelist = Length[Movelist];
   
 ]
 
 (*Questa funzione serve solo nel caso in cui l'utente stia giocando con le pedine bianche: 
 - Serve per stampare correttamente l'output del button "Mostra Soluzione"
 - Senza questa funzione l'ultima mossa stampata non sarebbe formattata correttamente*)
-dropCharWhiteMove[] := Module[{correctMoveToPrint,correctMove,lastgame},
+dropCharWhiteMove[lastgame_,correctMoveToPrint_,correctMove_] := Module[{},
 	correctMoveToPrint = correctMove;
 	If[StringMatchQ[PGNfile[lastgame]["Result"], "1-0"], (* Se la mossa \[EGrave] al bianco*)
 	(* Elimino dalla stringa tutti i caratteri in questo formato: numeriInt.."." (.. significa qualsiasi cosa e poi il punto (".")) *)
@@ -105,7 +104,7 @@ dropCharWhiteMove[] := Module[{correctMoveToPrint,correctMove,lastgame},
 - Viene richiamata nel button "Dimensione Scacchiera"
 - La dimensione cambia in ordine crescente, quindi dalla scacchiera pi\[UGrave] piccola (120) a quella pi\[UGrave] grande (400)- 
 - Per applicare la dimensione passo al comando Chess[...] il paramatro 'dimensionBoard' che applico a ImageSize *)
-changeDimensionBoard := DynamicModule[{},
+changeDimensionBoard[] := Module[{},
 
 Switch[dimensionBoard,120,dimensionBoard=240,
 					  240,dimensionBoard=300,
@@ -117,15 +116,14 @@ Chess[ShowBoard -> board,Interact -> False,ImageSize -> dimensionBoard,BoardColo
 
 (*-Resetto il colore della scacchiera a quello iniziale di default tramite la variabile colorBoard
  -Per applicare il colore lo passo come parametro assegnandolo alla "BoardColour" il valore colorBoard*)
-resetColorBoard := Module[{},
+resetColorBoard[] := Module[{},
 	colorBoard=RGBColor[0.8196,0.5451,0.2784];
 	Chess[ShowBoard -> board,Interact -> False, ImageSize->dimensionBoard, BoardColour ->\[NonBreakingSpace]colorBoard];
-	
 ]
 
 (*Cambio colore alla scacchiera:
 - la funzione \[EGrave] la stessa del reset color, solo che in questo caso il colore applicato \[EGrave] quello scelto dall'utente tramite ColorSetter*)
-changeColorBoard := Module[{selectedColor},
+changeColorBoard[selectedColor_] := Module[{},
 	colorBoard = selectedColor;
 	Chess[ShowBoard -> board, Interact -> False, ImageSize->dimensionBoard, BoardColour ->\[NonBreakingSpace]selectedColor];
 ]
@@ -135,7 +133,7 @@ changeColorBoard := Module[{selectedColor},
 - Per controllare se l'utente ha compiuto la mossa corretta, si confronta "moveToCheck" (l'ultima mossa della partita estratta dal dataset)
 con "correctMove" (la mossa eseguita dall'utente): se sono uguali allora viene stampato il messaggio di successo, altrimenti di sconfitta.
  *)
-checkMove[correctMove_, gameResult_, endgame_] := DynamicModule[{pgntosplit, delimitatori, board, dimensionBoard, lista, colorBoard, len, moveToCheck},
+checkMove[correctMove_, gameResult_, endgame_] := DynamicModule[{pgntosplit, delimitatori, lista, len, moveToCheck},
   pgntosplit = PGN // Dynamic;
   delimitatori = {" ", ", "};
   lista = StringSplit[pgntosplit[[1]], delimitatori];
@@ -154,20 +152,20 @@ grid,
 filepgn,                                                                                   (* file PGN della partita*)
 pgntosplit,                                                     (* variabile di appoggio per manipolare il file PGN *)
 moveToCheck,                (* mossa che compie il giocatore e che deve essere controllata per verificare se corretta *)
-lastgame,                                                   (* variabile utile a ricaricare l'ultima partita giocata*)
+lastgame = "",                                                   (* variabile utile a ricaricare l'ultima partita giocata*)
 nomeUtente = "",                                                                                                              (*Variabile usata per memorizzare il nickname dell'utente che sta giocando*)
                                                                                                          (* memorizza il nome del giocatore *)
+whoIsPlaying="",
+showSeed="",
 endgame = "",                                                                                                               (* contiene il messaggio di successo o sconfitta di fine partita *)
-correctMove,                                             (* mossa corretta, ovvero mossa che porta allo scacco matto *)
-correctMoveToPrint = "",                                                                                                 (* formato stampa della mossa corretta *)
+correctMove="",                                             (* mossa corretta, ovvero mossa che porta allo scacco matto *)
+correctMoveToPrint=" ",                                                                                          
 gameResult = 0,                                                                                                            (* partita vinta oppure persa *)
                                                         (* Var. per settare la dimensione della board*)
-checkMovelist,                                                                                                   (*                                            *)
-                                                                                                                            
+                                                                                                                
 seed = "",
 randomNum = "",
-showSeed = " ",
-
+selectedColor = RGBColor[0.8196,0.5451,0.2784],
 (* boolean di attivazione dei pulsanti*)
 newBoardEnabled = True,
 restartEnabled = False,
@@ -205,19 +203,20 @@ SetDirectory[NotebookDirectory[]];
 (* GraphicsGrid per generare tabella grafica dei comandi di gioco*)
 (* All'interno dei CompressData sono presenti le immagini dei pezzi di scacchi
 che vengono mostrati in alcune celle della tabella, al solo scopo decorativo *)
-whoIsPlaying = "";
+
 grid = GraphicsGrid[
 {
 {Import["whiteking.png"]," sta giocando"Dynamic@nomeUtente, Import["blacking.png"]},
 {newBoardBtn, restartBtn, checkBtn },
 {showSolutionBtn," seed partita"Dynamic@showSeed,repeatBtn},
 {Dynamic@whoIsPlaying,Dynamic@endgame,Dynamic@correctMoveToPrint},
-{changeSizeBtn, changeColorBtn,resetColorBtn },
+{changeSizeBtn, changeColorBtn,resetColorBtn},
 {Import["blackqueen.png"],
 ColorSetter[Dynamic[selectedColor]],
 Import["whitequeen.png"] (*ColorSetter permette di scegliere un colore RGB,per colorare\[NonBreakingSpace]la\[NonBreakingSpace]scacchiera*)
 }
 }, Frame->All , AspectRatio->2/5, ImageSize->Large];
+
 grid
 ]];
 
@@ -235,9 +234,12 @@ newBoardBtn = Button["Nuova Scacchiera",
     If[StringMatchQ[seed, "0"],
     randomNum = RandomInteger[{1, 11715}],
     randomNum = Interpreter["Number"][seed]];
-    
-	generateNewChessBoard[randomNum];
-	
+    Clear[whoIsPlaying];
+    Clear[showSeed];
+    Clear[correctMove];
+    Clear[lastgame];
+	generateNewChessBoard[whoIsPlaying,showSeed,lastgame, randomNum, correctMove];
+
 	gameResult = 0;
 	restartEnabled = False;
 	repeatEnabled = False;
@@ -253,7 +255,10 @@ newBoardBtn = Button["Nuova Scacchiera",
 			
 	
 repeatBtn = Button["Rigioca Partita", 
-	board = repeatChessBoard[];
+	Clear[whoIsPlaying];
+	Clear[showSeed];
+	Clear[correctMove];
+	repeatChessBoard[whoIsPlaying, showSeed, correctMove, lastgame];
 	repeatEnabled = False;
 	restartEnabled = False;
 	showSolutionEnabled = True;
@@ -270,8 +275,7 @@ restartBtn = Button["Restart",
 	showSeed = " ";
 	whoIsPlaying = ""; 
 	endgame = ""; 
-	correctMoveToPrint =""; 
-	correctMove=""; 
+	correctMoveToPrint ="";  
 	restartEnabled = False;
 	repeatEnabled = True;
 	newBoardEnabled = True;
@@ -285,23 +289,28 @@ restartBtn = Button["Restart",
 		Enabled->Dynamic@restartEnabled];
 
 checkBtn = Button["Verifica Mossa",
+	Clear[gameResult];
+	Clear[endgame];
 	checkMove[correctMove, gameResult, endgame];
 	restartEnabled = True;
 	checkMoveEnabled = False;,
 		Enabled->Dynamic@checkMoveEnabled ];
 	
 showSolutionBtn = Button["Mostra Soluzione", 
-	dropCharWhiteMove[];
+	Clear[correctMoveToPrint];
+	dropCharWhiteMove[lastgame,correctMoveToPrint,correctMove];
 	showSolutionEnabled = False;
+	
 	"La mossa corretta \[EGrave] " <> correctMoveToPrint,
 		Enabled->Dynamic@showSolutionEnabled ];
 	
 changeColorBtn = Button["Colora Scacchiera:",
-	changeColorBoard[];
+	Clear[colorBoard];
+	changeColorBoard[selectedColor];
 	resetColorEnabled = True;,
 		Enabled->Dynamic@changeColorEnabled];
 
-resetColorBtn = Button["Reset Colore", resetColorBoard[];
+resetColorBtn = Button["Reset Colore", Clear[colorBoard]; resetColorBoard[];
 	resetColorEnabled = False;,
 		Enabled->Dynamic@resetColorEnabled];
 
