@@ -147,25 +147,22 @@ checkMove[correctMove_, gameResult_, endgame_] := DynamicModule[{pgntosplit, del
 ]
 
 Main[]:= DynamicModule[{
-grid,
+grid,                                                      (*griglia comandi di gioco*)
 
-filepgn,                                                                                   (* file PGN della partita*)
-pgntosplit,                                                     (* variabile di appoggio per manipolare il file PGN *)
-moveToCheck,                (* mossa che compie il giocatore e che deve essere controllata per verificare se corretta *)
-lastgame = "",                                                   (* variabile utile a ricaricare l'ultima partita giocata*)
-nomeUtente = "",                                                                                                              (*Variabile usata per memorizzare il nickname dell'utente che sta giocando*)
-                                                                                                         (* memorizza il nome del giocatore *)
-whoIsPlaying="",
-showSeed="",
-endgame = "",                                                                                                               (* contiene il messaggio di successo o sconfitta di fine partita *)
-correctMove="",                                             (* mossa corretta, ovvero mossa che porta allo scacco matto *)
-correctMoveToPrint=" ",                                                                                          
-gameResult = 0,                                                                                                            (* partita vinta oppure persa *)
-                                                        (* Var. per settare la dimensione della board*)
-                                                                                                                
-seed = "",
-randomNum = "",
-selectedColor = RGBColor[0.8196,0.5451,0.2784],
+filepgn,                                                   (* file PGN della partita*)
+pgntosplit,                                                (* variabile di appoggio per manipolare il file PGN *)
+moveToCheck,                                               (* mossa che compie il giocatore e che deve essere controllata per verificare se corretta *)
+lastgame = "",                                             (* variabile utile a ricaricare l'ultima partita giocata*)
+nomeUtente = "",                                           (* variabile usata per memorizzare il nickname dell'utente che sta giocando*)
+whoIsPlaying="",                                           (* memorizza il colore del giocatore che deve fare scacco *)
+showSeed="",                                               (* variabile contenente il seme partita da mostrare*)
+endgame = "",                                              (* contiene il messaggio di successo o sconfitta di fine partita *)
+correctMove="",                                            (* mossa corretta, ovvero mossa che porta allo scacco matto *)
+correctMoveToPrint=" ",                                    (* mossa corretta, in formato da stampare*)                                                     
+gameResult = 0,                                            (* partita vinta oppure persa *)                                                                                                
+seed = "",                                                 (* seed della partita*)
+randomNum = "",                                            (* variabile che memorizza l'estrazione di un seed variabile*)
+selectedColor = RGBColor[0.8196,0.5451,0.2784],            (* colore scacchiera selezionabile dall'utente*)
 (* boolean di attivazione dei pulsanti*)
 newBoardEnabled = True,
 restartEnabled = False,
@@ -175,7 +172,18 @@ checkMoveEnabled = False,
 showSolutionEnabled = False,
 changeColorEnabled = True,
 resetColorEnabled = False,
-changeDimensionEnabled = True
+changeDimensionEnabled = True,
+(* variabili dei pulsanti*)
+newBoardBtn,
+repeatBtn,
+restartBtn,
+checkBtn,
+showSolutionBtn,
+checkSolutionBtn,
+changeColorBtn,
+resetColorBtn,
+changeSizeBtn
+
 },
 Quiet@Block[{},
 
@@ -188,37 +196,6 @@ While[True,
 ];
 nomeUtente=StringReplace[nomeUtente, " " -> ""];
 
-board = Startposition; (* La board viene settata con le pedine in posizioni specifiche (iniziali, in caso di schermata iniziale, o penultime)*)
-
-Chess[ShowBoard -> Interactive,ImageSize -> dimensionBoard, BoardColour -> colorBoard]
-Chess[ShowBoard -> board, Interact -> False,ImageSize -> dimensionBoard, BoardColour -> colorBoard]; (*expr per disabilitare l'interazione con la scacchiera*)
-(*Parametri del comando Chess[]:
-- ShowBoard -> serve per specifiare l'interazione con la scacchiera visualizzata (
-			  Interactive: possibilit\[AGrave] di interagire con essa e muovere le pedine
-			  PGN-values (board) le pedine sono mosse tenendo conto dei valori PGN specificati
--ImageSize -> Tramite un valore numerico intero specifico la dimensione della scacchiera
--BoardColour -> Tramite valore RGBColor vado ad applicare un determinato colore alla scacchiera
-)*)
-SetDirectory[NotebookDirectory[]];
-(* GraphicsGrid per generare tabella grafica dei comandi di gioco*)
-(* All'interno dei CompressData sono presenti le immagini dei pezzi di scacchi
-che vengono mostrati in alcune celle della tabella, al solo scopo decorativo *)
-
-grid = GraphicsGrid[
-{
-{Import["whiteking.png"]," sta giocando"Dynamic@nomeUtente, Import["blacking.png"]},
-{newBoardBtn, restartBtn, checkBtn },
-{showSolutionBtn," seed partita"Dynamic@showSeed,repeatBtn},
-{Dynamic@whoIsPlaying,Dynamic@endgame,Dynamic@correctMoveToPrint},
-{changeSizeBtn, changeColorBtn,resetColorBtn},
-{Import["blackqueen.png"],
-ColorSetter[Dynamic[selectedColor]],
-Import["whitequeen.png"] (*ColorSetter permette di scegliere un colore RGB,per colorare\[NonBreakingSpace]la\[NonBreakingSpace]scacchiera*)
-}
-}, Frame->All , AspectRatio->2/5, ImageSize->Large];
-
-grid
-]];
 
 (* funzioni dei pulsanti *)
 newBoardBtn = Button["Nuova Scacchiera", 
@@ -317,10 +294,43 @@ resetColorBtn = Button["Reset Colore", Clear[colorBoard]; resetColorBoard[];
 changeSizeBtn = Button["Dimensione Scacchiera",
 	changeDimensionBoard[];,
 	Enabled->Dynamic@changeDimensionEnabled];
+
+
+
+board = Startposition; (* La board viene settata con le pedine in posizioni specifiche (iniziali, in caso di schermata iniziale, o penultime)*)
+
+Chess[ShowBoard -> Interactive,ImageSize -> dimensionBoard, BoardColour -> colorBoard]
+Chess[ShowBoard -> board, Interact -> False,ImageSize -> dimensionBoard, BoardColour -> colorBoard]; (*expr per disabilitare l'interazione con la scacchiera*)
+(*Parametri del comando Chess[]:
+- ShowBoard -> serve per specifiare l'interazione con la scacchiera visualizzata (
+			  Interactive: possibilit\[AGrave] di interagire con essa e muovere le pedine
+			  PGN-values (board) le pedine sono mosse tenendo conto dei valori PGN specificati
+-ImageSize -> Tramite un valore numerico intero specifico la dimensione della scacchiera
+-BoardColour -> Tramite valore RGBColor vado ad applicare un determinato colore alla scacchiera
+)*)
+SetDirectory[NotebookDirectory[]];
+
+(* GraphicsGrid per generare tabella grafica dei comandi di gioco*)
+(* La tabella contiene i pulsanti, quattro immagini a scopo decorativo e le stampe dinamiche di diverse variabili*)
+grid = GraphicsGrid[
+{
+{Import["whiteking.png"]," sta giocando"Dynamic@nomeUtente, Import["blacking.png"]},
+{newBoardBtn, restartBtn, checkBtn },
+{showSolutionBtn," seed partita"Dynamic@showSeed,repeatBtn},
+{Dynamic@whoIsPlaying,Dynamic@endgame,Dynamic@correctMoveToPrint},
+{changeSizeBtn, changeColorBtn,resetColorBtn},
+{Import["blackqueen.png"],
+ColorSetter[Dynamic[selectedColor]],
+Import["whitequeen.png"]
+}
+}, Frame->All , AspectRatio->2/5, ImageSize->Large];
+
+grid
+]];
+
 	
 
 
 End[];
 EndPackage[];
-(*
-Quiet[Main[]]*)
+
