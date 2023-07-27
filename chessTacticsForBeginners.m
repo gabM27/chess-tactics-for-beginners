@@ -52,7 +52,7 @@ Begin["`Private`"];
 - A seconda degli ultimi 3 caratteri presenti in ogni partita ("1-0" o "0-1") l'utente giocher\[AGrave] con i bianchi o con i neri
 - Vengono poi mosse tutte le pedine tramite Move[...] fino alla penultima mossa della partita
 - Salviamo le mosse che sono state fatte per la partita *)
-generateNewChessBoard[whoIsPlaying_,showSeed_,lastgame_, randomNum_,correctMove_] := DynamicModule[{filepgn},
+generateNewChessBoard[whoIsPlaying_,showSeed_,lastgame_, randomNum_,correctMove_] := Module[{filepgn},
   lastgame = randomNum;
  
   filepgn = PGNfile[randomNum]["PGN"];
@@ -308,7 +308,8 @@ Chess[ShowBoard -> board, Interact -> False,ImageSize -> dimensionBoard, BoardCo
 -ImageSize -> Tramite un valore numerico intero specifico la dimensione della scacchiera
 -BoardColour -> Tramite valore RGBColor vado ad applicare un determinato colore alla scacchiera
 )*)
-SetDirectory[NotebookDirectory[]];
+
+SetDirectory[NotebookDirectory[]]; (* set directory base per gli import delle immagini nella grid *)
 
 (* GraphicsGrid per generare tabella grafica dei comandi di gioco*)
 (* La tabella contiene i pulsanti, quattro immagini a scopo decorativo e le stampe dinamiche di diverse variabili*)
