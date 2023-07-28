@@ -20,11 +20,14 @@
 (* :Mathematica Version: 13.2               *)
 (* :Limitation: None.                       *)
 (* :Discussion:                             *)
+
 BeginPackage["chessTacticsForBeginners`"];
 
+(* Main function --> accesso globale, serve per poter usufruire del package *)
 Main::usage="Main function";
+(* board, dimensionBoard e colorBoard --> accesso globale, necessario per gestire la scacchiera 
+da un contesto esterno, nel nostro caso nel tutorial *)
 board::usage="scacchiera";
-
 dimensionBoard::usage="Var. per settare la dimensione della board"; 
 colorBoard::usage="Var. per colore RGB della scacchiera, inizializzata a\[NonBreakingSpace]color\[NonBreakingSpace]default";
 dimensionBoard = 240; 
@@ -39,9 +42,36 @@ SetDirectory[dir];
 Needs["Chess`"];
 SetDirectory[NotebookDirectory[]];
 
+(*
+N.B. : le funzioni MakePGNfiles[input], PGNfile[num]["PGN"], PGNconvert[filepgn], 
+		Chess[Options..], Move[Options..], MoveFromPGN e le variabile Movelist e PGN 
+		sono proprie del package Chess by Arne Eide.
+		1. La funzione MakePGNfiles[input] serve per riconoscere le partite come file PGN a partire dall'input
+			inserito come argomento della funzione.
+		2. La funzione PGNfile[num]["PGN"] serve per estrapolare il "num-esimo" file PGN.
+		3. La funzione PGNconvert[filepgn] serve per convertire il file estrapolato tramite la funzione precedente
+			 in una lista di mosse in un formato comprensibile al package Chess by Arne Eide.
+		4. La funzione Chess[Options..] serve per mostrare e modificare la scacchiera in base
+			ai parametri (Options..) inseriti come argomento della funzione;
+			Parametri del comando Chess[]:
+				- ShowBoard -> serve per specifiare l'interazione con la scacchiera visualizzata
+			    - Interactive: possibilit\[AGrave] di interagire con essa e muovere le pedine 			
+			    - ImageSize -> Tramite un valore numerico intero specifico la dimensione della scacchiera
+                - BoardColour -> Tramite valore RGBColor vado ad applicare un determinato colore alla scacchiera
+		5. La funzione Move[Options..] serve per muovere i pezzi in base ai parametri (Options..)
+			inseriti come argomento della funzione.
+		6. La funzione MoveFromPGN[Options] serve per muovere i pezzi a partire da un file PGN.
+		7. La variabile Movelist serve per "catturare" la lista delle mosse effettuate.
+		8. La variabile PGN (Dynamic) serve per memorizzare la partita effettuata in un file PGN.
+*)
+
+(* caricamento del dataset delle partite *)
 problems = Import["dataset.zip","*.txt"][[1]];
 MakePGNfiles[problems];
 
+(* Inizio contesto privato: tutto ci\[OGrave] che \[EGrave] dichiarato in questo contesto
+	non pu\[OGrave] essere usato direttamente dall'esterno. 
+	*)
 Begin["`Private`"];
 
 (* funzione che viene attivata una volta cliccato il button "Nuova Scacchiera":
@@ -65,7 +95,12 @@ generateNewChessBoard[whoIsPlaying_,showSeed_,lastgame_, randomNum_,correctMove_
     whoIsPlaying = "Mossa al BIANCO",
     whoIsPlaying = "Mossa al NERO"];
     
-  Move[MoveFromPGN[#][[1]]] & /@ Drop[board, Length[Movelist] - 1];
+  Move[MoveFromPGN[#][[1]]] & /@ Drop[board, Length[Movelist] - 1]; 
+  (* esempio di come funziona Move[Options]: a partire dal file PGN, convertito nella variabile board,
+     vengono "droppate" le mosse fino alla penultima (data da Length[Movelist]-1). 
+     In questo modo, riusciamo a mostrare la posizione della partita sulla scacchiera 
+     nel momento in cui serve una sola mossa per fare scacco matto.
+   *)
  
   showSeed = ToString[randomNum];
 ]
@@ -196,12 +231,11 @@ While[True,
 ];
 nomeUtente=StringReplace[nomeUtente, " " -> ""];
 
-
 (* funzioni dei pulsanti *)
 newBoardBtn = Button["Nuova Scacchiera", 
 	Quiet@Block[{},
 	While[True,  
-     seed = InputString["Inserisci il seed della partita oppure 0 per generare una partita randomica (le partite sono 11715)"];
+     seed = InputString["Inserisci il seed della partita oppure 0 per generare una partita randomica (le partite sono 11714)"];
      If[! StringMatchQ[StringTrim[seed]][""] && StringMatchQ[seed, NumberString], 
            tmp = Interpreter["Number"][seed];
         If[tmp < 11716 && tmp >= 0, Break[]];
@@ -209,7 +243,7 @@ newBoardBtn = Button["Nuova Scacchiera",
         
     ];
     If[StringMatchQ[seed, "0"],
-    randomNum = RandomInteger[{1, 11715}],
+    randomNum = RandomInteger[{1, 11714}],
     randomNum = Interpreter["Number"][seed]];
     Clear[whoIsPlaying];
     Clear[showSeed];
@@ -295,21 +329,12 @@ changeSizeBtn = Button["Dimensione Scacchiera",
 	changeDimensionBoard[];,
 	Enabled->Dynamic@changeDimensionEnabled];
 
-
-
 board = Startposition; (* La board viene settata con le pedine in posizioni specifiche (iniziali, in caso di schermata iniziale, o penultime)*)
 
 Chess[ShowBoard -> Interactive,ImageSize -> dimensionBoard, BoardColour -> colorBoard]
 Chess[ShowBoard -> board, Interact -> False,ImageSize -> dimensionBoard, BoardColour -> colorBoard]; (*expr per disabilitare l'interazione con la scacchiera*)
-(*Parametri del comando Chess[]:
-- ShowBoard -> serve per specifiare l'interazione con la scacchiera visualizzata (
-			  Interactive: possibilit\[AGrave] di interagire con essa e muovere le pedine
-			  PGN-values (board) le pedine sono mosse tenendo conto dei valori PGN specificati
--ImageSize -> Tramite un valore numerico intero specifico la dimensione della scacchiera
--BoardColour -> Tramite valore RGBColor vado ad applicare un determinato colore alla scacchiera
-)*)
 
-SetDirectory[NotebookDirectory[]]; (* set directory base per gli import delle immagini nella grid *)
+SetDirectory[NotebookDirectory[]]; (* set directory base necessaria per gli import delle immagini nella grid *)
 
 (* GraphicsGrid per generare tabella grafica dei comandi di gioco*)
 (* La tabella contiene i pulsanti, quattro immagini a scopo decorativo e le stampe dinamiche di diverse variabili*)
@@ -327,6 +352,7 @@ Import["whitequeen.png"]
 }, Frame->All , AspectRatio->2/5, ImageSize->Large];
 
 grid
+
 ]];
 
 	
