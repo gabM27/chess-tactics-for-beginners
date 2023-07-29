@@ -23,15 +23,15 @@
 
 BeginPackage["chessTacticsForBeginners`"];
 
-(* Main function --> accesso globale, serve per poter usufruire del package *)
+(* Main function --> accesso globale, serve per poter usufruire del package*)
 Main::usage="Main function";
 (* board, dimensionBoard e colorBoard --> accesso globale, necessario per gestire la scacchiera 
 da un contesto esterno, nel nostro caso nel tutorial *)
 board::usage="scacchiera";
 dimensionBoard::usage="Var. per settare la dimensione della board"; 
 colorBoard::usage="Var. per colore RGB della scacchiera, inizializzata a\[NonBreakingSpace]color\[NonBreakingSpace]default";
-dimensionBoard = 240; 
-colorBoard=RGBColor[0.8196,0.5451,0.2784];                                    (* Var. per colore RGB della scacchiera, inizializzata a\[NonBreakingSpace]color\[NonBreakingSpace]default*)
+dimensionBoard = 240;  (* dimensione di default*)
+colorBoard=RGBColor[0.8196,0.5451,0.2784];          (* Var. per colore RGB della scacchiera, inizializzata a\[NonBreakingSpace]color\[NonBreakingSpace]default*)
 
 
 
@@ -55,7 +55,7 @@ N.B. : le funzioni MakePGNfiles[input], PGNfile[num]["PGN"], PGNconvert[filepgn]
 			ai parametri (Options..) inseriti come argomento della funzione;
 			Parametri del comando Chess[]:
 				- ShowBoard -> serve per specifiare l'interazione con la scacchiera visualizzata
-			    - Interactive: possibilit\[AGrave] di interagire con essa e muovere le pedine 			
+			    - Interactive -> possibilit\[AGrave] di interagire con essa e muovere le pedine 			
 			    - ImageSize -> Tramite un valore numerico intero specifico la dimensione della scacchiera
                 - BoardColour -> Tramite valore RGBColor vado ad applicare un determinato colore alla scacchiera
 		5. La funzione Move[Options..] serve per muovere i pezzi in base ai parametri (Options..)
@@ -137,7 +137,7 @@ dropCharWhiteMove[lastgame_,correctMoveToPrint_,correctMove_] := Module[{},
 
 (*Funzione per il cambio dimensione alla scacchiera, 4 possibili dimensioni: 120,240,300,400
 - Viene richiamata nel button "Dimensione Scacchiera"
-- La dimensione cambia in ordine crescente, quindi dalla scacchiera pi\[UGrave] piccola (120) a quella pi\[UGrave] grande (400)- 
+- La dimensione cambia in ordine crescente, quindi dalla scacchiera pi\[UGrave] piccola (120) a quella pi\[UGrave] grande (400)
 - Per applicare la dimensione passo al comando Chess[...] il paramatro 'dimensionBoard' che applico a ImageSize *)
 changeDimensionBoard[] := Module[{},
 
@@ -198,7 +198,8 @@ gameResult = 0,                                            (* partita vinta oppu
 seed = "",                                                 (* seed della partita*)
 randomNum = "",                                            (* variabile che memorizza l'estrazione di un seed variabile*)
 selectedColor = RGBColor[0.8196,0.5451,0.2784],            (* colore scacchiera selezionabile dall'utente*)
-(* boolean di attivazione dei pulsanti*)
+
+(* boolean di attivazione dei pulsanti, per definire il flusso di gioco*)
 newBoardEnabled = True,
 restartEnabled = False,
 repeatEnabled = False,
@@ -222,7 +223,7 @@ changeSizeBtn
 },
 Quiet@Block[{},
 
-(* Carico il dataset e creo i file pgn *)
+
 (* Questo \[EGrave] il messaggio pop-up della scelta del nome dell'utente all'avvio del programma:
 - L'utente sar\[AGrave] obbligato a mettere un nome (che non sia una stringa vuota) ed eventuali spazi verranno eliminati restituendo un'unica stringa *)
 While[True,
